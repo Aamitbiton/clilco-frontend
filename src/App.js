@@ -1,15 +1,15 @@
 import './App.css';
 import { Routes, Route } from "react-router-dom";
+import {Login} from '../src/views/login/Login'
 
 const Home = ({name}) => (<h1>{name}</h1>)
-const Login = () => (<h1>Login</h1>)
 const Screen = ({children}) => (<>{children}</>)
 function App() {
     return (
         <div>
             <Routes>
                 <Route path="/" element={<Screen><Home name={"HOME!!!"} /></Screen>}/>
-                <Route path="/login" element={<Screen><Login/></Screen>}/>
+                <Route path="/login" element={<Login/>}/>
             </Routes>
         </div>
     );
