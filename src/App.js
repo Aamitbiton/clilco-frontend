@@ -1,25 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import { Routes, Route } from "react-router-dom";
 
+const Home = ({name}) => (<h1>{name}</h1>)
+const Login = () => (<h1>Login</h1>)
+const Screen = ({children}) => (<>{children}</>)
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and ave to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div>
+            <Routes>
+                <Route path="/" element={<Screen><Home name={"HOME!!!"} /></Screen>}/>
+                <Route path="/login" element={<Screen><Login/></Screen>}/>
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
