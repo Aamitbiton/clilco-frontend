@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1de1ae38-3629-4ae3-b8f0-1230142f84f6" name="Changes" comment="remove unesesery import">
+    <list default="true" id="1de1ae38-3629-4ae3-b8f0-1230142f84f6" name="Changes" comment="add material ui and create login component">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firestore.rules" beforeDir="false" afterPath="$PROJECT_DIR$/firestore.rules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/firebase/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/firebase/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/firebase/firestore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/firebase/firestore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/auth/authFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/auth/authFunctions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/login/Login.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="add-mui" />
+        <entry key="$PROJECT_DIR$" value="AddStore" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -36,6 +42,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/firebase.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/firebase/firestore.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/package.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.github/workflows/firebase-hosting-pull-request.yml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.github/workflows/firebase-hosting-merge.yml" root0="FORCE_HIGHLIGHTING" />
@@ -74,6 +81,7 @@
       <workItem from="1647949468781" duration="1996000" />
       <workItem from="1647951530525" duration="1095000" />
       <workItem from="1647954644807" duration="999000" />
+      <workItem from="1648029980329" duration="5205000" />
     </task>
     <task id="LOCAL‎00001" summary="כגדגדג">
       <created>1647951562538</created>

@@ -4,12 +4,14 @@ import {
   signOut,
   deleteUser,
   getIdToken,
-  signInWithPhoneNumber,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider
 } from "firebase/auth";
-import {callAbleFunction} from "src/firebase/functions";
+import {callAbleFunction} from "../firebase/functions";
 
 const Auth = getAuth();
+const provider = new GoogleAuthProvider()
 
 async function deleteAccount() {
   try {
@@ -31,16 +33,30 @@ async function logOut() {
   return await signOut(Auth);
 }
 
-async function logIn(phoneNumber, appVerifier) {
-  try {
-    return await signInWithPhoneNumber(Auth, phoneNumber, appVerifier)
-  } catch (e) {
-  }
+async function logInWithGoogle(){
+try {
+    let result = await signInWithPopup(Auth, provider);
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  const credential = GoogleAuthProvider.credentialFromResult(result);
+  const token = credential.accessToken;
+  // The signed-in user info.
+  const user = result.user;
+  return user
+
+
+}catch (e) {
+
+}
+
+
+
+
+
 }
 
 export default {
   deleteAccount,
   logOut,
-  logIn,
-  getToken
+  getToken,
+  logInWithGoogle
 }
