@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1de1ae38-3629-4ae3-b8f0-1230142f84f6" name="Changes" comment="כגדגדג">
+    <list default="true" id="1de1ae38-3629-4ae3-b8f0-1230142f84f6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/store/actionsCreator.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/auth/authFunctions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/auth/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/reducers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/user/constants.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/user/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/user/userFunctions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
@@ -29,6 +37,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="recentNewPullRequestHead">
+      <RepoCoordinatesHolder>
+        <option name="owner" value="clilco" />
+        <option name="repository" value="clilco-frontend" />
+      </RepoCoordinatesHolder>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -42,11 +58,19 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/store" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\itsSerious\clilco-frontend\src\store" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -58,7 +82,9 @@
       <updated>1647949466093</updated>
       <workItem from="1647949468781" duration="1996000" />
       <workItem from="1647951530525" duration="1095000" />
-      <workItem from="1647954644807" duration="999000" />
+      <workItem from="1647954644807" duration="1101000" />
+      <workItem from="1648022124855" duration="304000" />
+      <workItem from="1648023448450" duration="1049000" />
     </task>
     <task id="LOCAL‎00001" summary="כגדגדג">
       <created>1647951562538</created>
@@ -66,7 +92,13 @@
       <option name="presentableId" value="LOCAL‎00001" />
       <updated>1647951562538</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL‎00002" summary="ADD ROUTER">
+      <created>1647955694084</created>
+      <option name="number" value="LOCAL‎00002" />
+      <option name="presentableId" value="LOCAL‎00002" />
+      <updated>1647955694084</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -86,6 +118,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="כגדגדג" />
-    <option name="LAST_COMMIT_MESSAGE" value="כגדגדג" />
+    <MESSAGE value="ADD ROUTER" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADD ROUTER" />
   </component>
 </project>
