@@ -2,20 +2,17 @@ import React from 'react';
 import {Link, useNavigate} from 'react-router-dom'
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import {runSignInWithGoogle} from '../../store/auth/authFunctions'
 import './login.css'
 
 
 export const Login = ()=>{
     const navigate = useNavigate()
-    const goToHome = ()=>{
-        navigate('/')
-    }
+
     return (
     <div className={'login-container'}>
         <Stack spacing={2} direction="row" >
-        {['Google', 'Apple', 'Facebook'].map((connectMethod)=>
-                <Button onClick={goToHome} variant="contained">{connectMethod}</Button>
-        )}
+                <Button onClick={runSignInWithGoogle} variant="contained">google</Button>
         </Stack>
     </div>
 

@@ -18,7 +18,6 @@ import {
   startAfter,
   arrayUnion,
 } from "firebase/firestore";
-import { globalFetch } from "src/firebase/functionsFetch";
 
 const db = getFirestore();
 
@@ -66,13 +65,6 @@ async function getCollection(path = "", wheres = [], orderBys = [], myLimit = 10
     return { docs, lastDoc: queryDocs[queryDocs.length - 1] };
   } catch (e) {
     console.error(e);
-    globalFetch({
-      data: {
-        e: e.toString(),
-        parameters: { path, wheres, orderBys, myLimit, start },
-      },
-      name: "alert_errors",
-    });
     return { docs: [] };
   }
 }
