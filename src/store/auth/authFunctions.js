@@ -1,14 +1,17 @@
 import {store} from "../index";
-import auth from '../../firebase/auth'
 import firestore from '../../firebase/firestore'
 const {getState,dispatch} = store
+import actionsCreator from '../actionsCreator'
+import * as authService from '../../services/auth'
+import * as userService from '../../services/user'
 
 export const  runSignInWithGoogle =async ()=>{
-let firebaseUser = await auth.logInWithGoogle();
+let firebaseUser = await authService.login_with_google();
 //get the user from the firestore
-let userDoc = await firestore.getDocument(`users/${firebaseUser.uid}`);
+let userDoc = await userService.get_user();
+// let userDoc = await firestore.getDocument(`users/${firebaseUser.uid}`);
 //write the user in state
-await dispatch({type:'SET_USER',payload:userDoc})
+await dispatch(actionsCreator("SET_USER", userDoc))
 //check if send to home or registration     
 }
 
