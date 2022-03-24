@@ -1,17 +1,18 @@
 import {store} from "../index";
-import firestore from '../../firebase/firestore'
-const {getState,dispatch} = store
+import * as firestore from '../../firebase/firestore'
 import actionsCreator from '../actionsCreator'
 import * as authService from '../../services/auth'
 import * as userService from '../../services/user'
 
-export const  runSignInWithGoogle =async ()=>{
-let firebaseUser = await authService.login_with_google();
-//get the user from the firestore
-let userDoc = await userService.get_user();
-// let userDoc = await firestore.getDocument(`users/${firebaseUser.uid}`);
-//write the user in state
-await dispatch(actionsCreator("SET_USER", userDoc))
-//check if send to home or registration     
+const {getState, dispatch} = store
+
+
+export const login_with_google = async () => {
+    const firebaseUser = await authService.login_with_google();
+    const userDoc = await userService.get_user();
+    await actionsCreator("SET_USER", userDoc);
+    if(!userDoc.phone) {}// go to phone page
+    if(!userDoc.area) {}// go to phone registration form
+
 }
 

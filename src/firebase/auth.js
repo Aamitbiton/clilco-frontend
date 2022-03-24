@@ -13,7 +13,7 @@ import {callAbleFunction} from "../firebase/functions";
 const Auth = getAuth();
 const provider = new GoogleAuthProvider()
 
-async function deleteAccount() {
+export async function deleteAccount() {
   try {
     const token = await Auth.currentUser.getIdToken();
     const uid = Auth.currentUser.uid;
@@ -25,15 +25,19 @@ async function deleteAccount() {
   }
 }
 
-async function getToken() {
+export async function getToken() {
   return await getIdToken(Auth.currentUser);
 }
 
-async function logOut() {
+export async function logOut() {
   return await signOut(Auth);
 }
 
-async function logInWithGoogle(){
+export function get_current_user() {
+  return Auth.currentUser
+}
+
+export async function logInWithGoogle(){
 try {
     let result = await signInWithPopup(Auth, provider);
   // This gives you a Google Access Token. You can use it to access the Google API.
@@ -54,9 +58,3 @@ try {
 
 }
 
-export default {
-  deleteAccount,
-  logOut,
-  getToken,
-  logInWithGoogle
-}

@@ -1,8 +1,8 @@
-import dbLayer from '../dbLayer'
-import authService from '../services/auth'
+import * as dbLayer from '../dbLayer'
+import * as authService from '../services/auth'
 
 
-export async function get_user(){
-    const id = authService.get_my_id()
-    return await dbLayer.get_user(id)
+export async function get_user() {
+    const {uid} = authService.get_current_user()
+    return await dbLayer.get_user(uid)
 }
