@@ -6,12 +6,15 @@ import {
   getIdToken,
   onAuthStateChanged,
   signInWithPopup,
-  GoogleAuthProvider
+  GoogleAuthProvider,
+  FacebookAuthProvider
 } from "firebase/auth";
 import {callAbleFunction} from "../firebase/functions";
 
 const Auth = getAuth();
-const provider = new GoogleAuthProvider()
+
+const facebook_provider = new FacebookAuthProvider();
+const google_provider = new GoogleAuthProvider()
 
 export async function deleteAccount() {
   try {
@@ -37,8 +40,9 @@ export function get_current_user() {
   return Auth.currentUser
 }
 
-export async function logInWithGoogle(){
+export async function logInWithProvider(providerName){
 try {
+  const provider = providerName === 'google' ? google_provider : facebook_provider
     let result = await signInWithPopup(Auth, provider);
   // This gives you a Google Access Token. You can use it to access the Google API.
   const credential = GoogleAuthProvider.credentialFromResult(result);
