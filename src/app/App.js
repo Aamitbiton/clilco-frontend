@@ -16,13 +16,13 @@ import {VideoDate} from '../views/videoDate/VideoDate'
 function App() {
     return (
         <Routes>
-            <Route element={<AuthNotRequired/>}>
+//             <Route element={<AuthNotRequired/>}>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/add-image" element={<AddImage/>}/>
                 <Route path="/registration-form" element={<RegistrationForm/>}/>
-            </Route>
+//             </Route>
 
-            <Route element={<AuthRequired/>}>
+//             <Route element={<AuthRequired/>}>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/view-users" element={<ViewUsers/>}/>
                 <Route path="/lobby" element={<Lobby/>}/>
@@ -30,7 +30,7 @@ function App() {
                 <Route path="/after-video" element={<AfterVideo/>}/>
                 <Route path="/verify-phone" element={<VerifyPhone/>}/>
                 <Route path="/video-date" element={<VideoDate/>}/>
-            </Route>
+//             </Route>
         </Routes>
     );
 }
