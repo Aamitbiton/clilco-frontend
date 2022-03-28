@@ -3,6 +3,7 @@ import * as firestore from '../../firebase/firestore'
 import actionsCreator from '../actionsCreator'
 import * as authService from '../../services/auth'
 import * as userService from '../../services/user'
+import * as api from '../../services/api'
 
 const {getState, dispatch} = store
 
@@ -22,5 +23,9 @@ export const login_with_facebook = async () => {
     if(!userDoc.phone) {}// go to phone page
     if(!userDoc.area) {}// go to phone registration form
 
+}
+export const send_sms = async (phoneNumber) => {
+   await api.send_sms(phoneNumber)
+    return true
 }
 

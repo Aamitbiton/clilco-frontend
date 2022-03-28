@@ -9,8 +9,16 @@
     flex-direction: column;
 
 }
-.error-message{
+.title{
+    font-weight: bold;
     color: blue;
+    text-align: center;
+}
+.form-control{
+    margin-bottom: 10px;
+}
+.error-message{
+    color: red;
     text-align: center;
 }
 .submit-btn{
