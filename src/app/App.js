@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route } from "react-router-dom";
-import {Login} from '../src/views/login/Login'
+import {Login} from '../views/login/Login'
 
 const Home = ({name}) => (<h1>{name}</h1>)
 const Screen = ({children}) => (<>{children}</>)
