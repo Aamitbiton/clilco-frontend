@@ -40,6 +40,10 @@ export function get_current_user() {
   return Auth.currentUser
 }
 
+export function on_auth_state_changed(callBack) {
+  return onAuthStateChanged(Auth,callBack)
+}
+
 export async function logInWithProvider(providerName){
 try {
   const provider = providerName === 'google' ? google_provider : facebook_provider
