@@ -3,7 +3,6 @@ import {watch_auth_changes} from '../auth/authFunctions'
 import {watch_user} from '../user/userFunctions'
 import {store} from "../index";
 import APP_CONSTANTS from './constants';
-
 const {getState, dispatch} = store
 
 

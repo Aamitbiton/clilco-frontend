@@ -7,7 +7,7 @@ export async function get_user() {
     const uid = authService.get_current_user()?.uid;
     if (uid) return await dbLayer.get_user(uid)
 }
-export async function watch_user(callback) {
+export async function watch_user(callBack) {
     const id = authService.get_current_user()?.uid;
-    await dbLayer.watch_user({id, callback})
+    await dbLayer.watch_user({id, callBack})
 }
