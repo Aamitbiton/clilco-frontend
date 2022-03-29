@@ -5,6 +5,7 @@ import {Login} from '../views/login/Login'
 import React, {useEffect, useState} from "react";
 import {init_app} from "../store/app/appFunctions";
 import {useSelector} from "react-redux";
+import {Lobby} from "../views/lobby/Lobby";
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
             appState.app_ready &&
             <Routes>
                 <Route path="/login" element={<Login/>}/>
-                <Route path="/" element={<AuthenticatedLayout/>}/>
+                <Route path="/*" element={<AuthenticatedLayout/>}/>
             </Routes>
         }
     </>);
