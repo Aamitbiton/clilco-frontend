@@ -5,7 +5,7 @@ import {login_with_google, login_with_facebook} from '../../store/auth/authFunct
 import './login.css'
 
 
-export const Login = ()=>{
+export const Login = ()=>   {
     return (
     <div className={'login-container'}>
         <Stack spacing={2} direction="row" >
