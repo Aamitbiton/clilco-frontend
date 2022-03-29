@@ -13,10 +13,11 @@ export const login_with_google = async () => {
     const firebaseUser = await authService.login_with_google();
     const userDoc = await userService.get_user();
     await actionsCreator("SET_USER", userDoc);
-    if (!userDoc.phone) {
-    }// go to phone page
-    if (!userDoc.area) {
-    }// go to phone registration form
+    debugger
+    // if (!userDoc.phone) {
+    // }// go to phone page
+    // if (!userDoc.area) {
+    // }// go to phone registration form
 
 }
 

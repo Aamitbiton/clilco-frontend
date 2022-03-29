@@ -14,10 +14,11 @@ import {useSelector} from "react-redux";
 
 
 export const AuthenticatedLayout = () => {
-
     const location = useLocation();
     const userState = useSelector((state) => state.user)
     const appState = useSelector((state) => state.app)
+
+
 
     return (
         <>

@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 function App() {
     const appState = useSelector((state) => state.app)
     useEffect(init_app, [])
-    return (<>
+            return (<>
         {
             appState.app_ready &&
             <Routes>
