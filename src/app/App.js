@@ -9,15 +9,14 @@ import {useSelector} from "react-redux";
 
 function App() {
     const appState = useSelector((state) => state.app)
-    useEffect( init_app, [])
+    useEffect(init_app, [])
     return (<>
         {
-            appState.app_ready ?
-                <Routes>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/" element={<AuthenticatedLayout/>}/>
-                </Routes>
-                : null
+            appState.app_ready &&
+            <Routes>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/" element={<AuthenticatedLayout/>}/>
+            </Routes>
         }
     </>);
 }

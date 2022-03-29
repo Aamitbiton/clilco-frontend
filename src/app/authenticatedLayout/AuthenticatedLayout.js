@@ -1,4 +1,4 @@
-import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
+import {Routes, Route, Navigate, useLocation} from "react-router-dom";
 import {Home} from '../../views/home/Home'
 import {ViewUsers} from '../../views/viewUsers/ViewUsers'
 import {Lobby} from '../../views/lobby/Lobby'
@@ -16,16 +16,12 @@ import {useSelector} from "react-redux";
 export const AuthenticatedLayout = () => {
 
     const location = useLocation();
-    const navigate = useNavigate();
     const userState = useSelector((state) => state.user)
     const appState = useSelector((state) => state.app)
 
-// todo make this prettier
-    // if app is ready and finished setching user then check if user then routs else go to login
-
     return (
         <>
-            {appState.finished_fetching_user ? (
+            {appState.finished_fetching_user && (
                 userState.user?.id ?
                     <Routes>
                         <Route path="/" element={<Home/>}/>
@@ -40,7 +36,7 @@ export const AuthenticatedLayout = () => {
                         <Route path="*" element={<Missed/>}/>
                     </Routes>
                     : <Navigate to="login" state={{from: location}} replace/>
-            ) : null}
+            )}
 
         </>
     );
