@@ -8,7 +8,6 @@ import '../verifyPhone.css'
 export const  PhoneInput = ({numberVerified}) => {
     let schema = Yup.object().shape({
             phoneNumber: Yup.string().phone('il').required()
-
     })
     const initialValues = {
         phoneNumber: '',
