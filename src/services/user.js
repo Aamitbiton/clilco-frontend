@@ -9,5 +9,6 @@ export async function get_user() {
 }
 export async function watch_user(callBack) {
     const id = authService.get_current_user()?.uid;
-    await dbLayer.watch_user({id, callBack})
+    if(id) await dbLayer.watch_user({id, callBack})
+    else callBack()
 }
