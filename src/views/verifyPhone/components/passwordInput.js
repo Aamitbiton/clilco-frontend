@@ -1,22 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 import * as Yup from 'yup';
 import "yup-phone";
 import '../verifyPhone.css'
 
-function PasswordInput() {
+function PasswordInput({checkPassword}) {
     let schema = Yup.object().shape({
-        password: Yup.string()
+        code: Yup.string()
             .required()
             .matches(/^[0-9]+$/, "Must be only digits")
-            .length(5)
+            .length(4)
     })
     const initialValues = {
-        password: '',
+        code: '',
     };
+    const [Loading,setLoading] = useState(false);
     const handleSubmit = (values)=>{
-alert(values.password)
+        setLoading(true)
+         checkPassword(values.code)
+        setTimeout(()=>{
+            setLoading(false)
+        },3000)
     }
     return (
         <div className="phone-number-form">
@@ -28,13 +34,22 @@ alert(values.password)
                 <Form>
                     <div className="form-group">
                         <p className="title">הזן את הקוד שקיבלת</p>
-                        <Field name="password" type="password" className="form-control" />
+                        <Field name="code" type="code" className="form-control" />
                         <ErrorMessage
-                            name="password"
+                            name="code"
                             component="div"
                             className="error-message"
                         />
-                        <Button className="submit-btn" type="submit" variant="contained">אישור</Button>
+                        <LoadingButton
+                            loadingPosition="start"
+                            className="submit-btn"
+                            type="submit"
+                            loading={Loading}
+                            variant="contained"
+                        >
+                            אישור
+                        </LoadingButton>
+
 
                     </div>
                 </Form>

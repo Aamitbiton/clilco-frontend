@@ -6,6 +6,7 @@ import React, {useEffect, useState} from "react";
 import {init_app} from "../store/app/appFunctions";
 import {useSelector} from "react-redux";
 import {Lobby} from "../views/lobby/Lobby";
+import {VerifyPhone} from "../views/verifyPhone/VerifyPhone";
 
 
 function App() {

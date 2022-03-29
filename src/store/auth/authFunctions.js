@@ -43,7 +43,12 @@ export const login_with_facebook = async () => {
 
 }
 export const send_sms = async (phoneNumber) => {
-   await api.send_sms(phoneNumber)
-    return true
+    let userId = getState().user.user.id
+  return await api.send_sms(phoneNumber, userId)
+}
+
+export const check_password = async (code) => {
+    let userId = getState().user.user.id
+  return await api.check_password(userId, code)
 }
 
