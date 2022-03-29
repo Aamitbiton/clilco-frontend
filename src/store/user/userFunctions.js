@@ -13,3 +13,8 @@ export const watch_user = async () => {
         if (user) await actionsCreator(USER_CONSTANTS.SET_USER, user);
         await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
     });}
+
+
+export const set_user_available = async () => {
+    await userService.update_user({available:true})
+}
