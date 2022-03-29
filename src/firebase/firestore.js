@@ -82,7 +82,9 @@ async function remove(path) {
 }
 
 async function watchDoc(path, callBack) {
-  return onSnapshot(doc(db, path), callBack);
+  return onSnapshot(doc(db, path), (userDoc=>{
+    callBack(userDoc.data())
+  }));
 }
 
 async function watchColl(path, callBack, wheres = []) {
