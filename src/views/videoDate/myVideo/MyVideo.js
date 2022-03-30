@@ -1,12 +1,9 @@
 import React, {useEffect} from 'react';
-import './lobby.css'
+import './myVideo.css';
 
-export const Lobby = () => {
-
+export const MyVideo = () => {
     return (
         <>
-
-            <h1>lobby</h1>
         </>
 
     )
