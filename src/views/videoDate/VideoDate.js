@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './videoDate.css';
 import {set_user_available} from "../../store/user/userFunctions";
 import {watch_room} from "../../store/video/videoFunctions";
@@ -10,25 +10,24 @@ import {VideoControllers} from "./videoControllers/VideoControllers";
 
 
 export const VideoDate = () => {
+    const [dateStarted, setDateStarted] = useState(false);
     const videoState = useSelector((state) => state.video)
-    const init_video_room = async () => {
+    const go_available = async () => {
         await watch_room();
         await set_user_available();
-
     }
-    useEffect(init_video_room, [])
+    const init_video_date =async () => {
+        setDateStarted(true);
+    }
+    const watch_video_state = async () => videoState?.room && await init_video_date()
+    useEffect(go_available, [])
+    useEffect(watch_video_state, [videoState])
+
     return (
         <>
+            {/*{JSON.stringify(videoState)}*/}
             <div className="video-page">
-
-                <div className="my-video">
-                    my-video
-                </div>
-
-                <div className="remote-video">
-                    remote-video
-                </div>
-
+                <MyVideo dateStarted={dateStarted}/>
             </div>
         </>
 
