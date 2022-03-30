@@ -17,3 +17,7 @@ export async function watch_room({id, callBack}) {
 export async function update_user({id, data}) {
     return await firestore.update(constants.dbPaths.singleUser(id), data)
 }
+
+export async function get_next_speed_date_time() {
+    return await firestore.getDocument(constants.dbPaths.next_speed_date_time)
+}
