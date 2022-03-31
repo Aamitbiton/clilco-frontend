@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import './myVideo.css';
 
-export const MyVideo = ({dateStarted}) => {
+export const MyVideo = ({room}) => {
     const [myVideoClass, setMyVideoClass] = useState('my-video');
 
     const videoRef = useRef();
@@ -10,11 +10,11 @@ export const MyVideo = ({dateStarted}) => {
     }
     const handle_date_started = async () => {
         setTimeout(() => {
-            setMyVideoClass(`${myVideoClass} video-in-date`)
+            if (room) setMyVideoClass(`${myVideoClass} video-in-date`)
         }, 2000)
     }
     useEffect(init_my_video, [])
-    useEffect(handle_date_started, [dateStarted])
+    useEffect(handle_date_started, [room])
 
     return (
         <>
