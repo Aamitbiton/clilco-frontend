@@ -16,7 +16,12 @@ export async function watch_user({privateCallBack, publicCallBack}) {
     }
 }
 
-export async function update_user(data) {
+export async function update_user_public(data) {
     const id = authService.get_current_user()?.uid;
-    await dbLayer.update_user({id, data})
+    await dbLayer.update_user_public({id, data})
+}
+
+export async function update_user_private(data) {
+    const id = authService.get_current_user()?.uid;
+    await dbLayer.update_user_private({id, data})
 }
