@@ -1,6 +1,5 @@
 import actionsCreator from '../actionsCreator'
 import {watch_auth_changes} from '../auth/authFunctions'
-import {watch_user} from '../user/userFunctions'
 import {get_next_speed_date_time} from '../video/videoFunctions'
 import {store} from "../index";
 import APP_CONSTANTS from './constants';
@@ -15,9 +14,5 @@ export const init_app = async ({navigator}) => {
     await actionsCreator('GLOBAL_HOOKS',{navigator})
 }
 
-export const init_app_data = async () => {
-    await watch_user();
 
-    // probably more functions will be added here
-}
 

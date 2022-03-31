@@ -4,16 +4,17 @@ import * as authService from '../../services/auth'
 import * as userService from '../../services/user'
 import * as api from '../../services/api'
 import {store} from "../index";
+import {watch_user} from "../user/userFunctions";
 const {getState, dispatch} = store
-
 
 export const login_with_google = async () => {
     const firebaseUser = await authService.login_with_google();
-    const userDoc = await userService.get_user();
-    await actionsCreator("SET_USER", userDoc);
-    debugger
-    if (!userDoc.phone) {
+    const user = getState().user.user
+    if (!user.private.phone) {
+        getState().app.global_hooks.navigator('/verify-phone')
+    }else {
         getState().app.global_hooks.navigator('/')
+
     }
 
 
@@ -24,30 +25,30 @@ export const watch_auth_changes = async (set_app_ready) => {
         set_app_ready();
         await actionsCreator("SET_IS_LOGGED_IN", user != null);
         if (user) {
-            const userDoc = await userService.get_user();
-            await actionsCreator("SET_USER", userDoc);
+          await watch_user();
+
         }
     });
 }
 
 export const login_with_facebook = async () => {
     const firebaseUser = await authService.login_with_facebook();
-    const userDoc = await userService.get_user();
-    await actionsCreator("SET_USER", userDoc);
-    if (!userDoc.phone) {
-    }// go to phone page
-    if (!userDoc.area) {
-    }// go to phone registration form
+    const user = getState().user.user
+    if (!user.private.phone) {
+        getState().app.global_hooks.navigator('/verify-phone')
+    }else {
+        getState().app.global_hooks.navigator('/')
 
+    }
 }
 
 export const send_sms = async (phoneNumber) => {
-    let userId = getState().user.user.id
+    let userId = getState().user.user.private.id
   return await api.send_sms(phoneNumber, userId)
 }
 
 export const check_password = async (code) => {
-    let userId = getState().user.user.id
+    let userId = getState().user.user.private.id
   return await api.check_password(userId, code)
 }
 

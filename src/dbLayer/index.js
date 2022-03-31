@@ -5,8 +5,9 @@ export async function get_user(id) {
     return await firestore.getDocument(constants.dbPaths.singleUser(id))
 }
 
-export async function watch_user({id, callBack}) {
-    return await firestore.watchDoc(constants.dbPaths.singleUser(id), callBack)
+export async function watch_user({id, privateCallBack, publicCallBack}) {
+     await firestore.watchDoc(constants.dbPaths.singleUser.private(id), privateCallBack)
+     await firestore.watchDoc(constants.dbPaths.singleUser.public(id), publicCallBack)
 }
 
 export async function watch_room({id, callBack}) {

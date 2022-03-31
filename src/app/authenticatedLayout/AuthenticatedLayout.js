@@ -10,22 +10,19 @@ import {VideoDate} from '../../views/videoDate/VideoDate'
 import {Missed} from '../../views/missed/Missed'
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
-import {init_app_data} from "../../store/app/appFunctions";
 
 
 export const AuthenticatedLayout = () => {
 
     const location = useLocation();
-    const userState = useSelector((state) => state.user)
+    const user = useSelector((state) => state.user.user)
     const appState = useSelector((state) => state.app)
-
-    useEffect(init_app_data, [])
 
 
     return (
         <>
             {appState.finished_fetching_user && (
-                userState.user?.id ?
+                user.private?.id ?
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/add-image" element={<AddImage/>}/>

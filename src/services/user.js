@@ -7,10 +7,13 @@ export async function get_user() {
     if (uid) return await dbLayer.get_user(uid)
 }
 
-export async function watch_user(callBack) {
+export async function watch_user({privateCallBack, publicCallBack}) {
     const id = authService.get_current_user()?.uid;
-    if(id) await dbLayer.watch_user({id, callBack})
-    else callBack()
+    if (id) await dbLayer.watch_user({id, privateCallBack, publicCallBack})
+    else {
+        privateCallBack()
+        publicCallBack()
+    }
 }
 
 export async function update_user(data) {

@@ -1,4 +1,5 @@
 export default Object.freeze({
-    SET_USER: "SET_USER",
+    SET_USER_PUBLIC: "SET_USER_PUBLIC",
+    SET_USER_PRIVATE: "SET_USER_PRIVATE",
 
 })

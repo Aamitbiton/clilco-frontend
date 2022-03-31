@@ -4,17 +4,25 @@ import actionsCreator from '../actionsCreator'
 import * as userService from '../../services/user'
 import {store} from "../index";
 import APP_CONSTANTS from "../app/constants";
-const {getState,dispatch} = store
 
+const {getState, dispatch} = store
 
 
 export const watch_user = async () => {
-    await userService.watch_user(async (user)=>{
-        if (user) await actionsCreator(USER_CONSTANTS.SET_USER, user);
+    const privateCallBack = async (user) => {
+        if (user) await actionsCreator(USER_CONSTANTS.SET_USER_PRIVATE, user);
         await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
-    });}
+    }
+
+    const publicCallBack = async (user) => {
+        if (user) await actionsCreator(USER_CONSTANTS.SET_USER_PUBLIC, user);
+        await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
+    }
+
+    await userService.watch_user({publicCallBack,privateCallBack});
+}
 
 
 export const set_user_available = async () => {
-    await userService.update_user({available:true})
+    await userService.update_user({available: true})
 }
