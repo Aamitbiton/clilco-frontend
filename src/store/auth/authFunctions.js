@@ -13,6 +13,7 @@ export const login_with_google = async () => {
     await actionsCreator("SET_USER", userDoc);
     debugger
     if (!userDoc.phone) {
+        getState().app.global_hooks.navigator('/')
     }
 
 

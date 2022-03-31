@@ -7,20 +7,12 @@ import {init_app} from "../store/app/appFunctions";
 import {useSelector} from "react-redux";
 import actionsCreator from "../store/actionsCreator";
 
-import {VerifyPhone} from "../views/verifyPhone/VerifyPhone";
-
 
 function App() {
-    const appState = useSelector((state) => state.app)
-    const navigator = useNavigate()
-    const init_navigation = ()=>{
-        actionsCreator('GLOBAL_HOOKS',{navigator})
-    }
-
-
-    useEffect(init_app, [])
-    useEffect(init_navigation, [])
-            return (<>
+    const appState = useSelector((state) => state.app);
+    const navigator = useNavigate();
+    useEffect(() => init_app({navigator}), [])
+    return (<>
         {
             appState.app_ready &&
             <Routes>

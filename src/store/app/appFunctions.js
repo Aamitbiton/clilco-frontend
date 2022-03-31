@@ -7,11 +7,12 @@ import APP_CONSTANTS from './constants';
 const {getState, dispatch} = store
 
 
-export const init_app = async () => {
+export const init_app = async ({navigator}) => {
     await watch_auth_changes(async () => {
         await actionsCreator(APP_CONSTANTS.SET_APP_READY, true);
     })
     await get_next_speed_date_time()
+    await actionsCreator('GLOBAL_HOOKS',{navigator})
 }
 
 export const init_app_data = async () => {
