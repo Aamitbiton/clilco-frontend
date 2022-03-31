@@ -14,5 +14,7 @@ export const init_app = async () => {
 
 export const init_app_data = async () => {
     await watch_user();
+
     // probably more functions will be added here
 }
+

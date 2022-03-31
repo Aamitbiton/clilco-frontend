@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import "yup-phone";
 import '../verifyPhone.css'
 
-function PasswordInput({checkPassword}) {
+function PasswordInput({checkPassword,sendSmsAgain}) {
     let schema = Yup.object().shape({
         code: Yup.string()
             .required()
@@ -17,12 +17,17 @@ function PasswordInput({checkPassword}) {
         code: '',
     };
     const [Loading,setLoading] = useState(false);
-    const handleSubmit = (values)=>{
+    const [sendAgainLoading,setSendAgainLoading] = useState(false);
+    const send_sms_again =async ()=>{
+        debugger
+        setSendAgainLoading(true)
+        await sendSmsAgain()
+        setSendAgainLoading(false)
+    }
+    const handleSubmit = async(values)=>{
         setLoading(true)
-         checkPassword(values.code)
-        setTimeout(()=>{
+        await checkPassword(values.code)
             setLoading(false)
-        },3000)
     }
     return (
         <div className="phone-number-form">
@@ -41,13 +46,20 @@ function PasswordInput({checkPassword}) {
                             className="error-message"
                         />
                         <LoadingButton
-                            loadingPosition="start"
                             className="submit-btn"
                             type="submit"
                             loading={Loading}
                             variant="contained"
                         >
                             אישור
+                        </LoadingButton>
+                        <LoadingButton
+                            className="submit-btn"
+                            onClick={()=>send_sms_again()}
+                            loading={sendAgainLoading}
+                            variant="flat"
+                        >
+                            שלח שוב
                         </LoadingButton>
 
 

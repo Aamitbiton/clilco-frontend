@@ -1,19 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import Button from '@mui/material/Button';
 import * as Yup from 'yup';
 import "yup-phone";
 import '../verifyPhone.css'
+import LoadingButton from "@mui/lab/LoadingButton";
 
-export const  PhoneInput = ({numberVerified}) => {
+export const  PhoneInput = ({smsSent}) => {
     let schema = Yup.object().shape({
             phoneNumber: Yup.string().phone('il').required()
     })
     const initialValues = {
         phoneNumber: '',
-    };
-    const handleSubmit = (values)=>{
-        numberVerified(values.phoneNumber)
+    }
+    const [Loading,setLoading] = useState(false);
+
+    const handleSubmit = async (values)=>{
+        setLoading(true)
+       await smsSent(values.phoneNumber)
+        setLoading(false)
     }
     return (
         <div className="phone-number-form">
@@ -31,8 +36,14 @@ export const  PhoneInput = ({numberVerified}) => {
                                 component="div"
                                 className="error-message"
                             />
-                            <Button className="submit-btn" type="submit" variant="contained">שלח קוד</Button>
-
+                            <LoadingButton
+                                className="submit-btn"
+                                type="submit"
+                                loading={Loading}
+                                variant="contained"
+                            >
+                                שלח קוד
+                            </LoadingButton>
                         </div>
                     </Form>
             </Formik>
