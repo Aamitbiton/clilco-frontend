@@ -1,7 +1,6 @@
 import {Routes, Route, Navigate, useLocation} from "react-router-dom";
 import {Home} from '../../views/home/Home'
 import {ViewUsers} from '../../views/viewUsers/ViewUsers'
-import {Lobby} from '../../views/lobby/Lobby'
 import {Profile} from '../../views/profile/Profile'
 import {AddImage} from '../../views/addImage/AddImage'
 import {AfterVideo} from '../../views/afterVideo/AfterVideo'
@@ -32,7 +31,6 @@ export const AuthenticatedLayout = () => {
                         <Route path="/add-image" element={<AddImage/>}/>
                         <Route path="/registration-form" element={<RegistrationForm/>}/>
                         <Route path="/view-users" element={<ViewUsers/>}/>
-                        <Route path="/lobby" element={<Lobby/>}/>
                         <Route path="/profile" element={<Profile/>}/>
                         <Route path="/after-video" element={<AfterVideo/>}/>
                         <Route path="/verify-phone" element={<VerifyPhone/>}/>
