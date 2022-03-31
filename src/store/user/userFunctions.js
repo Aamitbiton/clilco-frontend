@@ -4,6 +4,7 @@ import actionsCreator from '../actionsCreator'
 import * as userService from '../../services/user'
 import {store} from "../index";
 import APP_CONSTANTS from "../app/constants";
+import {update_user_public} from "../../services/user";
 
 const {getState, dispatch} = store
 
@@ -24,5 +25,5 @@ export const watch_user = async () => {
 
 
 export const set_user_available = async () => {
-    await userService.update_user({available: true})
+    await userService.update_user_public({available: true})
 }

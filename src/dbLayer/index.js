@@ -15,8 +15,12 @@ export async function watch_room({id, callBack}) {
     return await firestore.watchColl({path: constants.dbPaths.rooms, callBack, wheres})
 }
 
-export async function update_user({id, data}) {
-    return await firestore.update(constants.dbPaths.singleUser(id), data)
+export async function update_user_public({id, data}) {
+    return await firestore.update(constants.dbPaths.singleUser.public(id), data)
+}
+
+export async function update_user_private({id, data}) {
+    return await firestore.update(constants.dbPaths.singleUser.private(id), data)
 }
 
 export async function get_next_speed_date_time() {
