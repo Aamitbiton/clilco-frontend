@@ -1,4 +1,5 @@
 export default Object.freeze({
     SET_APP_READY: "SET_APP_READY",
     FINISHED_FETCHING_USER: "FINISHED_FETCHING_USER",
+    GLOBAL_HOOKS: "GLOBAL_HOOKS"
 })

@@ -3,9 +3,7 @@ import actionsCreator from '../actionsCreator'
 import * as authService from '../../services/auth'
 import * as userService from '../../services/user'
 import * as api from '../../services/api'
-
 import {store} from "../index";
-
 const {getState, dispatch} = store
 
 
@@ -14,10 +12,9 @@ export const login_with_google = async () => {
     const userDoc = await userService.get_user();
     await actionsCreator("SET_USER", userDoc);
     debugger
-    // if (!userDoc.phone) {
-    // }// go to phone page
-    // if (!userDoc.area) {
-    // }// go to phone registration form
+    if (!userDoc.phone) {
+    }
+
 
 }
 
@@ -42,6 +39,7 @@ export const login_with_facebook = async () => {
     }// go to phone registration form
 
 }
+
 export const send_sms = async (phoneNumber) => {
     let userId = getState().user.user.id
   return await api.send_sms(phoneNumber, userId)
