@@ -6,12 +6,17 @@ import './index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles';
+import {theme} from './themes'
+
 ReactDOM.render(
   <React.StrictMode>
       <Provider store={store}>
-      <BrowserRouter>
-          <App />
-      </BrowserRouter>
+          <ThemeProvider theme={theme}>
+              <BrowserRouter>
+                  <App />
+              </BrowserRouter>
+          </ThemeProvider>
       </Provider>
   </React.StrictMode>,
   document.getElementById('root')

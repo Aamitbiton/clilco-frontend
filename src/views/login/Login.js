@@ -9,8 +9,8 @@ export const Login = ()=>   {
     return (
     <div className={'login-container'}>
         <Stack spacing={2} direction="row" >
-                <Button onClick={login_with_google} variant="contained">google</Button>
-                <Button onClick={login_with_facebook} variant="contained">facebook</Button>
+                <Button onClick={login_with_google} color="appTurquoise" variant="contained">google</Button>
+                <Button onClick={login_with_facebook} color="appPurple" variant="contained">facebook</Button>
         </Stack>
     </div>
 
