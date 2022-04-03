@@ -1,28 +1,40 @@
-import {App} from './app';
-import {getStorage, ref, uploadBytes, getDownloadURL, uploadString,listAll,deleteObject} from "firebase/storage";
-import {LS_USER} from "src/utils/constants/LocalStorage";
+import { App } from "./app";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  uploadString,
+  listAll,
+  deleteObject,
+} from "firebase/storage";
+import { errorLog } from "../utils/logs";
 
 const storage = getStorage(App);
-
-async function uploadImgAsString(imgString, path) {
-  const userId = JSON.parse(localStorage.getItem(LS_USER)).uid;
-  const storageRef = ref(storage, userId + "/" + path);
-  return await uploadString(storageRef, imgString,'data_url')
+async function uploadImgAsString({ image, path }) {
+  const storageRef = ref(storage, path);
+  try {
+    return await uploadString(storageRef, image, "data_url");
+  } catch (e) {
+    errorLog(e);
+  }
 }
 
-async function uploadFile(file, path) {
-  const userId = JSON.parse(localStorage.getItem(LS_USER)).uid;
-  const fileRef = ref(storage, userId + "/" + path);
-  const snapshot = await uploadBytes(fileRef, file)
-  return await getDownloadURL(snapshot.ref)
-}
+// async function uploadFile(file, path) {
+//   const userId = JSON.parse(localStorage.getItem(LS_USER)).uid;
+//   const fileRef = ref(storage, userId + "/" + path);
+//   const snapshot = await uploadBytes(fileRef, file)
+//   return await getDownloadURL(snapshot.ref)
+// }
 
 async function getImg(userId, counter) {
   return getDownloadURL(ref(storage, userId + "/" + counter));
 }
 
 export async function getCurrentVideoQuestion(lang, section, question) {
-  return getDownloadURL(ref(storage,`videoQuestions/${lang}/${section}/${question}.mp3`));
+  return getDownloadURL(
+    ref(storage, `videoQuestions/${lang}/${section}/${question}.mp3`)
+  );
 }
 
 // async function uploadTest(recording, user) {
@@ -37,18 +49,18 @@ export async function getCurrentVideoQuestion(lang, section, question) {
 // }
 
 export async function getVoiceMatchesAudio() {
-  let list = await listAll(ref(storage,`voiceMatchesAudio`))
-  let array = []
+  let list = await listAll(ref(storage, `voiceMatchesAudio`));
+  let array = [];
   for (let item of list.items) {
-    let finallyItem = await getDownloadURL(ref(item))
-    array.push(finallyItem)
+    let finallyItem = await getDownloadURL(ref(item));
+    array.push(finallyItem);
   }
-  return array
+  return array;
 }
 
 export default {
   uploadImgAsString,
   getImg,
-  uploadFile,
-  getVoiceMatchesAudio
-}
+  // uploadFile,
+  getVoiceMatchesAudio,
+};

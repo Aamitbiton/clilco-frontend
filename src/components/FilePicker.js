@@ -15,7 +15,7 @@ function FilePiker({ onChange, title = "add file", rules, errorMessage }) {
       </div>
       <Button
         style={{ margin: 10 }}
-        variant={"contained"}
+        variant={"outlined"}
         onClick={() => file.current.click()}
       >
         {title}

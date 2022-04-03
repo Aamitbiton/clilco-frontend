@@ -8,6 +8,7 @@ import {
 } from "../../utils/images";
 import Image from "../../components/Image";
 import { Button } from "@mui/material";
+import { upload_profile_image } from "../../store/user/userFunctions";
 
 export const AddImage = () => {
   const [image, setImage] = useState(null);
@@ -31,7 +32,7 @@ export const AddImage = () => {
       />
       <Button
         disabled={!image}
-        onClick={() => alert(image?.length)}
+        onClick={() => upload_profile_image(image)}
         variant={"contained"}
       >
         SUBMIT
