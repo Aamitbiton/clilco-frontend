@@ -15,18 +15,17 @@ export async function get_next_speed_date_time() {
   return await dbLayer.get_next_speed_date_time();
 }
 
-export async function send_candidate({ candidate, roomId }) {
-  const id = authService.get_current_user()?.uid;
-  return await dbLayer.update_room({
+export async function send_candidate({ candidate, roomId, type }) {
+  return await dbLayer.add_candidate({
     roomId,
-    data: { [id]: { candidate } },
+    candidate,
+    type,
   });
 }
 
-export async function send_offer({ offer, roomId }) {
-  const id = authService.get_current_user()?.uid;
+export async function send_offer({ data, roomId }) {
   return await dbLayer.update_room({
     roomId,
-    data: { [id]: { offer } },
+    data,
   });
 }

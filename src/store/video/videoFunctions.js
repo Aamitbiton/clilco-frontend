@@ -2,9 +2,7 @@ import actionsCreator from "../actionsCreator";
 import * as videoService from "../../services/video";
 import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
-import { set_user_available } from "../user/userFunctions";
-import { webRTCConfiguration } from "../../views/videoDate/videoUtils";
-import { send_candidate } from "../../services/video";
+import { send_candidate, send_offer } from "../../services/video";
 
 const { getState, dispatch } = store;
 
@@ -19,6 +17,18 @@ export const watch_room = async () => {
   });
 };
 
+export const add_candidate = async ({ candidate, roomId, type }) => {
+  await send_candidate({ candidate, roomId, type });
+};
+
+export const add_offer = async ({ offer, roomId, type }) => {
+  await send_offer({ data: { [type]: offer }, roomId, type });
+};
+
+export const add_answer = async ({ answer, roomId, type }) => {
+  await send_offer({ data: { [type]: answer }, roomId, type });
+};
+
 export const get_next_speed_date_time = async () => {
   const time = await videoService.get_next_speed_date_time();
   if (time?.milliseconds)
@@ -26,9 +36,4 @@ export const get_next_speed_date_time = async () => {
       VIDEO_CONSTANTS.SET_SPEED_DATE_TIME,
       time.milliseconds
     );
-};
-
-export const go_available = async () => {
-  await watch_room();
-  await set_user_available();
 };

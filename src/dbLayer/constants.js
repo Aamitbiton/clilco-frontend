@@ -7,4 +7,6 @@ export const dbPaths = {
   rooms: "clilco_rooms",
   singleRoom: (id) => `clilco_rooms/${id}`,
   next_speed_date_time: "clilco_data_for_app/next_speed_date",
+  user_candidates: (type) => `${type}Candidates`,
+  user_offers: "offers",
 };
