@@ -8,13 +8,15 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles';
 import {theme} from './themes'
+import {Header} from "./app/header/header";
 
 ReactDOM.render(
   <React.StrictMode>
       <Provider store={store}>
           <ThemeProvider theme={theme}>
               <BrowserRouter>
-                  <App />
+                  <Header/>
+                      <App />
               </BrowserRouter>
           </ThemeProvider>
       </Provider>

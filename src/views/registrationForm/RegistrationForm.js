@@ -17,8 +17,8 @@ export const RegistrationForm = () => {
           password: "",
         }}
       >
-        <FormFiled name={"email"} />
-        <FormFiled name={"password"} />
+        <FormFiled name={"email"} label={"Email"}/>
+        <FormFiled name={"password"} label={"Password"} />
         <SubmitButton label={"send"} />
       </AppForm>
     </>
