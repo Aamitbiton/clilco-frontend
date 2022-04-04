@@ -2,7 +2,7 @@ import actionsCreator from "../actionsCreator";
 import * as videoService from "../../services/video";
 import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
-import { send_candidate, send_offer } from "../../services/video";
+import { send_offer } from "../../services/video";
 
 const { getState, dispatch } = store;
 
@@ -15,10 +15,6 @@ export const watch_room = async () => {
 
     // dont forget to stop watching rooms if not available
   });
-};
-
-export const add_candidate = async ({ candidate, roomId, type }) => {
-  await send_candidate({ candidate, roomId, type });
 };
 
 export const add_offer = async ({ offer, roomId, type }) => {

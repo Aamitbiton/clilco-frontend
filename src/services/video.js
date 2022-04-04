@@ -15,14 +15,6 @@ export async function get_next_speed_date_time() {
   return await dbLayer.get_next_speed_date_time();
 }
 
-export async function send_candidate({ candidate, roomId, type }) {
-  return await dbLayer.add_candidate({
-    roomId,
-    candidate,
-    type,
-  });
-}
-
 export async function send_offer({ data, roomId }) {
   return await dbLayer.update_room({
     roomId,

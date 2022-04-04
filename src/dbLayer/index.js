@@ -48,14 +48,6 @@ export async function update_room({ roomId, data }) {
   return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
 }
 
-export async function add_candidate({ roomId, candidate, type }) {
-  return await firestore.add_to_array({
-    path: constants.dbPaths.singleRoom(roomId),
-    prop: constants.dbPaths.user_candidates(type),
-    val: candidate,
-  });
-}
-
 export async function add_offer({ roomId, data }) {
   return await firestore.add_to_array({
     path: constants.dbPaths.singleRoom(roomId),
