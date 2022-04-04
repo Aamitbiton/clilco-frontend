@@ -45,13 +45,6 @@ export async function get_next_speed_date_time() {
 }
 
 export async function update_room({ roomId, data }) {
-  return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
-}
 
-export async function add_offer({ roomId, data }) {
-  return await firestore.add_to_array({
-    path: constants.dbPaths.singleRoom(roomId),
-    prop: constants.dbPaths.user_offers,
-    val: data,
-  });
+  return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
 }
