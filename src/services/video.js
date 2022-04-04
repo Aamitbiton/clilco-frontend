@@ -1,4 +1,4 @@
-import * as dbLayer from "../dbLayer";
+import * as dbLayer from "../apiMiddleware/dbLayer";
 import * as authService from "./auth";
 
 export async function watch_room(handle_room) {
@@ -10,7 +10,6 @@ export async function watch_room(handle_room) {
     },
   });
 }
-
 export async function get_next_speed_date_time() {
   return await dbLayer.get_next_speed_date_time();
 }
