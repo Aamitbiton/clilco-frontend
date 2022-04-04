@@ -1,8 +1,12 @@
 import * as Yup from "yup";
 
 const registrationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(6).label("Password"),
+  name: Yup.string().min(2).max(10).required(),
+  day: Yup.string().required(),
+  month: Yup.string().required(),
+  year: Yup.string().required(),
+  // religion: Yup.string().required(),
+  // city: Yup.string().required(),
 });
 
 export default registrationSchema;

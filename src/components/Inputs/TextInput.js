@@ -22,7 +22,7 @@ function TextInput({
       margin={margin}
       multiline={multiline}
       label={label}
-      error={error}
+      error={!!error}
       value={value}
       name={name}
       helperText={helperText}
