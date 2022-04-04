@@ -8,6 +8,8 @@ import AppStack from "../../components/AppStack";
 import { days, months, years } from "../../utils/dates";
 import FormSelectField from "../../components/Form/FormSelectField";
 import { religions } from "./FormOptions";
+import FormAutoComplete from "../../components/Form/FormAutoComplete";
+import AppAutoComplete from "../../components/Inputs/AppAutoComplete";
 
 export const RegistrationForm = () => {
   const flex = {
@@ -38,7 +40,12 @@ export const RegistrationForm = () => {
             <FormSelectField name={"year"} label={"שנה"} options={years} />
           </AppStack>
           <FormSelectField label={"דת"} name={"religion"} options={religions} />
-          <FormSelectField label={"עיר מגורים"} name={"city"} />
+          {/*<FormSelectField label={"עיר מגורים"} name={"city"} />*/}
+          {/*<FormAutoComplete options={["yan", "lala", "bol"]} />*/}
+          <AppAutoComplete
+            renderInput={(r) => console.log(r)}
+            options={["er", "erw", "qqq"]}
+          />
           <SubmitButton label={"send"} />
         </AppForm>
       </div>
