@@ -36,3 +36,7 @@ export async function update_user_private({ id, data }) {
 export async function get_next_speed_date_time() {
   return await firestore.getDocument(constants.dbPaths.next_speed_date_time);
 }
+
+export async function update_room({ roomId, data }) {
+  return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
+}
