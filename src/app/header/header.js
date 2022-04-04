@@ -1,0 +1,12 @@
+import React from 'react';
+import './header.css'
+import logo_header from '../../assets/logo_header.png'
+
+export const Header =()=>{
+    return(
+        <div className={'header-container'}>
+            <img className={'img'} src={logo_header}/>
+        </div>
+        )
+
+}
