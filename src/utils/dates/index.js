@@ -14,4 +14,8 @@ const days = [
   23, 24, 25, 26, 27, 28, 29, 30, 31,
 ];
 
-export { years, months, days };
+function getBirthdayTime({ day, month, year }) {
+  return new Date(year, month - 1, day).getTime();
+}
+
+export { years, months, days, getBirthdayTime };

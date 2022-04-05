@@ -1,11 +1,12 @@
 import React from "react";
-import { Field, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 import TextInput from "../Inputs/TextInput";
-function FormFiled({ placeholder, id, name, type,label, ...otherProps }) {
+function FormFiled({ placeholder, id, name, type,width, label, ...otherProps }) {
   const { handleChange, errors, touched } = useFormikContext();
   return (
     <TextInput
       id={id}
+      width={width}
       name={name}
       type={type}
       label={label}

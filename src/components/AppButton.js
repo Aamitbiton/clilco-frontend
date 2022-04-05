@@ -10,7 +10,8 @@ labelColor,
   variant = "outlined",
   startIcon,
   endIcon,
-    rounded = true,
+  customIcon = true,
+  rounded = true,
   ...otherProps
 }) {
 
@@ -21,7 +22,9 @@ labelColor,
   }
   return (
     <RaisedButton
-       endIcon={endIcon && <IconRender icon={endIcon}/>}
+      endIcon={
+          endIcon && (customIcon ? <IconRender icon={endIcon} /> : endIcon)
+      }
       variant={variant}
       {...otherProps}
       onClick={onClick}

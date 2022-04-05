@@ -5,8 +5,7 @@ import {Login} from '../views/login/Login';
 import React, {useEffect} from "react";
 import {init_app} from "../store/app/appFunctions";
 import {useSelector} from "react-redux";
-import {useTranslation} from "react-i18next";
-
+import AppRoutes from "./AppRoutes";
 
 
 function App() {
@@ -20,7 +19,7 @@ function App() {
         {
             appState.app_ready &&
             <Routes>
-                <Route path="/login" element={<Login/>}/>
+                <Route path={AppRoutes.LOGIN} element={<Login/>}/>
                 <Route path="/*" element={<AuthenticatedLayout/>}/>
             </Routes>
         }

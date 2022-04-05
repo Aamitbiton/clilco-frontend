@@ -8,26 +8,25 @@ import {
 } from "@mui/material";
 
 function AppSelect({
+  width,
   label,
   options,
   handleChange,
   value,
   error,
-  touched,
-  name,
 }) {
-  const style = {
-    minWidth: 100,
-  };
+
   return (
     <FormControl>
       <InputLabel id="demo-simple-select-label">{label}</InputLabel>
       <Select
         defaultValue={""}
-        style={style}
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={value}
+        style={{
+            width
+        }}
         label={label}
         onChange={handleChange}
       >
