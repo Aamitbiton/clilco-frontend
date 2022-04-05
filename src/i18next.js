@@ -29,6 +29,6 @@ const set_direction = (lng)=> {
     if (lng === 'he') document.body.dir = 'rtl'
 }
 const get_browser_lng = () =>{
-    return  (window.navigator.language.split('-'))[0]
+    return  (window.navigator.language.split('-'))[0] || 'en'
 }
 
