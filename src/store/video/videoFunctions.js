@@ -7,14 +7,12 @@ import { send_offer } from "../../services/video";
 const { getState, dispatch } = store;
 
 export const watch_room = async () => {
-  await videoService.watch_room(async (room) => {
+  const unsubscribes = await videoService.watch_room(async (room) => {
     if (room) await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
-    //todo: if there is room - start video
     // after date consider to delete the room or add parameter to stop listening
-    // maybe user the rooms as יומן שיחות
-
     // dont forget to stop watching rooms if not available
   });
+  await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
 
 export const add_offer = async ({ offer, roomId, type }) => {
@@ -23,6 +21,19 @@ export const add_offer = async ({ offer, roomId, type }) => {
 
 export const add_answer = async ({ answer, roomId, type }) => {
   await send_offer({ data: { [type]: answer }, roomId, type });
+};
+
+export const clean_room = async () => {
+  const room = getState().video.room;
+  if (!room) return;
+  await videoService.clean_room({ room });
+};
+
+export const unsubscribe_room_listener = async () => {
+  const unsubscribes = getState().video.room_unsubscribes;
+  Object.keys(unsubscribes).every((key) => {
+    unsubscribes[key]();
+  });
 };
 
 export const get_next_speed_date_time = async () => {
