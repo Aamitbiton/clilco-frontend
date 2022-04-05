@@ -1,0 +1,25 @@
+@mixin flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.full-height {
+    height: 100vh;
+}
+
+.background-white {
+    background: #fff;
+}
+
+.flex-center{
+@include flex-center
+}
+
+.flex-column-center {
+@include flex-center;
+    flex-direction: column;
+}
+
+

@@ -1,35 +1,38 @@
 import React from "react";
-import RaisedButton  from "@mui/material/Button";
+import RaisedButton from "@mui/material/Button";
 import IconRender from "./iconRender";
 
 function AppButton({
-labelColor,
+  labelColor,
   label,
   onClick,
   disabled = false,
   variant = "outlined",
   startIcon,
   endIcon,
-    rounded = true,
+  customIcon = true,
+  rounded = true,
   ...otherProps
 }) {
-
   const style = {
     borderRadius: rounded && 50,
-    justifyContent: 'space-between'
+    justifyContent: "space-between",
+  };
 
-  }
   return (
     <RaisedButton
-        startIcon={startIcon && <IconRender icon={startIcon}/>}
+      startIcon={
+        startIcon && (customIcon ? <IconRender icon={startIcon} /> : startIcon)
+      }
       variant={variant}
       {...otherProps}
       onClick={onClick}
       disabled={disabled}
+      endIcon={endIcon}
       style={style}
     >
-      <b style={{color:labelColor}} >{label}</b>
-    </RaisedButton >
+      <b style={{ color: labelColor }}>{label}</b>
+    </RaisedButton>
   );
 }
 

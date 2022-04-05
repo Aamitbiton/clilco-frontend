@@ -5,11 +5,12 @@ function TextInput({
   onChange,
   placeholder,
   defaultValue,
+                     width,
   name,
   id,
   value,
   variant = "outlined",
-  label = "label",
+  label,
   error,
   helperText,
   margin = "dense",
@@ -19,6 +20,7 @@ function TextInput({
   const style = {
     backgroundColor: "#fff",
     borderRadius: 5,
+    width
   };
   return (
     <TextField
