@@ -21,7 +21,7 @@ labelColor,
   }
   return (
     <RaisedButton
-        startIcon={startIcon && <IconRender icon={startIcon}/>}
+       endIcon={endIcon && <IconRender icon={endIcon}/>}
       variant={variant}
       {...otherProps}
       onClick={onClick}

@@ -2,9 +2,11 @@ import React from 'react';
 
 function IconRender({icon}) {
     const style ={
-        width: 40,
-        display: 'flex'
-        }
+        width: 30,
+        display: 'flex',
+        paddingInlineStart: 5
+
+}
     return (
         <div>
             <img style={style} src={icon}/>
