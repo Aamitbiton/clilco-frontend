@@ -9,26 +9,36 @@ import { VerifyPhone } from "../../views/verifyPhone/VerifyPhone";
 import { VideoDate } from "../../views/videoDate/VideoDate";
 import { Missed } from "../../views/missed/Missed";
 import React, { useEffect } from "react";
+import AppRoutes from "../AppRoutes";
 import { useSelector } from "react-redux";
 
 export const AuthenticatedLayout = () => {
   const location = useLocation();
   const user = useSelector((state) => state.user.user);
   const appState = useSelector((state) => state.app);
-
+  const {
+    AFTER_VIDEO,
+    PROFILE,
+    REGISTRATION,
+    ROOT,
+    UPLOAD_IMAGE,
+    VERIFY_PHONE,
+    VIDEO_DATE,
+    VIEW_USERS,
+  } = AppRoutes;
   return (
     <>
       {appState.finished_fetching_user &&
         (user.private?.id ? (
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/add-image" element={<AddImage />} />
-            <Route path="/registration-form" element={<RegistrationForm />} />
-            <Route path="/view-users" element={<ViewUsers />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/after-video" element={<AfterVideo />} />
-            <Route path="/verify-phone" element={<VerifyPhone />} />
-            <Route path="/video-date" element={<VideoDate />} />
+            <Route path={ROOT} element={<Home />} />
+            <Route path={UPLOAD_IMAGE} element={<AddImage />} />
+            <Route path={REGISTRATION} element={<RegistrationForm />} />
+            <Route path={VIEW_USERS} element={<ViewUsers />} />
+            <Route path={PROFILE} element={<Profile />} />
+            <Route path={AFTER_VIDEO} element={<AfterVideo />} />
+            <Route path={VERIFY_PHONE} element={<VerifyPhone />} />
+            <Route path={VIDEO_DATE} element={<VideoDate />} />
             <Route path="*" element={<Missed />} />
           </Routes>
         ) : (
