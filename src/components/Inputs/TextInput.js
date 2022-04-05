@@ -5,7 +5,7 @@ function TextInput({
   onChange,
   placeholder,
   defaultValue,
-                     width,
+  width,
   name,
   id,
   value,
@@ -18,9 +18,8 @@ function TextInput({
   ...otherProps
 }) {
   const style = {
-    backgroundColor: "#fff",
     borderRadius: 5,
-    width
+    width,
   };
   return (
     <TextField
@@ -29,7 +28,6 @@ function TextInput({
       multiline={multiline}
       label={label}
       error={!!error}
-      color={"appTurquoise"}
       style={style}
       value={value}
       name={name}

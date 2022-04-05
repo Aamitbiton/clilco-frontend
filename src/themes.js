@@ -1,21 +1,24 @@
 import { createTheme } from "@mui/material/styles";
 
+const { background, turquoise, light, purple, grey } = Object.freeze({
+  turquoise: "#0ae5c0",
+  background: "#2d3138",
+  grey: "#c5c9d6",
+  light: "#ffffff",
+  purple: "#db1b87",
+});
+
 export const theme = createTheme({
   palette: {
-    appTurquoise: {
-      main: "#0ae5c0",
+    mode: "dark",
+    background: {
+      default: background,
     },
-    backgroundAppColor: {
-      main: "#2d3138",
+    primary: {
+      main: turquoise,
     },
-    appGray: {
-      main: "#c5c9d6",
-    },
-    appLight: {
-      main: "#ffffff",
-    },
-    appPurple: {
-      main: "#db1b87",
+    secondary: {
+      main: purple,
     },
   },
 });

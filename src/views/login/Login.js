@@ -22,26 +22,22 @@ export const Login = () => {
           labelColor={"white"}
           label={"התחבר עם גוגל"}
           onClick={login_with_google}
-          color="appTurquoise"
         />
         <AppButton
           startIcon={facebookIcon}
           labelColor={"white"}
           label={"התחבר עם פייסבוק"}
           onClick={login_with_facebook}
-          color="appTurquoise"
         />
         <AppButton
           startIcon={appleIcon}
           labelColor={"white"}
           label={"התחבר עם אפל"}
-          color="appTurquoise"
         />
         <AppButton
           startIcon={emailIcon}
           labelColor={"white"}
           label={"התחבר עם שם משתמש"}
-          color="appTurquoise"
         />
       </AppStack>
     </div>

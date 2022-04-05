@@ -33,7 +33,7 @@ export const RegistrationForm = () => {
   };
 
   return (
-    <div className={"full-height background-white flex-column-center"}>
+    <div className={"full-height flex-column-center"}>
       <Title title={"פרטים אישיים"} />
       <AppForm
         validationSchema={registrationSchema}
@@ -97,7 +97,6 @@ export const RegistrationForm = () => {
             <FormAutoComplete width={largeInput} name={"city"} />
           </AppStack>
           <SubmitButton
-            color={"appTurquoise"}
             customIcon={false}
             startIcon={<ArrowLeftIcon />}
             label={"המשך"}
