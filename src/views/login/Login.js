@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Stack from "@mui/material/Stack";
 import {
   login_with_google,
   login_with_facebook,
@@ -46,6 +45,7 @@ export const Login = () => {
             endIcon={emailIcon}
             labelColor={"white"}
             label={"התחבר עם שם משתמש"}
+            onClick={() => set_enter_with_web(true)}
           />
         </AppStack>
       )}
