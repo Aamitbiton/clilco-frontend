@@ -19,7 +19,6 @@ function PasswordInput({checkPassword,sendSmsAgain}) {
     const [Loading,setLoading] = useState(false);
     const [sendAgainLoading,setSendAgainLoading] = useState(false);
     const send_sms_again =async ()=>{
-        debugger
         setSendAgainLoading(true)
         await sendSmsAgain()
         setSendAgainLoading(false)
