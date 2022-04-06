@@ -1,0 +1,18 @@
+.buttons-container{
+    background-color: rgba(0, 0, 0, 1);
+}
+
+
+.end-btn{
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    clip-path: circle();
+    position: absolute;
+    bottom: 5%;
+    margin-inline-start: 5%;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 1);
+    cursor: pointer;
+}

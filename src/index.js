@@ -21,7 +21,6 @@ ReactDOM.render(
         <RTL>
           <Suspense fallback={suspenseMarkup}>
             <BrowserRouter>
-              <Header />
               <App />
             </BrowserRouter>
           </Suspense>

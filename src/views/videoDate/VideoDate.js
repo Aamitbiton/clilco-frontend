@@ -12,13 +12,11 @@ import { handle_user_availability } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
-import { VideoControllers } from "./components/videoControllers/VideoControllers";
-import { Tips } from "./components/tips/Tips";
+import { VideoButtons } from "./components/videoButtons/VideoButtons";
 import { webRTCConfiguration } from "./videoUtils";
 import actionsCreator from "../../store/actionsCreator";
 import VIDEO_CONSTANTS from "../../store/video/constants";
 import Peer from "simple-peer";
-import AppButton from "../../components/AppButton";
 
 export const VideoDate = () => {
   //todo:
@@ -111,9 +109,6 @@ export const VideoDate = () => {
       client.peer.on("signal", async (offer) => {
         await add_offer({ offer, roomId: room.id, type: "offer" });
       });
-      client.peer.on("error", () => {
-        alert("closed1");
-      });
       setClient({ ...client, init: false });
     }
     if (client.offer) {
@@ -121,9 +116,6 @@ export const VideoDate = () => {
       setClient({ ...client, offer: null });
       client.peer.on("signal", async (answer) => {
         await add_answer({ answer, roomId: room.id, type: "answer" });
-      });
-      client.peer.on("error", () => {
-        alert("closed2");
       });
     }
   }, [client]);
@@ -134,12 +126,8 @@ export const VideoDate = () => {
     <>
       <div className="video-page">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
-        <RemoteVideo remoteStream={remoteStream} />
-        <AppButton
-          onClick={end_video_date}
-          className="end-btn"
-          label={"End Call"}
-        />
+        {dateStarted && <RemoteVideo remoteStream={remoteStream} />}
+        {dateStarted && <VideoButtons end_video_date={end_video_date} />}
       </div>
     </>
   );
