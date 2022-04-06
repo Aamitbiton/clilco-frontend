@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
-import Stack from '@mui/material/Stack';
-import {login_with_google, login_with_facebook} from '../../store/auth/authFunctions'
-import './login.css'
+import React, {useState} from "react";
+import {
+  login_with_google,
+  login_with_facebook,
+} from "../../store/auth/authFunctions";
+import "./login.css";
 import AppButton from "../../components/AppButton";
 import AppStack from "../../components/AppStack";
 import Title from "../../components/title/title";
@@ -24,14 +26,13 @@ export const Login = ()=> {
                 <LoginWithEmail/>
             :
                 <AppStack direction={'column'}>
-                    <AppButton endIcon={googleIcon} labelColor={'white'} label={"התחבר עם גוגל"} onClick={login_with_google} color="appTurquoise" />
-                    <AppButton endIcon={facebookIcon} labelColor={'white'} label={"התחבר עם פייסבוק"} onClick={login_with_facebook} color="appTurquoise" />
-                    <AppButton endIcon={appleIcon} labelColor={'white'} label={"התחבר עם אפל"}  color="appTurquoise" />
-                    <AppButton endIcon={emailIcon} labelColor={'white'} label={"התחבר עם שם משתמש"} onClick={()=> set_enter_with_web(true)} color="appTurquoise" />
+                    <AppButton endIcon={googleIcon} labelColor={'white'} label={"התחבר עם גוגל"} onClick={login_with_google}  />
+                    <AppButton endIcon={facebookIcon} labelColor={'white'} label={"התחבר עם פייסבוק"} onClick={login_with_facebook}  />
+                    <AppButton endIcon={appleIcon} labelColor={'white'} label={"התחבר עם אפל"}   />
+                    <AppButton endIcon={emailIcon} labelColor={'white'} label={"התחבר עם שם משתמש"} onClick={()=> set_enter_with_web(true)}  />
                 </AppStack>
 
         }
     </div>
   );
 };
-

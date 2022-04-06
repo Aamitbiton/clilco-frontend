@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function IconRender({icon}) {
     const style ={
@@ -9,7 +9,7 @@ function IconRender({icon}) {
 }
     return (
         <div>
-            <img style={style} src={icon}/>
+            <img style={style} alt={"app-icon"} src={icon}/>
         </div>
     );
 }

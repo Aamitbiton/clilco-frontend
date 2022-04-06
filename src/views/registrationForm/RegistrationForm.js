@@ -2,53 +2,107 @@ import React from "react";
 import "./registrationForm.css";
 import AppForm from "../../components/Form/AppForm";
 import registrationSchema from "./validationSchema";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import SubmitButton from "../../components/Form/SubmitButton";
 import FormFiled from "../../components/Form/FormFiled";
 import AppStack from "../../components/AppStack";
-import { days, months, years } from "../../utils/dates";
+import { days, getBirthdayTime, months, years } from "../../utils/dates";
 import FormSelectField from "../../components/Form/FormSelectField";
-import { religions } from "./FormOptions";
-import FormAutoComplete from "../../components/Form/FormAutoComplete";
-import AppAutoComplete from "../../components/Inputs/AppAutoComplete";
+import { gender, religion } from "./FormOptions";
+import FormAutoComplete from "./CitiesAutoComplete";
+import Title from "../../components/title/title";
+import { set_user_details } from "../../store/user/userFunctions";
+
+const largeInput = 270;
+const midInput = 125;
+const smallInput = 80;
 
 export const RegistrationForm = () => {
-  const flex = {
-    display: "flex",
-    alignItems: "center",
-    height: "100vh",
-    justifyContent: "center",
+  const handleSubmit = async (values) => {
+    const { day, month, year, name, religion, city, gender, wanted } = values;
+    const birthday = getBirthdayTime({ day, month, year });
+    const userDetails = {
+      name,
+      religion,
+      city,
+      birthday,
+      gender,
+      wanted,
+    };
+    await set_user_details(userDetails);
   };
+
   return (
-    <>
-      <div style={flex}>
-        <AppForm
-          validationSchema={registrationSchema}
-          onSubmit={(values) => console.log(values)}
-          initialValues={{
-            name: "",
-            day: "",
-            month: "",
-            year: "",
-            religion: "",
-            city: "",
-          }}
-        >
-          <FormFiled name={"name"} />
+    <div className={"full-height flex-column-center"}>
+      <Title title={"פרטים אישיים"} />
+      <AppForm
+        validationSchema={registrationSchema}
+        onSubmit={(values) => handleSubmit(values)}
+        initialValues={{
+          name: "",
+          day: "",
+          month: "",
+          year: "",
+          religion: "",
+          city: null,
+          gender: "",
+          wanted: "",
+        }}
+      >
+        <div className={"flex-column-center"}>
           <AppStack>
-            <FormSelectField name={"day"} label={"יום"} options={days} />
-            <FormSelectField name={"month"} label={"חודש"} options={months} />
-            <FormSelectField name={"year"} label={"שנה"} options={years} />
+            <FormFiled label={"שם פרטי"} width={largeInput} name={"name"} />
           </AppStack>
-          <FormSelectField label={"דת"} name={"religion"} options={religions} />
-          {/*<FormSelectField label={"עיר מגורים"} name={"city"} />*/}
-          {/*<FormAutoComplete options={["yan", "lala", "bol"]} />*/}
-          <AppAutoComplete
-            renderInput={(r) => console.log(r)}
-            options={["er", "erw", "qqq"]}
+          <AppStack margin={2}>
+            <FormSelectField
+              name={"gender"}
+              width={midInput}
+              label={"אני"}
+              options={gender}
+            />
+            <FormSelectField
+              name={"wanted"}
+              width={midInput}
+              label={"מחפש להכיר"}
+              options={gender}
+            />
+          </AppStack>
+          <AppStack>
+            <FormSelectField
+              width={smallInput}
+              name={"day"}
+              label={"יום"}
+              options={days}
+            />
+            <FormSelectField
+              width={smallInput}
+              name={"month"}
+              label={"חודש"}
+              options={months}
+            />
+            <FormSelectField
+              width={smallInput}
+              name={"year"}
+              label={"שנה"}
+              options={years}
+            />
+          </AppStack>
+          <AppStack margin={3} direction={"column"}>
+            <FormSelectField
+              width={largeInput}
+              label={"דת"}
+              name={"religion"}
+              options={religion}
+            />
+            <FormAutoComplete width={largeInput} name={"city"} />
+          </AppStack>
+          <SubmitButton
+            customIcon={false}
+            startIcon={<ArrowLeftIcon />}
+            label={"המשך"}
           />
-          <SubmitButton label={"send"} />
-        </AppForm>
-      </div>
-    </>
+        </div>
+      </AppForm>
+    </div>
   );
 };
