@@ -11,9 +11,9 @@ import {
 import { handle_user_availability } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
-import { Tips } from "./components/tips/Tips";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
 import { VideoControllers } from "./components/videoControllers/VideoControllers";
+import { Tips } from "./components/tips/Tips";
 import { webRTCConfiguration } from "./videoUtils";
 import actionsCreator from "../../store/actionsCreator";
 import VIDEO_CONSTANTS from "../../store/video/constants";
@@ -21,7 +21,7 @@ import Peer from "simple-peer";
 import AppButton from "../../components/AppButton";
 
 export const VideoDate = () => {
-  //todo: scenarios
+  //todo:
   // user exists and returns
   // user enters with another device
   // user refreshes page
@@ -100,7 +100,9 @@ export const VideoDate = () => {
     await unsubscribe_room_listener();
     navigate("/");
   };
-  const unMount = async () => {};
+  const unMount = async () => {
+    await close_connection();
+  };
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
@@ -133,8 +135,12 @@ export const VideoDate = () => {
       <div className="video-page">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
         <RemoteVideo remoteStream={remoteStream} />
+        <AppButton
+          onClick={end_video_date}
+          className="end-btn"
+          label={"End Call"}
+        />
       </div>
-      <AppButton onClick={end_video_date} label={"out"} />
     </>
   );
 };
