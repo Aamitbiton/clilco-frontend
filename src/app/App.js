@@ -12,10 +12,7 @@ import {useTranslation} from "react-i18next";
 function App() {
     const appState = useSelector((state) => state.app);
         const navigator = useNavigate();
-
-
     useEffect( () => init_app({navigator}), [])
-
     return (<div className={'app-container'}>
         {
             appState.app_ready &&
