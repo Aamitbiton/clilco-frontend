@@ -6,12 +6,11 @@ import React, { useEffect } from "react";
 import { init_app } from "../store/app/appFunctions";
 import { useSelector } from "react-redux";
 import AppRoutes from "./AppRoutes";
-import {useTranslation} from "react-i18next";
 
 function App() {
-    const appState = useSelector((state) => state.app);
-        const navigator = useNavigate();
-    useEffect( () => init_app({navigator}), []);
+  const appState = useSelector((state) => state.app);
+  const navigator = useNavigate();
+  useEffect(() => init_app({ navigator }), []);
   return (
     <div>
       {appState.app_ready && (

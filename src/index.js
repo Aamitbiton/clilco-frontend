@@ -10,18 +10,22 @@ import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./themes";
 import { Header } from "./app/header/header";
 import CssBaseline from "@mui/material/CssBaseline";
+import { RTL } from "./themes";
 const suspenseMarkup = <p>loading...</p>;
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Suspense fallback={suspenseMarkup}>
-          <BrowserRouter>
-            <Header />
-            <App />
-          </BrowserRouter>
-        </Suspense>
+        <CssBaseline />
+        <RTL>
+          <Suspense fallback={suspenseMarkup}>
+            <BrowserRouter>
+              <Header />
+              <App />
+            </BrowserRouter>
+          </Suspense>
+        </RTL>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,

@@ -21,13 +21,13 @@ function AppButton({
 
   return (
     <RaisedButton
-       endIcon={endIcon && (customIcon ? <IconRender icon={endIcon} /> : startIcon)
+      endIcon={
+        endIcon && (customIcon ? <IconRender icon={endIcon} /> : startIcon)
       }
       variant={variant}
       {...otherProps}
       onClick={onClick}
       disabled={disabled}
-      endIcon={endIcon}
       style={style}
     >
       <b style={{ color: labelColor }}>{label}</b>
