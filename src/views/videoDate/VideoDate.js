@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./videoDate.css";
 import {
   watch_room,
@@ -21,6 +21,12 @@ import Peer from "simple-peer";
 import AppButton from "../../components/AppButton";
 
 export const VideoDate = () => {
+  //todo: scenarios
+  // user exists and returns
+  // user enters with another device
+  // user refreshes page
+  // remote video has errors/stops
+
   const [client, setClient] = useState({});
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
@@ -28,6 +34,7 @@ export const VideoDate = () => {
   const room = useSelector((state) => state.video.room);
   const dateStarted = useSelector((state) => state.video.date_started);
   const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
 
   const init_page = async () => {
     await watch_room();
@@ -80,10 +87,9 @@ export const VideoDate = () => {
     if (offer && !answer) await create_answer(offer);
   };
   const close_connection = async () => {
-    debugger;
     client.peer?.destroy();
-    let tracks = localStream.getTracks();
-    tracks.forEach((track) => {
+    let tracks = localStream?.getTracks();
+    tracks?.forEach((track) => {
       track.stop();
       track.enabled = false;
     });
@@ -91,13 +97,10 @@ export const VideoDate = () => {
   };
   const end_video_date = async () => {
     await close_connection();
-    await handle_user_availability(false);
     await unsubscribe_room_listener();
-    //todo: rout out of here
+    navigate("/");
   };
-  const unMount = async () => {
-    await handle_user_availability(false);
-  };
+  const unMount = async () => {};
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);

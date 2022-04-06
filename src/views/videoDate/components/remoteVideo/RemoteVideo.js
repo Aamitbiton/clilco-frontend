@@ -10,7 +10,12 @@ export const RemoteVideo = ({ remoteStream }) => {
   }, [remoteStream]);
   return (
     <>
-      <video ref={remoteVideoRef} autoPlay={true} className="remote-video" />
+      <video
+        ref={remoteVideoRef}
+        autoPlay={true}
+        className="remote-video"
+        muted={true}
+      />
     </>
   );
 };
