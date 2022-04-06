@@ -6,17 +6,28 @@ import React, { useEffect } from "react";
 import { init_app } from "../store/app/appFunctions";
 import { useSelector } from "react-redux";
 import AppRoutes from "./AppRoutes";
+import { RTL } from "../themes";
+
 function App() {
   const appState = useSelector((state) => state.app);
   const navigator = useNavigate();
   useEffect(() => init_app({ navigator }), []);
   return (
     <div>
-      {appState.app_ready && (
-        <Routes>
-          <Route path={AppRoutes.LOGIN} element={<Login />} />
-          <Route path="/*" element={<AuthenticatedLayout />} />
-        </Routes>
+      {appState.app_ready && appState.lng === "he" ? (
+        <RTL>
+          <Routes>
+            <Route path={AppRoutes.LOGIN} element={<Login />} />
+            <Route path="/*" element={<AuthenticatedLayout />} />
+          </Routes>
+        </RTL>
+      ) : (
+        appState.app_ready && (
+          <Routes>
+            <Route path={AppRoutes.LOGIN} element={<Login />} />
+            <Route path="/*" element={<AuthenticatedLayout />} />
+          </Routes>
+        )
       )}
     </div>
   );

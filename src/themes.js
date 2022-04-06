@@ -13,7 +13,7 @@ const { background, turquoise, light, purple, grey } = Object.freeze({
 });
 
 export const theme = createTheme({
-  direction: "rtl",
+  direction: "ltr",
   palette: {
     mode: "dark",
     background: {
