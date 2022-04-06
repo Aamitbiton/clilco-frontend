@@ -9,4 +9,5 @@ export const dbPaths = {
   next_speed_date_time: "clilco_data_for_app/next_speed_date",
   user_candidates: (type) => `${type}Candidates`,
   user_offers: "offers",
+  users_left_room: "users_left_room",
 };

@@ -17,19 +17,20 @@ export async function watch_user({ id, privateCallBack, publicCallBack }) {
 }
 
 export async function watch_room({ id, callBack }) {
-  const wheres_caller = [["caller", "==", id]];
-  await firestore.watchColl({
+  const wheres_caller = [["caller.id", "==", id]];
+  const unsubscribe_caller = await firestore.watchColl({
     path: constants.dbPaths.rooms,
     callBack,
     wheres: wheres_caller,
   });
 
-  const wheres_answerer = [["answerer", "==", id]];
-  await firestore.watchColl({
+  const wheres_answerer = [["answerer.id", "==", id]];
+  const unsubscribe_answerer = await firestore.watchColl({
     path: constants.dbPaths.rooms,
     callBack,
     wheres: wheres_answerer,
   });
+  return { unsubscribe_answerer, unsubscribe_caller };
 }
 
 export async function update_user_public({ id, data }) {
@@ -45,6 +46,5 @@ export async function get_next_speed_date_time() {
 }
 
 export async function update_room({ roomId, data }) {
-
   return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
 }
