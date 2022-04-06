@@ -13,8 +13,8 @@ export const RemoteVideo = ({ remoteStream }) => {
       <video
         ref={remoteVideoRef}
         autoPlay={true}
-        muted={true}
         className="remote-video"
+        muted={true}
       />
     </>
   );

@@ -1,7 +1,7 @@
 .my-video-before-date{
     -webkit-transform : scaleX(-1);
     transform : scaleX(-1);
-    height: 100vh;
+    height: 100%;
 }
 .my-video-in-date{
     -webkit-transform : scaleX(-1);
@@ -10,6 +10,8 @@
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border: solid 1px #f1f1f1;
     animation: minimize-video-for-date-animation 1s forwards;
+    position: absolute;
+    z-index: 5;
 }
 @keyframes minimize-video-for-date-animation {
     0%{

@@ -22,8 +22,8 @@ export const watch_user = async () => {
   await userService.watch_user({ publicCallBack, privateCallBack });
 };
 
-export const set_user_available = async () => {
-  await userService.update_user_public({ available: true });
+export const handle_user_availability = async (available) => {
+  await userService.update_user_public({ available });
 };
 
 export const upload_profile_image = async (image) => {

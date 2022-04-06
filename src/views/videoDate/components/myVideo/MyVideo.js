@@ -12,9 +12,7 @@ export const MyVideo = ({ dateStarted, setLocalStream }) => {
     setLocalStream(localStream);
     videoRef.current.srcObject = localStream;
   };
-  const handle_date_started = async () => {
-    // insert video to pc
-  };
+  const handle_date_started = async () => {};
 
   useEffect(init_my_video, []);
   useEffect(handle_date_started, [dateStarted]);
