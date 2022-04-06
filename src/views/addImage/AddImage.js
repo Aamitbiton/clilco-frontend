@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./addImage.css";
-import FilePiker from "../../components/FilePicker";
+import FilePiker from "../../components/Inputs/FilePicker";
 import {
   convertToBase64,
   filterOnlyImages,

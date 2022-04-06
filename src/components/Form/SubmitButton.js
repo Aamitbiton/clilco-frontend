@@ -1,9 +1,14 @@
 import { useFormikContext } from "formik";
 import AppButton from "../AppButton";
-function SubmitButton({ label, ...otherProps }) {
+function SubmitButton({ label, endIcon, ...otherProps }) {
   const { handleSubmit } = useFormikContext();
   return (
-    <AppButton {...otherProps} onClick={() => handleSubmit()} label={label} />
+    <AppButton
+      endIcon={endIcon}
+      {...otherProps}
+      onClick={() => handleSubmit()}
+      label={label}
+    />
   );
 }
 

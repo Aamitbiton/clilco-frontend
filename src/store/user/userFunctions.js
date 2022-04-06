@@ -29,3 +29,7 @@ export const handle_user_availability = async (available) => {
 export const upload_profile_image = async (image) => {
   return await userService.upload_image(image);
 };
+
+export const set_user_details = async (userDetails) => {
+  await userService.update_user_public(userDetails);
+};

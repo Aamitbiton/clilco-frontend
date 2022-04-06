@@ -5,6 +5,7 @@ function TextInput({
   onChange,
   placeholder,
   defaultValue,
+  width,
   name,
   id,
   value,
@@ -16,13 +17,18 @@ function TextInput({
   multiline = false,
   ...otherProps
 }) {
+  const style = {
+    borderRadius: 5,
+    width,
+  };
   return (
     <TextField
       id={id}
       margin={margin}
       multiline={multiline}
       label={label}
-      error={error}
+      error={!!error}
+      style={style}
       value={value}
       name={name}
       helperText={helperText}
