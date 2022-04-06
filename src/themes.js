@@ -13,7 +13,7 @@ const { background, turquoise, light, purple, grey } = Object.freeze({
 });
 
 export const theme = createTheme({
-  direction: window.navigator.language === "he-Il" ? "rtl" : "ltr",
+  direction: "ltr",
   palette: {
     mode: "dark",
     background: {
