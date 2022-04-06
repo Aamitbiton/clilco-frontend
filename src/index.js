@@ -8,7 +8,6 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./themes";
-import { Header } from "./app/header/header";
 import CssBaseline from "@mui/material/CssBaseline";
 const suspenseMarkup = <p>loading...</p>;
 
@@ -19,7 +18,6 @@ ReactDOM.render(
         <CssBaseline />
         <Suspense fallback={suspenseMarkup}>
           <BrowserRouter>
-            <Header />
             <App />
           </BrowserRouter>
         </Suspense>

@@ -1,18 +1,46 @@
 .buttons-container{
-    background-color: rgba(0, 0, 0, 1);
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    height: 15vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+}
+.justify-mobile{
+    justify-content: space-evenly;
+}
+
+.justify-desktop{
+    justify-content: center;
+}
+
+.video-btn{
+    margin: 0 3vw ;
+    background-color: #2d3138;
+    width: 7vh;
+    height: 7vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: circle();
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 1);
+    cursor: pointer;
+    border: 2px solid turquoise;
+    border-radius: 100%;
+}
+
+.icon-text{
+    padding-top: 5px;
+    text-align: center;
+    font-size: 18px;
 }
 
 
-.end-btn{
-    background-color: red;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    line-height: 100px;
-    clip-path: circle();
-    position: absolute;
-    bottom: 5%;
-    margin-inline-start: 5%;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 1);
-    cursor: pointer;
+.end-call{}
+
+.next-question{
+}
+
+.mute{
 }

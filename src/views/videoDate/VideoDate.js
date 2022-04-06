@@ -101,6 +101,8 @@ export const VideoDate = () => {
   const unMount = async () => {
     await close_connection();
   };
+  const next_question = () => {};
+  const mute_questions = () => {};
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
@@ -126,8 +128,17 @@ export const VideoDate = () => {
     <>
       <div className="video-page">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
-        {dateStarted && <RemoteVideo remoteStream={remoteStream} />}
-        {dateStarted && <VideoButtons end_video_date={end_video_date} />}
+        {dateStarted && (
+          <div>
+            <RemoteVideo remoteStream={remoteStream} />
+
+            <VideoButtons
+              end_video_date={end_video_date}
+              next_question={next_question}
+              mute_questions={mute_questions}
+            />
+          </div>
+        )}
       </div>
     </>
   );

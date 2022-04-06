@@ -11,8 +11,8 @@
     border: solid 1px #f1f1f1;
     animation: minimize-video-for-date-animation 1s forwards;
     position: absolute;
-    margin-inline-start: 10px;
-    margin-top: 10px;
+    left: 10px;
+    top: 10px;
     z-index: 5;
     object-fit: cover;
 }
