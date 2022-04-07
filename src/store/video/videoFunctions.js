@@ -48,9 +48,9 @@ export const unsubscribe_room_listener = async () => {
 
 export const get_next_speed_date_time = async () => {
   const time = await videoService.get_next_speed_date_time();
-  if (time?.milliseconds)
-    await actionsCreator(
-      VIDEO_CONSTANTS.SET_SPEED_DATE_TIME,
-      time.milliseconds
-    );
+  if (time?.start)
+    await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
+      start: time.start,
+      end: time.end,
+    });
 };

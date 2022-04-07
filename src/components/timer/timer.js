@@ -1,6 +1,19 @@
 import React from "react";
+import { useTimer } from "react-timer-hook";
 import "./timer.scss";
 
-export const Timer = (seconds) => {
-  return <div className="container">seconds</div>;
+export const Timer = ({ expiredMilliseconds }) => {
+  const expiryTimestamp = new Date(expiredMilliseconds);
+  const { seconds, minutes, hours } = useTimer({
+    expiryTimestamp,
+    onExpire: () => console.warn("onExpire called"),
+  });
+
+  return (
+    <div className="container flex-center">
+      <b className="text">
+        {hours} : {minutes} : {seconds}
+      </b>
+    </div>
+  );
 };
