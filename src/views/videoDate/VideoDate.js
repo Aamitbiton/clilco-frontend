@@ -128,7 +128,7 @@ export const VideoDate = () => {
   }, []);
   return (
     <>
-      <div className="full-height">
+      <div className="full-screen">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
         {!dateStarted && <>{/*timer for date*/}</>}
 
