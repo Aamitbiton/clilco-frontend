@@ -1,6 +1,6 @@
 .buttons-container{
     width: 100vw;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     height: 15vh;
     background-color: rgba(0, 0, 0, 0.3);
