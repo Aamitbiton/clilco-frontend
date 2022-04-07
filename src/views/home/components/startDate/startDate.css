@@ -6,5 +6,6 @@
 }
 
 .start-btn{
-
+ border-radius: 50px !important;
+    color: red !important;
 }

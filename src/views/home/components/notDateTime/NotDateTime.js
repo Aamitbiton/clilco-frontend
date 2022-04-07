@@ -1,17 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import Button from '@mui/material/Button';
-import './notDateTime.css'
-
+import React, { useState, useEffect } from "react";
+import Button from "@mui/material/Button";
+import "./notDateTime.css";
+import { Timer } from "../../../../components/timer/timer";
 
 export const NotDateTime = () => {
-
-    return (
-        <>
-            <div className="not-date-time">
-                <Button variant="contained">Watch people</Button>
-            </div>
-        </>
-
-    )
-}
-
+  return (
+    <>
+      <Timer />
+    </>
+  );
+};
