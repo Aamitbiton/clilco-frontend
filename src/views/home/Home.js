@@ -6,6 +6,8 @@ import { StartDate } from "./components/startDate/StartDate";
 import { NotDateTime } from "./components/notDateTime/NotDateTime";
 import { Header } from "./components/header/header";
 import { APP_ROUTS } from "../constants";
+import Title from "../../components/title/title";
+import Typography from "@mui/material/Typography";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -36,8 +38,13 @@ export const Home = () => {
   };
   return (
     <>
-      <div className="home">
+      <div className="home full-screen ">
         <Header />
+
+        <Title title={"חווית ספיד דייט חכם"} />
+        <Typography className={"flex-center"} color={"white"} variant={"h5"}>
+          מוכנים?
+        </Typography>
         <div className="content">
           {isVideoTime ? (
             <StartDate handle_start_date_click={handle_start_date_click} />

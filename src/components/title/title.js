@@ -4,7 +4,13 @@ import Typography from "@mui/material/Typography";
 
 function Title({ title, mb = 2, color = "secondary", ...otherProps }) {
   return (
-    <Typography mb={mb} color={color} variant={"h4"} {...otherProps}>
+    <Typography
+      className={"flex-center"}
+      mb={mb}
+      color={color}
+      variant={"h4"}
+      {...otherProps}
+    >
       {title}
     </Typography>
   );
