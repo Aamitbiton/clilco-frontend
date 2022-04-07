@@ -3,10 +3,10 @@ import Button from "@mui/material/Button";
 import "./notDateTime.css";
 import { Timer } from "../../../../components/timer/timer";
 
-export const NotDateTime = () => {
+export const NotDateTime = ({ datesStartedMilliseconds }) => {
   return (
-    <>
-      <Timer />
-    </>
+    <div className="flex-center full-screen">
+      <Timer expiredMilliseconds={datesStartedMilliseconds} />
+    </div>
   );
 };

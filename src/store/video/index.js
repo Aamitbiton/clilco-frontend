@@ -8,7 +8,7 @@ const {
 } = VIDEO_CONSTANTS;
 const videoInterface = {
   room: null,
-  speed_date_time: null,
+  speed_date_time: {},
   date_started: false,
   room_unsubscribes: false,
 };
