@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./videoDate.css";
+import "./videoDate.scss";
 import {
   watch_room,
   add_offer,
@@ -17,6 +17,7 @@ import { webRTCConfiguration } from "./videoUtils";
 import actionsCreator from "../../store/actionsCreator";
 import VIDEO_CONSTANTS from "../../store/video/constants";
 import Peer from "simple-peer";
+import { Connecting } from "./components/connecting/Connecting";
 
 export const VideoDate = () => {
   //todo:
@@ -111,6 +112,7 @@ export const VideoDate = () => {
       client.peer.on("signal", async (offer) => {
         await add_offer({ offer, roomId: room.id, type: "offer" });
       });
+
       setClient({ ...client, init: false });
     }
     if (client.offer) {
@@ -126,13 +128,20 @@ export const VideoDate = () => {
   }, []);
   return (
     <>
-      <div className="video-page">
+      <div className="full-height">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
         {!dateStarted && <>{/*timer for date*/}</>}
 
         {dateStarted && (
           <>
-            <RemoteVideo remoteStream={remoteStream} />
+            {remoteStream.active ? (
+              <RemoteVideo remoteStream={remoteStream} />
+            ) : (
+              <Connecting
+                remoteStream={remoteStream}
+                reset_connection={clean_room}
+              />
+            )}
             <VideoButtons
               end_video_date={end_video_date}
               next_question={next_question}

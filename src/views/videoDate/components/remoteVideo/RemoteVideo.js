@@ -1,21 +1,32 @@
 import React, { useEffect, useRef } from "react";
-import "./remoteVideo.css";
+import "./remoteVideo.scss";
+import { useSelector } from "react-redux";
 
 export const RemoteVideo = ({ remoteStream }) => {
   const remoteVideoRef = useRef();
+  const isMobile = useSelector((state) => state.app.isMobile);
+  const get_video_class = () => {};
   useEffect(() => {
     if (remoteStream) {
       remoteVideoRef.current.srcObject = remoteStream;
     }
   }, [remoteStream]);
+
   return (
     <>
-      <video
-        ref={remoteVideoRef}
-        autoPlay={true}
-        className="remote-video"
-        muted={true}
-      />
+      {remoteStream && (
+        <>
+          <video
+            playsInline
+            ref={remoteVideoRef}
+            autoPlay={true}
+            className={`remote-video ${
+              isMobile ? "mobile-addons" : "desktop-addons"
+            }`}
+            muted={true}
+          />
+        </>
+      )}
     </>
   );
 };

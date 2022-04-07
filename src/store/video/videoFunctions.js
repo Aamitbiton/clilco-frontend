@@ -16,11 +16,21 @@ export const watch_room = async () => {
 };
 
 export const add_offer = async ({ offer, roomId, type }) => {
-  await send_offer({ data: { [type]: offer }, roomId, type });
+  const { success, error } = await send_offer({
+    data: { [type]: offer },
+    roomId,
+    type,
+  });
+  if (error) await clean_room();
 };
 
 export const add_answer = async ({ answer, roomId, type }) => {
-  await send_offer({ data: { [type]: answer }, roomId, type });
+  const { success, error } = await send_offer({
+    data: { [type]: answer },
+    roomId,
+    type,
+  });
+  if (error) await clean_room();
 };
 
 export const clean_room = async () => {
