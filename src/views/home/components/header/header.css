@@ -4,7 +4,9 @@
     max-height: 50px;
     background-color: #2d3138;
     width: 100%;
+    justify-content: space-between;
 }
 .img{
     padding: 5px;
+    width: 120px;
 }
