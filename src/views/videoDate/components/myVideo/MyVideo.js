@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./myVideo.css";
 
 export const MyVideo = ({ dateStarted, setLocalStream }) => {
   const videoRef = useRef();
@@ -20,7 +19,9 @@ export const MyVideo = ({ dateStarted, setLocalStream }) => {
   return (
     <>
       <video
-        className={dateStarted ? "my-video-in-date" : "my-video-before-date"}
+        className={`reverse-video ${
+          dateStarted ? "my-video-in-date" : "my-video-before-date"
+        }`}
         ref={videoRef}
         autoPlay={true}
         muted={true}

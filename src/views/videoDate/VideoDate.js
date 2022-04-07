@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
 import { VideoButtons } from "./components/videoButtons/VideoButtons";
-import { TimerUntilDate } from "./components/timerUntilDate/TimerUntilDate";
 import { webRTCConfiguration } from "./videoUtils";
 import actionsCreator from "../../store/actionsCreator";
 import VIDEO_CONSTANTS from "../../store/video/constants";
@@ -129,16 +128,11 @@ export const VideoDate = () => {
     <>
       <div className="video-page">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
-        {!dateStarted && (
-          <>
-            <TimerUntilDate />
-          </>
-        )}
+        {!dateStarted && <>{/*timer for date*/}</>}
 
         {dateStarted && (
           <>
             <RemoteVideo remoteStream={remoteStream} />
-
             <VideoButtons
               end_video_date={end_video_date}
               next_question={next_question}
