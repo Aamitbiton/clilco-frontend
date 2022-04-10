@@ -80,10 +80,12 @@ async function getCollection(
 
 async function update(path, data) {
   try {
-    return await updateDoc(doc(db, path), data);
+    await updateDoc(doc(db, path), data);
+    return { success: true };
   } catch (e) {
     console.log(e);
     debugger;
+    return { error: e };
   }
 }
 

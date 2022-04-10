@@ -14,4 +14,6 @@ export const init_app = async ({ navigator }) => {
     await actionsCreator(APP_CONSTANTS.LNG, lng);
   });
   await get_next_speed_date_time();
+  const isMobile = window.innerWidth < 450;
+  await actionsCreator(APP_CONSTANTS.SET_IS_MOBILE, isMobile);
 };
