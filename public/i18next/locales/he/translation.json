@@ -1,3 +1,9 @@
 {
-  "Welcome_title": "ברוכים הבאים"
+  "Welcome_title": "ברוכים הבאים",
+  "video_page": {
+    "end-call": "ניתוק",
+    "mute": "השתק שאלות",
+    "next-question":"שאלה הבאה"
+  }
 }
+

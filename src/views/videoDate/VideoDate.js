@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./videoDate.css";
+import "./videoDate.scss";
 import {
   watch_room,
   add_offer,
@@ -11,17 +11,16 @@ import {
 import { handle_user_availability } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
-import { Tips } from "./components/tips/Tips";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
-import { VideoControllers } from "./components/videoControllers/VideoControllers";
+import { VideoButtons } from "./components/videoButtons/VideoButtons";
 import { webRTCConfiguration } from "./videoUtils";
 import actionsCreator from "../../store/actionsCreator";
 import VIDEO_CONSTANTS from "../../store/video/constants";
 import Peer from "simple-peer";
-import AppButton from "../../components/AppButton";
+import { Connecting } from "./components/connecting/Connecting";
 
 export const VideoDate = () => {
-  //todo: scenarios
+  //todo:
   // user exists and returns
   // user enters with another device
   // user refreshes page
@@ -100,7 +99,11 @@ export const VideoDate = () => {
     await unsubscribe_room_listener();
     navigate("/");
   };
-  const unMount = async () => {};
+  const unMount = async () => {
+    await close_connection();
+  };
+  const next_question = () => {};
+  const mute_questions = () => {};
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
@@ -109,9 +112,7 @@ export const VideoDate = () => {
       client.peer.on("signal", async (offer) => {
         await add_offer({ offer, roomId: room.id, type: "offer" });
       });
-      client.peer.on("error", () => {
-        alert("closed1");
-      });
+
       setClient({ ...client, init: false });
     }
     if (client.offer) {
@@ -120,9 +121,6 @@ export const VideoDate = () => {
       client.peer.on("signal", async (answer) => {
         await add_answer({ answer, roomId: room.id, type: "answer" });
       });
-      client.peer.on("error", () => {
-        alert("closed2");
-      });
     }
   }, [client]);
   useEffect(() => {
@@ -130,11 +128,28 @@ export const VideoDate = () => {
   }, []);
   return (
     <>
-      <div className="video-page">
+      <div className="full-screen">
         <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
-        <RemoteVideo remoteStream={remoteStream} />
+        {!dateStarted && <>{/*timer for date*/}</>}
+
+        {dateStarted && (
+          <>
+            {remoteStream.active ? (
+              <RemoteVideo remoteStream={remoteStream} />
+            ) : (
+              <Connecting
+                remoteStream={remoteStream}
+                reset_connection={clean_room}
+              />
+            )}
+            <VideoButtons
+              end_video_date={end_video_date}
+              next_question={next_question}
+              mute_questions={mute_questions}
+            />
+          </>
+        )}
       </div>
-      <AppButton onClick={end_video_date} label={"out"} />
     </>
   );
 };

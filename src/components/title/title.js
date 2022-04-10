@@ -1,5 +1,4 @@
 import React from "react";
-import "./title.css";
 import Typography from "@mui/material/Typography";
 
 function Title({ title, mb = 2, color = "secondary", ...otherProps }) {

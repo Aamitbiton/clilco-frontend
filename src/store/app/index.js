@@ -1,12 +1,18 @@
 import APP_CONSTANTS from "./constants";
 
-const { SET_APP_READY, FINISHED_FETCHING_USER, GLOBAL_HOOKS, LNG } =
-  APP_CONSTANTS;
+const {
+  SET_APP_READY,
+  FINISHED_FETCHING_USER,
+  GLOBAL_HOOKS,
+  LNG,
+  SET_IS_MOBILE,
+} = APP_CONSTANTS;
 const appInterface = {
   app_ready: false,
   finished_fetching_user: false,
   global_hooks: null,
   lng: null,
+  isMobile: false,
 };
 
 export default function app(state = appInterface, action) {
@@ -22,6 +28,9 @@ export default function app(state = appInterface, action) {
 
     case LNG:
       return { ...state, lng: action.payload };
+
+    case SET_IS_MOBILE:
+      return { ...state, isMobile: action.payload };
 
     default:
       return state;

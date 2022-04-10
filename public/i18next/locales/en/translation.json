@@ -1,3 +1,9 @@
 {
-  "Welcome_title": "Welcome"
+  "Welcome_title": "Welcome",
+  "video_page": {
+    "end-call": "End call",
+    "mute": "Mute questions",
+    "next-question":"Next question"
+  }
 }
+
