@@ -7,6 +7,7 @@ import { init_app } from "../store/app/appFunctions";
 import { useSelector } from "react-redux";
 import AppRoutes from "./AppRoutes";
 import { RTL } from "../themes";
+import ConditionalWrapper from "../components/ConditionalWrapper";
 
 function App() {
   const appState = useSelector((state) => state.app);
@@ -14,20 +15,16 @@ function App() {
   useEffect(() => init_app({ navigator }), []);
   return (
     <div>
-      {appState.app_ready && appState.lng === "he" ? (
-        <RTL>
+      {appState.app_ready && (
+        <ConditionalWrapper
+          condition={appState.lng === "he"}
+          wrapper={(children) => <RTL>{children}</RTL>}
+        >
           <Routes>
             <Route path={AppRoutes.LOGIN} element={<Login />} />
             <Route path="/*" element={<AuthenticatedLayout />} />
           </Routes>
-        </RTL>
-      ) : (
-        appState.app_ready && (
-          <Routes>
-            <Route path={AppRoutes.LOGIN} element={<Login />} />
-            <Route path="/*" element={<AuthenticatedLayout />} />
-          </Routes>
-        )
+        </ConditionalWrapper>
       )}
     </div>
   );
