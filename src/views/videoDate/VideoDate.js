@@ -21,7 +21,7 @@ import { Connecting } from "./components/connecting/Connecting";
 import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
-  //todo: casses:
+  //todo: manage the components and the state according to the following scenarios:
   // 1. user is waiting for room to be created
   // 2.room created but connection not yet happened
   // 3. connection inits and video comes here
