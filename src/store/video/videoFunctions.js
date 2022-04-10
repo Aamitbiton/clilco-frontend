@@ -2,7 +2,8 @@ import actionsCreator from "../actionsCreator";
 import * as videoService from "../../services/video";
 import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
-import { send_offer } from "../../services/video";
+import { send_offer_or_answer, update_me_in_room } from "../../services/video";
+import { infoLog } from "../../utils/logs";
 
 const { getState, dispatch } = store;
 
@@ -15,18 +16,9 @@ export const watch_room = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
 
-export const add_offer = async ({ offer, roomId, type }) => {
-  const { success, error } = await send_offer({
-    data: { [type]: offer },
-    roomId,
-    type,
-  });
-  if (error) await clean_room();
-};
-
-export const add_answer = async ({ answer, roomId, type }) => {
-  const { success, error } = await send_offer({
-    data: { [type]: answer },
+export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
+  const { success, error } = await send_offer_or_answer({
+    data: { [type]: offerOrAnswer },
     roomId,
     type,
   });
