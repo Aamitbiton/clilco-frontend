@@ -18,6 +18,21 @@ export async function send_offer_or_answer({ data, roomId }) {
     data,
   });
 }
+export async function set_go_to_decision({ roomId }) {
+  const id = authService.get_current_user()?.uid;
+  return await dbLayer.update_room({
+    roomId,
+    data: { hungUpBy: id, goToDecision: true },
+  });
+}
+
+export async function end_date({ roomId }) {
+  const id = authService.get_current_user()?.uid;
+  return await dbLayer.update_room({
+    roomId,
+    data: { ended: true },
+  });
+}
 
 export async function clean_room({ room }) {
   return await dbLayer.update_room({

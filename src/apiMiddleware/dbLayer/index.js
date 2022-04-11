@@ -21,14 +21,20 @@ export async function watch_user({ id, privateCallBack, publicCallBack }) {
 }
 
 export async function watch_room({ id, callBack }) {
-  const wheres_caller = [["caller.id", "==", id]];
+  const wheres_caller = [
+    ["caller.id", "==", id],
+    ["ended", "!=", true],
+  ];
   const unsubscribe_caller = await firestore.watchColl({
     path: constants.dbPaths.rooms,
     callBack,
     wheres: wheres_caller,
   });
 
-  const wheres_answerer = [["answerer.id", "==", id]];
+  const wheres_answerer = [
+    ["answerer.id", "==", id],
+    ["ended", "!=", true],
+  ];
   const unsubscribe_answerer = await firestore.watchColl({
     path: constants.dbPaths.rooms,
     callBack,
