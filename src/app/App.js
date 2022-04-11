@@ -8,13 +8,14 @@ import { useSelector } from "react-redux";
 import AppRoutes from "./AppRoutes";
 import { RTL } from "../themes";
 import ConditionalWrapper from "../components/ConditionalWrapper";
+import SimpleSnackbar from "../components/snackBar/SnackBar";
 
 function App() {
   const appState = useSelector((state) => state.app);
   const navigator = useNavigate();
   useEffect(() => init_app({ navigator }), []);
   return (
-    <div>
+    <>
       {appState.app_ready && (
         <ConditionalWrapper
           condition={appState.lng === "he"}
@@ -26,7 +27,8 @@ function App() {
           </Routes>
         </ConditionalWrapper>
       )}
-    </div>
+      <SimpleSnackbar />
+    </>
   );
 }
 

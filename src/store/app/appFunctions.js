@@ -17,3 +17,19 @@ export const init_app = async ({ navigator }) => {
   const isMobile = window.innerWidth < 450;
   await actionsCreator(APP_CONSTANTS.SET_IS_MOBILE, isMobile);
 };
+
+export const create_snackBar = async ({ message, action }) => {
+  await actionsCreator(APP_CONSTANTS.SET_SNACK_BAR, {
+    open: true,
+    handleClose: action,
+    message,
+  });
+};
+
+export const reset_snackBar = async () => {
+  await actionsCreator(APP_CONSTANTS.SET_SNACK_BAR, {
+    open: false,
+    handleClose: null,
+    message: null,
+  });
+};

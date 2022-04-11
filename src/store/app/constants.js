@@ -4,4 +4,5 @@ export default Object.freeze({
   GLOBAL_HOOKS: "GLOBAL_HOOKS",
   LNG: "LNG",
   SET_IS_MOBILE: "SET_IS_MOBILE",
+  SET_SNACK_BAR: "SET_SNACK_BAR",
 });

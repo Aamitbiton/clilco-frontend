@@ -8,34 +8,20 @@ import {
   unsubscribe_room_listener,
 } from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
+import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
 import { VideoButtons } from "./components/videoButtons/VideoButtons";
-import { OtherUserAborted } from "./components/otherUserAborted/OtherUserAborted";
 import { webRTCConfiguration } from "./videoUtils";
-import actionsCreator from "../../store/actionsCreator";
-import VIDEO_CONSTANTS from "../../store/video/constants";
 import Peer from "simple-peer";
-import { Connecting } from "./components/connecting/Connecting";
-import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
-  //todo: manage the components and the state according to the following scenarios:
-  // 1. user is waiting for room to be created
-  // 2.room created but connection not yet happened
-  // 3. connection inits and video comes here
-  // 4. one user presses to exit
-  // 5. one user refreshes
-  // 6. one user exits
-
-  const [peer, setPeer] = useState({});
+  const [peer, setPeer] = useState(null);
   const [newProcess, setNewProcess] = useState(true);
-  const [otherUserHasLeftRoom, setOtherUserHasLeftRoom] = useState(false);
   const [localStream, setLocalStream] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(new MediaStream());
+  const [remoteStream, setRemoteStream] = useState(null);
   const room = useSelector((state) => state.video.room);
-  const dateStarted = useSelector((state) => state.video.date_started);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
@@ -73,7 +59,7 @@ export const VideoDate = () => {
     peer?.signal(answer);
   };
   const handle_got_stream = (stream) => {
-    setRemoteStream(stream);
+    setRemoteStream(new MediaStream(stream));
     set_remote_video_error_handler(stream);
   };
   const handle_caller = async ({ offer, answer }) => {
@@ -87,17 +73,25 @@ export const VideoDate = () => {
   const set_remote_video_error_handler = (stream) => {
     stream.getTracks().forEach((track) => {
       if (track.kind === "video") {
-        // track.addEventListener("mute", async () => {
-        //   setOtherUserHasLeftRoom(true);
-        // });
+        track.addEventListener("mute", handle_remote_video_stopped);
+        track.addEventListener("unmute", () =>
+          handle_remote_video_restarted(stream)
+        );
       }
     });
+  };
+  const handle_remote_video_stopped = async () => {
+    setRemoteStream(null);
+    peer?.destroy();
+    create_snackBar({ message: "hi!!!", action: reset_snackBar });
+  };
+  const handle_remote_video_restarted = async (stream) => {
+    handle_got_stream(stream);
   };
   const handle_room_update = async () => {
     if (!room) return;
     const myId = user.private.id;
     const { caller, answerer, answer, offer } = room;
-    await actionsCreator(VIDEO_CONSTANTS.SET_DATE_STARTED, true);
     if (newProcess && offer) await clean_room();
     setNewProcess(false);
     if (caller.id === myId) await handle_caller(room);
@@ -129,26 +123,12 @@ export const VideoDate = () => {
   return (
     <>
       <div className="full-screen">
-        <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
-        {!dateStarted && <>{/*timer for date*/}</>}
+        <MyVideo dateStarted={remoteStream} setLocalStream={setLocalStream} />
+        {remoteStream && <>{/*timer for date*/}</>}
 
-        {dateStarted && (
+        {remoteStream && (
           <>
-            {remoteStream.active ? (
-              otherUserHasLeftRoom ? (
-                <OtherUserAborted
-                  remoteStream={remoteStream}
-                  reset_connection={end_video_date}
-                />
-              ) : (
-                <RemoteVideo remoteStream={remoteStream} />
-              )
-            ) : (
-              <Connecting
-                remoteStream={remoteStream}
-                reset_connection={clean_room}
-              />
-            )}
+            <RemoteVideo remoteStream={remoteStream} />
             <VideoButtons
               end_video_date={end_video_date}
               next_question={next_question}
