@@ -8,11 +8,13 @@ import { useSelector } from "react-redux";
 import AppRoutes from "./AppRoutes";
 import { RTL } from "../themes";
 import ConditionalWrapper from "../components/ConditionalWrapper";
+import useRouterGuard from "../hooks/useRouterGuard";
 
 function App() {
   const appState = useSelector((state) => state.app);
   const navigator = useNavigate();
   useEffect(() => init_app({ navigator }), []);
+  useRouterGuard();
   return (
     <div>
       {appState.app_ready && (

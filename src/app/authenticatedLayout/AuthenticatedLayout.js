@@ -28,22 +28,19 @@ export const AuthenticatedLayout = () => {
   } = AppRoutes;
   return (
     <>
-      {appState.finished_fetching_user &&
-        (user.private?.id ? (
-          <Routes>
-            <Route path={ROOT} element={<Home />} />
-            <Route path={UPLOAD_IMAGE} element={<AddImage />} />
-            <Route path={REGISTRATION} element={<RegistrationForm />} />
-            <Route path={VIEW_USERS} element={<ViewUsers />} />
-            <Route path={PROFILE} element={<Profile />} />
-            <Route path={AFTER_VIDEO} element={<AfterVideo />} />
-            <Route path={VERIFY_PHONE} element={<VerifyPhone />} />
-            <Route path={VIDEO_DATE} element={<VideoDate />} />
-            <Route path="*" element={<Missed />} />
-          </Routes>
-        ) : (
-          <Navigate to="login" state={{ from: location }} replace />
-        ))}
+      {appState.finished_fetching_user && user.private?.id && (
+        <Routes>
+          <Route path={ROOT} element={<Home />} />
+          <Route path={UPLOAD_IMAGE} element={<AddImage />} />
+          <Route path={REGISTRATION} element={<RegistrationForm />} />
+          <Route path={VIEW_USERS} element={<ViewUsers />} />
+          <Route path={PROFILE} element={<Profile />} />
+          <Route path={AFTER_VIDEO} element={<AfterVideo />} />
+          <Route path={VERIFY_PHONE} element={<VerifyPhone />} />
+          <Route path={VIDEO_DATE} element={<VideoDate />} />
+          <Route path="*" element={<Missed />} />
+        </Routes>
+      )}
     </>
   );
 };

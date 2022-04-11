@@ -20,7 +20,7 @@ export const VerifyPhone = () => {
   };
   const check_if_password_verified = async (code) => {
     let code_verified = (await check_password(code)).data;
-    if (code_verified) navigate("/");
+    if (code_verified) alert("success!");
     else alert("סיסמא שגויה");
   };
 

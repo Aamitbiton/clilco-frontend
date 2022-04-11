@@ -1,55 +1,47 @@
-import React, {useState} from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import Button from '@mui/material/Button';
-import * as Yup from 'yup';
-import "yup-phone";
-import '../verifyPhone.css'
+import React, { useState } from "react";
+import "../verifyPhone.css";
 import LoadingButton from "@mui/lab/LoadingButton";
+import AppForm from "../../../components/Form/AppForm";
+import FormFiled from "../../../components/Form/FormFiled";
+import AppStack from "../../../components/AppStack";
+import { phoneSchema } from "../SchemaValidation";
+import CenterLayout from "../../../components/CenterLayout";
 
-export const  PhoneInput = ({smsSent}) => {
-    let schema = Yup.object().shape({
-            phoneNumber: Yup.string().phone('il').required()
-    })
-    const initialValues = {
-        phoneNumber: '',
-    }
-    const [Loading,setLoading] = useState(false);
+export const PhoneInput = ({ smsSent }) => {
+  const [Loading, setLoading] = useState(false);
+  const handleSubmit = async (values) => {
+    setLoading(true);
+    await smsSent(values.phoneNumber);
+    setLoading(false);
+  };
 
-    const handleSubmit = async (values)=>{
-        setLoading(true)
-       await smsSent(values.phoneNumber)
-        setLoading(false)
-    }
-    return (
-        <div className="phone-number-form">
-            <Formik
-                initialValues={initialValues}
-                validationSchema={schema}
-                onSubmit={handleSubmit}
-            >
-                    <Form>
-                        <div className="form-group">
-                            <p className="title">הכנס מספר טלפון</p>
-                            <Field name="phoneNumber" type="phoneNumber" className="form-control" />
-                            <ErrorMessage
-                                name="phoneNumber"
-                                component="div"
-                                className="error-message"
-                            />
-                            <LoadingButton
-                                className="submit-btn"
-                                type="submit"
-                                loading={Loading}
-                                variant="contained"
-                            >
-                                שלח קוד
-                            </LoadingButton>
-                        </div>
-                    </Form>
-            </Formik>
-        </div>
-    );
-
-}
+  return (
+    <CenterLayout>
+      <AppForm
+        initialValues={{
+          phoneNumber: "",
+        }}
+        validationSchema={phoneSchema}
+        onSubmit={handleSubmit}
+      >
+        <AppStack direction={"column"} spacing={2}>
+          <FormFiled
+            width={270}
+            label={"הכנס מספר טלפון"}
+            name={"phoneNumber"}
+          />
+          <LoadingButton
+            className="submit-btn"
+            type="submit"
+            loading={Loading}
+            variant="contained"
+          >
+            שלח קוד
+          </LoadingButton>
+        </AppStack>
+      </AppForm>
+    </CenterLayout>
+  );
+};
 
 export default PhoneInput;
