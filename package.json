@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "face-api.js": "^0.22.2",
     "firebase": "9.6.2",
     "firebase-functions": "3.16.0",
     "firebase-tools": "10.0.1",
