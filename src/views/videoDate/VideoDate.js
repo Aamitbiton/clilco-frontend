@@ -5,10 +5,12 @@ import {
   watch_room,
   add_offer_or_answer,
   clean_room,
+  get_remote_user_data,
   unsubscribe_room_listener,
 } from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
+import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
@@ -23,6 +25,7 @@ export const VideoDate = () => {
   const [remoteStream, setRemoteStream] = useState(null);
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
+  const remoteUser = useSelector((state) => state.video.remote_user);
   const navigate = useNavigate();
 
   const init_page = async () => {
@@ -83,7 +86,10 @@ export const VideoDate = () => {
   const handle_remote_video_stopped = async () => {
     setRemoteStream(null);
     peer?.destroy();
-    create_snackBar({ message: "hi!!!", action: reset_snackBar });
+    await create_snackBar({
+      message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
+      action: reset_snackBar,
+    });
   };
   const handle_remote_video_restarted = async (stream) => {
     handle_got_stream(stream);
@@ -96,7 +102,10 @@ export const VideoDate = () => {
     setNewProcess(false);
     if (caller.id === myId) await handle_caller(room);
     else if (answerer.id === myId) await handle_answerer(room);
+    if (!remoteUser)
+      await get_remote_user_data(caller.id === myId ? answerer.id : caller.id);
   };
+
   const next_question = () => {};
   const mute_questions = () => {};
   const stop_my_video = async () => {

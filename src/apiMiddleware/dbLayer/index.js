@@ -5,6 +5,10 @@ export async function get_user(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser(id));
 }
 
+export async function get_user_public(id) {
+  return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
+}
+
 export async function watch_user({ id, privateCallBack, publicCallBack }) {
   await firestore.watchDoc(
     constants.dbPaths.singleUser.private(id),

@@ -1,5 +1,6 @@
 import * as dbLayer from "../apiMiddleware/dbLayer";
 import * as authService from "./auth";
+import { get_user_public } from "../apiMiddleware/dbLayer";
 
 export async function watch_room(handle_room) {
   const id = authService.get_current_user()?.uid;
@@ -27,6 +28,10 @@ export async function clean_room({ room }) {
     roomId: room.id,
     data: { answer: null, offer: null },
   });
+}
+
+export async function get_remote_user(uid) {
+  return await dbLayer.get_user_public(uid);
 }
 
 export async function update_me_in_room({ roomId, data }) {
