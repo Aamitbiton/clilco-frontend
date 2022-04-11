@@ -5,7 +5,7 @@ import HttpApi from "i18next-http-backend";
 import { theme } from "./themes";
 
 export const init_i18next = async () => {
-  const browser_lng = get_browser_lng();
+  const browser_lng = "he";
   await i18n
     .use(initReactI18next)
     .use(LanguageDetector)

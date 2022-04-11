@@ -10,7 +10,7 @@ export const Timer = ({ expiredMilliseconds }) => {
   });
 
   return (
-    <div className="container flex-center">
+    <div className="container  flex-center ltr">
       <b className="text">
         {hours} : {minutes} : {seconds}
       </b>

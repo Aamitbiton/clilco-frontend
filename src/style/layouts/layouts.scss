@@ -12,7 +12,12 @@
 .full-width{
     width: 100vw;
 }
-
+.ltr{
+    direction: ltr !important;
+}
+.mt-s{margin-top: 10px}
+.mt-m{margin-top: 20px}
+.mt-l{margin-top: 30px}
 .full-screen{
     @extend .full-width;
     @extend .full-height;
