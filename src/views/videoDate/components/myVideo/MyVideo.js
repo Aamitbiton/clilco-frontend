@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./myVideo.scss";
+import { test_ai } from "../../../../store/video/videoFunctions";
 
 export const MyVideo = ({
   dateStarted,
@@ -16,6 +17,7 @@ export const MyVideo = ({
 
       setLocalStream(localStream);
       videoRef.current.srcObject = localStream;
+      test_ai(videoRef.current);
     } catch (e) {
       handle_no_permissions();
     }

@@ -76,3 +76,5 @@ export const get_remote_user_data = async (uid) => {
   const remote_user = await videoService.get_remote_user(uid);
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
+
+export const test_ai = async (video) => {};
