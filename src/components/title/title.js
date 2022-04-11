@@ -1,10 +1,13 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 
-function Title({ title, mt = 3, color = "secondary", ...otherProps }) {
+function Title({ title, mt = 7, color = "secondary", ...otherProps }) {
+  const style = { position: "fixed" };
+
   return (
     <Typography
-      className={"flex-center"}
+      style={style}
+      className={"flex-center full-width"}
       mt={mt}
       color={color}
       variant={"h4"}
