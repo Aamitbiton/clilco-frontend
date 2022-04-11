@@ -12,10 +12,6 @@ export async function watch_room(handle_room) {
   });
 }
 
-export async function get_next_speed_date_time() {
-  return await dbLayer.get_next_speed_date_time();
-}
-
 export async function send_offer_or_answer({ data, roomId }) {
   return await dbLayer.update_room({
     roomId,
