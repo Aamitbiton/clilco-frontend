@@ -1,7 +1,6 @@
 @import "./src/style/varables";
 
 
-
 .remote-video{
     position: absolute;
     left: 0;
@@ -16,6 +15,11 @@
 .both-mobile-video-style{
     width: 100vw;
     object-fit: cover;
+}
+
+.local-mobile-remote-desktop-video-style{
+    width: 100vw;
+    object-fit: contain;
 }
 
 

@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./videoDate.scss";
 import {
   watch_room,
-  add_offer,
-  add_answer,
+  add_offer_or_answer,
   clean_room,
   unsubscribe_room_listener,
 } from "../../store/video/videoFunctions";
@@ -13,21 +12,26 @@ import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
 import { VideoButtons } from "./components/videoButtons/VideoButtons";
+import { OtherUserAborted } from "./components/otherUserAborted/OtherUserAborted";
 import { webRTCConfiguration } from "./videoUtils";
 import actionsCreator from "../../store/actionsCreator";
 import VIDEO_CONSTANTS from "../../store/video/constants";
 import Peer from "simple-peer";
 import { Connecting } from "./components/connecting/Connecting";
+import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
-  //todo:
-  // user exists and returns
-  // user enters with another device
-  // user refreshes page
-  // remote video has errors/stops
+  //todo: manage the components and the state according to the following scenarios:
+  // 1. user is waiting for room to be created
+  // 2.room created but connection not yet happened
+  // 3. connection inits and video comes here
+  // 4. one user presses to exit
+  // 5. one user refreshes
+  // 6. one user exits
 
-  const [client, setClient] = useState({});
+  const [peer, setPeer] = useState({});
   const [newProcess, setNewProcess] = useState(true);
+  const [otherUserHasLeftRoom, setOtherUserHasLeftRoom] = useState(false);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(new MediaStream());
   const room = useSelector((state) => state.video.room);
@@ -38,45 +42,39 @@ export const VideoDate = () => {
   const init_page = async () => {
     await watch_room();
     await handle_user_availability(true);
+    window.addEventListener("beforeunload", handle_exit);
   };
   const create_offer = async () => {
-    setClient({
-      ...client,
-      gotAnswer: false,
-      peer: init_peer({ type: "offer" }),
-      init: true,
-    });
+    setPeer(init_peer({ type: "offer" }));
   };
-  const init_peer = ({ type }) => {
+  const create_answer = (offer) => {
+    setPeer(init_peer({ type: "answer", offer }));
+  };
+  const init_peer = ({ type, offer }) => {
     let peer = new Peer({
       initiator: type === "offer",
       stream: localStream,
       trickle: false,
       config: webRTCConfiguration,
     });
-    peer.on("stream", setRemoteStream);
+    peer.on("stream", handle_got_stream);
+    if (offer) peer.signal(offer);
+    peer.on("signal", handle_signal);
     return peer;
   };
-  const create_answer = (offer) => {
-    setClient({
-      ...client,
-      peer: init_peer({ type: "answer" }),
-      notInit: true,
-      offer,
+  const handle_signal = async (offerOrAnswer) => {
+    await add_offer_or_answer({
+      offerOrAnswer,
+      roomId: room.id,
+      type: offerOrAnswer.type,
     });
   };
   const signal_answer = (answer) => {
-    client.peer?.signal(answer);
+    peer?.signal(answer);
   };
-  const handle_room_update = async () => {
-    if (!room) return;
-    const myId = user.private.id;
-    const { caller, answerer, answer, offer } = room;
-    await actionsCreator(VIDEO_CONSTANTS.SET_DATE_STARTED, true);
-    if (newProcess && offer) await clean_room();
-    setNewProcess(false);
-    if (caller.id === myId) await handle_caller({ offer, answer });
-    else if (answerer.id === myId) await handle_answerer({ offer, answer });
+  const handle_got_stream = (stream) => {
+    setRemoteStream(stream);
+    set_remote_video_error_handler(stream);
   };
   const handle_caller = async ({ offer, answer }) => {
     if (!offer) await create_offer();
@@ -85,8 +83,29 @@ export const VideoDate = () => {
   const handle_answerer = async ({ offer, answer }) => {
     if (offer && !answer) await create_answer(offer);
   };
-  const close_connection = async () => {
-    client.peer?.destroy();
+
+  const set_remote_video_error_handler = (stream) => {
+    stream.getTracks().forEach((track) => {
+      if (track.kind === "video") {
+        // track.addEventListener("mute", async () => {
+        //   setOtherUserHasLeftRoom(true);
+        // });
+      }
+    });
+  };
+  const handle_room_update = async () => {
+    if (!room) return;
+    const myId = user.private.id;
+    const { caller, answerer, answer, offer } = room;
+    await actionsCreator(VIDEO_CONSTANTS.SET_DATE_STARTED, true);
+    if (newProcess && offer) await clean_room();
+    setNewProcess(false);
+    if (caller.id === myId) await handle_caller(room);
+    else if (answerer.id === myId) await handle_answerer(room);
+  };
+  const next_question = () => {};
+  const mute_questions = () => {};
+  const stop_my_video = async () => {
     let tracks = localStream?.getTracks();
     tracks?.forEach((track) => {
       track.stop();
@@ -95,37 +114,18 @@ export const VideoDate = () => {
     setLocalStream(null);
   };
   const end_video_date = async () => {
-    await close_connection();
+    await handle_exit();
     await unsubscribe_room_listener();
     navigate("/");
   };
-  const unMount = async () => {
-    await close_connection();
+  const handle_exit = () => {
+    stop_my_video();
+    peer?.destroy();
   };
-  const next_question = () => {};
-  const mute_questions = () => {};
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
-  useEffect(() => {
-    if (client.init) {
-      client.peer.on("signal", async (offer) => {
-        await add_offer({ offer, roomId: room.id, type: "offer" });
-      });
 
-      setClient({ ...client, init: false });
-    }
-    if (client.offer) {
-      client.peer?.signal(client.offer);
-      setClient({ ...client, offer: null });
-      client.peer.on("signal", async (answer) => {
-        await add_answer({ answer, roomId: room.id, type: "answer" });
-      });
-    }
-  }, [client]);
-  useEffect(() => {
-    return unMount;
-  }, []);
   return (
     <>
       <div className="full-screen">
@@ -135,7 +135,14 @@ export const VideoDate = () => {
         {dateStarted && (
           <>
             {remoteStream.active ? (
-              <RemoteVideo remoteStream={remoteStream} />
+              otherUserHasLeftRoom ? (
+                <OtherUserAborted
+                  remoteStream={remoteStream}
+                  reset_connection={end_video_date}
+                />
+              ) : (
+                <RemoteVideo remoteStream={remoteStream} />
+              )
             ) : (
               <Connecting
                 remoteStream={remoteStream}
