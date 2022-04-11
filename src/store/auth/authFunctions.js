@@ -44,3 +44,14 @@ export const check_password = async (code) => {
   let userId = getState().user.user.private.id;
   return await api.check_password(userId, code);
 };
+
+export const signOut = async () => {
+  await authService.signOut();
+};
+export const login_with_email = async ({ email, password }) => {
+  return await authService.login_with_email({ email, password });
+};
+
+export const resetPassword = async (email) => {
+  return await authService.resetPassword(email);
+};

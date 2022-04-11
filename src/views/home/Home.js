@@ -6,6 +6,7 @@ import { StartDate } from "./components/startDate/StartDate";
 import { NotDateTime } from "./components/notDateTime/NotDateTime";
 import { Header } from "./components/header/header";
 import { APP_ROUTS } from "../constants";
+import Menu from "./components/Menu/Menu";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export const Home = () => {
     <>
       <div className="home">
         <Header />
+        <Menu />
         <div className="content">
           {isVideoTime ? (
             <StartDate handle_start_date_click={handle_start_date_click} />

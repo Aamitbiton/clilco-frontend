@@ -1,5 +1,5 @@
 import { useFormikContext } from "formik";
-import AppButton from "../AppButton";
+import AppButton from "../Buttons/AppButton";
 function SubmitButton({ label, endIcon, ...otherProps }) {
   const { handleSubmit } = useFormikContext();
   return (

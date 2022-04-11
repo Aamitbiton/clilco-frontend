@@ -34,5 +34,6 @@ export const cacheRtl = createCache({
 });
 
 export function RTL({ children }) {
+  console.log("RTL");
   return <CacheProvider value={cacheRtl}>{children}</CacheProvider>;
 }

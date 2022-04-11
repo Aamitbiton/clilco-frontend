@@ -33,7 +33,6 @@ async function createDoc(path, data, id) {
     }
   } catch (e) {
     console.log(e);
-    debugger;
   }
 }
 
@@ -47,7 +46,6 @@ async function getDocument(path) {
     return data;
   } catch (e) {
     console.log(e);
-    debugger;
   }
 }
 
@@ -72,7 +70,6 @@ async function getCollection(
     });
     return { docs, lastDoc: queryDocs[queryDocs.length - 1] };
   } catch (e) {
-    debugger;
     console.error(e);
     return { docs: [] };
   }
@@ -84,7 +81,6 @@ async function update(path, data) {
     return { success: true };
   } catch (e) {
     console.log(e);
-    debugger;
     return { error: e };
   }
 }
@@ -93,7 +89,6 @@ async function remove(path) {
   try {
     return await deleteDoc(doc(db, path));
   } catch (e) {
-    debugger;
     console.log(e);
   }
 }
@@ -104,7 +99,6 @@ async function watchDoc(path, callBack) {
       callBack(userDoc.data());
     });
   } catch (e) {
-    debugger;
     console.log(e);
   }
 }
@@ -120,7 +114,6 @@ async function watchColl({ path, callBack, wheres = [] }) {
       );
     });
   } catch (e) {
-    debugger;
     console.log(e);
   }
 }
@@ -129,7 +122,6 @@ async function create_random_id(path) {
   try {
     return (await doc(collection(db, path ? path : null))).id;
   } catch (e) {
-    debugger;
     console.log(e);
   }
 }
@@ -140,7 +132,6 @@ async function add_to_array({ path, prop, val }) {
       [prop]: arrayUnion(val),
     });
   } catch (e) {
-    debugger;
     console.log(e);
   }
 }

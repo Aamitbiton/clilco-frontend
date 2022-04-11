@@ -1,11 +1,12 @@
 import React from "react";
 import RaisedButton from "@mui/material/Button";
-import IconRender from "./iconRender";
+import IconRender from "../iconRender";
 
 function AppButton({
   labelColor,
   label,
   onClick,
+  width,
   disabled = false,
   variant = "outlined",
   startIcon,
@@ -17,6 +18,7 @@ function AppButton({
   const style = {
     borderRadius: rounded && 50,
     justifyContent: "space-between",
+    width,
   };
 
   return (
