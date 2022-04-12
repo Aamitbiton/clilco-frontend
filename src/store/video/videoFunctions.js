@@ -76,23 +76,9 @@ export const get_remote_user_data = async (uid) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
 
-export const test_ai = async (video) => {
-  // const runFaceMesh = async () => {
-  //   const net = await mesh.load({
-  //     inputResolution: { width: 640, height: 480 },
-  //     scale: 0.8,
-  //   });
-  //   const detect = async () => {
-  //     const face = await net.estimateFaces(video);
-  //     console.log(face);
-  //   };
-  //   detect();
-  // };
-  //
-  // runFaceMesh();
+export const emotion_detector = async (video) => {
   Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-    faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
     faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
     faceapi.nets.faceExpressionNet.loadFromUri("/models"),
   ]).then(() => {
@@ -100,19 +86,12 @@ export const test_ai = async (video) => {
     setInterval(async () => {
       const detections = await faceapi
         .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
         .withFaceExpressions();
       const { angry, disgusted, fearful, happy, neutral, sad, surprised } =
         detections[0]?.expressions || {};
-      console.table({
-        angry,
-        disgusted,
-        fearful,
-        happy,
-        neutral,
-        sad,
+      console.log({
         surprised,
       });
-    }, 100);
+    }, 1000);
   });
 };
