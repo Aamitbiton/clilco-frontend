@@ -76,6 +76,12 @@ export const get_remote_user_data = async (uid) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
 
+export const set_its_dating_time = async (payload) => {
+  await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
+    its_dating_time: payload,
+  });
+};
+
 export const test_ai = async (video) => {
   // const runFaceMesh = async () => {
   //   const net = await mesh.load({
