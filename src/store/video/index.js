@@ -21,7 +21,10 @@ export default function video(state = videoInterface, action) {
       return { ...state, room: action.payload };
 
     case SET_SPEED_DATE_TIME:
-      return { ...state, speed_date_time: action.payload };
+      return {
+        ...state,
+        speed_date_time: { ...state.speed_date_time, ...action.payload },
+      };
 
     case SET_DATE_STARTED:
       return { ...state, date_started: action.payload };

@@ -77,6 +77,14 @@ export const get_remote_user_data = async (uid) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
 
+
+
+export const set_its_dating_time = async (payload) => {
+  await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
+    its_dating_time: payload,
+  });
+};
+
 export const emotion_detector = async ({ video, action }) => {
   await Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri("/models"),

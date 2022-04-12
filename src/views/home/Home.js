@@ -10,22 +10,19 @@ import Title from "../../components/title/title";
 import Typography from "@mui/material/Typography";
 
 export const Home = () => {
-  const navigate = useNavigate();
   const videoState = useSelector((state) => state.video);
-
-  const handle_start_date_click = () => {
-    navigate(APP_ROUTS.VIDEO_DATE);
-  };
+  const navigate = useSelector((state) => state.app.global_hooks.navigator);
   return (
     <>
       <div className="home full-screen ">
         <Header />
         <Title title={"חווית ספיד דייט חכם"} />
         <div className="content">
-          {videoState.its_dating_time ? (
-            <StartDate handle_start_date_click={handle_start_date_click} />
+          {videoState.speed_date_time.its_dating_time ? (
+            <StartDate navigate={navigate} />
           ) : (
             <NotDateTime
+              navigate={navigate}
               datesStartedMilliseconds={videoState.speed_date_time.start}
             />
           )}
