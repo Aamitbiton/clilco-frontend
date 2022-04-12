@@ -18,7 +18,7 @@ export const Home = () => {
         <Header />
         <Title title={"חווית ספיד דייט חכם"} />
         <div className="content">
-          {!videoState.speed_date_time.its_dating_time ? (
+          {videoState.speed_date_time.its_dating_time ? (
             <StartDate navigate={navigate} />
           ) : (
             <NotDateTime
