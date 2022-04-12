@@ -5,38 +5,29 @@ import {
   watch_room,
   add_offer_or_answer,
   clean_room,
+  get_remote_user_data,
   unsubscribe_room_listener,
+  set_go_to_decision,
 } from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
+import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
+import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
 import { VideoButtons } from "./components/videoButtons/VideoButtons";
-import { OtherUserAborted } from "./components/otherUserAborted/OtherUserAborted";
 import { webRTCConfiguration } from "./videoUtils";
-import actionsCreator from "../../store/actionsCreator";
-import VIDEO_CONSTANTS from "../../store/video/constants";
 import Peer from "simple-peer";
-import { Connecting } from "./components/connecting/Connecting";
-import { infoLog } from "../../utils/logs";
+import AppRoutes from "../../app/AppRoutes";
 
 export const VideoDate = () => {
-  //todo: manage the components and the state according to the following scenarios:
-  // 1. user is waiting for room to be created
-  // 2.room created but connection not yet happened
-  // 3. connection inits and video comes here
-  // 4. one user presses to exit
-  // 5. one user refreshes
-  // 6. one user exits
-
-  const [peer, setPeer] = useState({});
+  const [peer, setPeer] = useState(null);
   const [newProcess, setNewProcess] = useState(true);
-  const [otherUserHasLeftRoom, setOtherUserHasLeftRoom] = useState(false);
   const [localStream, setLocalStream] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(new MediaStream());
+  const [remoteStream, setRemoteStream] = useState(null);
   const room = useSelector((state) => state.video.room);
-  const dateStarted = useSelector((state) => state.video.date_started);
   const user = useSelector((state) => state.user.user);
+  const remoteUser = useSelector((state) => state.video.remote_user);
   const navigate = useNavigate();
 
   const init_page = async () => {
@@ -73,8 +64,12 @@ export const VideoDate = () => {
     peer?.signal(answer);
   };
   const handle_got_stream = (stream) => {
-    setRemoteStream(stream);
+    setRemoteStream(new MediaStream(stream));
     set_remote_video_error_handler(stream);
+    create_snackBar({
+      message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
+      action: reset_snackBar,
+    });
   };
   const handle_caller = async ({ offer, answer }) => {
     if (!offer) await create_offer();
@@ -87,23 +82,46 @@ export const VideoDate = () => {
   const set_remote_video_error_handler = (stream) => {
     stream.getTracks().forEach((track) => {
       if (track.kind === "video") {
-        // track.addEventListener("mute", async () => {
-        //   setOtherUserHasLeftRoom(true);
-        // });
+        track.addEventListener("mute", handle_remote_video_stopped);
+        track.addEventListener("unmute", () =>
+          handle_remote_video_restarted(stream)
+        );
       }
     });
+  };
+  const handle_remote_video_stopped = async () => {
+    setRemoteStream(null);
+    peer?.destroy();
+    await create_snackBar({
+      message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
+      action: reset_snackBar,
+    });
+  };
+  const handle_remote_video_restarted = async (stream) => {
+    handle_got_stream(stream);
   };
   const handle_room_update = async () => {
     if (!room) return;
     const myId = user.private.id;
-    const { caller, answerer, answer, offer } = room;
-    await actionsCreator(VIDEO_CONSTANTS.SET_DATE_STARTED, true);
+    const { caller, answerer, answer, offer, goToDecision } = room;
     if (newProcess && offer) await clean_room();
     setNewProcess(false);
     if (caller.id === myId) await handle_caller(room);
     else if (answerer.id === myId) await handle_answerer(room);
+    if (!remoteUser)
+      await get_remote_user_data(caller.id === myId ? answerer.id : caller.id);
+    if (goToDecision) {
+      debugger;
+      handle_exit();
+      navigate(AppRoutes.AFTER_VIDEO);
+    }
   };
+
   const next_question = () => {};
+  const handle_no_permissions = () => {
+    alert("אין לך הרשאות למצלמה");
+    //todo: Add here appModal
+  };
   const mute_questions = () => {};
   const stop_my_video = async () => {
     let tracks = localStream?.getTracks();
@@ -115,8 +133,10 @@ export const VideoDate = () => {
   };
   const end_video_date = async () => {
     await handle_exit();
+    setRemoteStream(null);
     await unsubscribe_room_listener();
-    navigate("/");
+    await set_go_to_decision();
+    navigate(AppRoutes.AFTER_VIDEO);
   };
   const handle_exit = () => {
     stop_my_video();
@@ -129,26 +149,16 @@ export const VideoDate = () => {
   return (
     <>
       <div className="full-screen">
-        <MyVideo dateStarted={dateStarted} setLocalStream={setLocalStream} />
-        {!dateStarted && <>{/*timer for date*/}</>}
+        <MyVideo
+          dateStarted={remoteStream}
+          setLocalStream={setLocalStream}
+          handle_no_permissions={handle_no_permissions}
+        />
+        {remoteStream && <>{/*timer for date*/}</>}
 
-        {dateStarted && (
+        {remoteStream && (
           <>
-            {remoteStream.active ? (
-              otherUserHasLeftRoom ? (
-                <OtherUserAborted
-                  remoteStream={remoteStream}
-                  reset_connection={end_video_date}
-                />
-              ) : (
-                <RemoteVideo remoteStream={remoteStream} />
-              )
-            ) : (
-              <Connecting
-                remoteStream={remoteStream}
-                reset_connection={clean_room}
-              />
-            )}
+            <RemoteVideo remoteStream={remoteStream} />
             <VideoButtons
               end_video_date={end_video_date}
               next_question={next_question}

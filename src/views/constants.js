@@ -1,3 +1,3 @@
 export const APP_ROUTS = {
-    VIDEO_DATE: "/video-date"
-}
+  VIDEO_DATE: "/video-date",
+};

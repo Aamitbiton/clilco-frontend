@@ -5,6 +5,10 @@ export async function get_user(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser(id));
 }
 
+export async function get_user_public(id) {
+  return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
+}
+
 export async function watch_user({ id, privateCallBack, publicCallBack }) {
   await firestore.watchDoc(
     constants.dbPaths.singleUser.private(id),
@@ -17,14 +21,20 @@ export async function watch_user({ id, privateCallBack, publicCallBack }) {
 }
 
 export async function watch_room({ id, callBack }) {
-  const wheres_caller = [["caller.id", "==", id]];
+  const wheres_caller = [
+    ["caller.id", "==", id],
+    ["ended", "!=", true],
+  ];
   const unsubscribe_caller = await firestore.watchColl({
     path: constants.dbPaths.rooms,
     callBack,
     wheres: wheres_caller,
   });
 
-  const wheres_answerer = [["answerer.id", "==", id]];
+  const wheres_answerer = [
+    ["answerer.id", "==", id],
+    ["ended", "!=", true],
+  ];
   const unsubscribe_answerer = await firestore.watchColl({
     path: constants.dbPaths.rooms,
     callBack,
@@ -39,10 +49,6 @@ export async function update_user_public({ id, data }) {
 
 export async function update_user_private({ id, data }) {
   return await firestore.update(constants.dbPaths.singleUser.private(id), data);
-}
-
-export async function get_next_speed_date_time() {
-  return await firestore.getDocument(constants.dbPaths.next_speed_date_time);
 }
 
 export async function update_room({ roomId, data }) {

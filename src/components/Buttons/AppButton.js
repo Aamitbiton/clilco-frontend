@@ -1,5 +1,5 @@
 import React from "react";
-import RaisedButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import IconRender from "../iconRender";
 
 function AppButton({
@@ -11,18 +11,20 @@ function AppButton({
   variant = "outlined",
   startIcon,
   endIcon,
+  borderColor,
   customIcon = true,
   rounded = true,
   ...otherProps
 }) {
   const style = {
     borderRadius: rounded && 50,
-    justifyContent: "space-between",
+    border: `2px solid ${borderColor ? borderColor : "turquoise"}`,
+    justifyContent: "center",
     width,
   };
 
   return (
-    <RaisedButton
+    <Button
       endIcon={
         endIcon && (customIcon ? <IconRender icon={endIcon} /> : startIcon)
       }
@@ -32,8 +34,10 @@ function AppButton({
       disabled={disabled}
       style={style}
     >
-      <b style={{ color: labelColor }}>{label}</b>
-    </RaisedButton>
+      <b className={"flex-center"} style={{ color: labelColor }}>
+        {label}
+      </b>
+    </Button>
   );
 }
 

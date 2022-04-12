@@ -9,6 +9,7 @@ import AppRoutes from "./AppRoutes";
 import { RTL } from "../themes";
 import ConditionalWrapper from "../components/ConditionalWrapper";
 import useRouterGuard from "../hooks/useRouterGuard";
+import SimpleSnackbar from "../components/snackBar/SnackBar";
 
 function App() {
   const appState = useSelector((state) => state.app);
@@ -16,7 +17,7 @@ function App() {
   useEffect(() => init_app({ navigator }), []);
   useRouterGuard();
   return (
-    <div>
+    <>
       {appState.app_ready && (
         <ConditionalWrapper
           condition={appState.lng === "he"}
@@ -28,7 +29,8 @@ function App() {
           </Routes>
         </ConditionalWrapper>
       )}
-    </div>
+      <SimpleSnackbar />
+    </>
   );
 }
 
