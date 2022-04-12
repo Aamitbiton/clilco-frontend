@@ -7,7 +7,6 @@ import { send_sms, check_password } from "../../store/auth/authFunctions";
 import { useNavigate } from "react-router-dom";
 
 export const VerifyPhone = () => {
-  const navigate = useNavigate();
   const [smsSent, setSmsSent] = useState(false);
   const [userPhoneNumber, setUserPhoneNumber] = useState(false);
   const send_code_sms = async (phoneNumber) => {
@@ -20,8 +19,7 @@ export const VerifyPhone = () => {
   };
   const check_if_password_verified = async (code) => {
     let code_verified = (await check_password(code)).data;
-    if (code_verified) alert("success!");
-    else alert("סיסמא שגויה");
+    if (!code_verified) alert("סיסמא שגויה");
   };
 
   return (

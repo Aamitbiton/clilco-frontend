@@ -7,16 +7,18 @@ function useRouterGuard(props) {
   const user = useSelector((state) => state.user?.user);
   const appState = useSelector((state) => state.app);
   const navigate = useNavigate();
-  const dontVerifyPhone = () => user.private.id && !user.private.phone;
-  const dontFillRegistrationForm = () => !user.public.gender;
-  const dontUploadImage = () => !user.public.imgUrl;
 
   const handleNavigation = () => {
     if (!appState.app_ready) return;
+
+    const dontVerifyPhone = () => user.private.id && !user.private.phone;
+    const dontFillRegistrationForm = () => !user.public.gender;
+    const dontUploadImage = () => !user.public.imgUrl;
+
     if (!user?.private?.id) navigate(LOGIN);
     else if (dontVerifyPhone()) navigate(VERIFY_PHONE);
     else if (dontFillRegistrationForm()) navigate(REGISTRATION);
-    else if (dontUploadImage()) navigate(UPLOAD_IMAGE);
+    // else if (dontUploadImage()) navigate(UPLOAD_IMAGE);
     else navigate(ROOT);
   };
   useEffect(handleNavigation, [user]);
