@@ -4,6 +4,7 @@ import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
 import { send_offer_or_answer, update_me_in_room } from "../../services/video";
 import * as faceapi from "face-api.js";
+
 const { getState, dispatch } = store;
 
 export const watch_room = async () => {
@@ -76,22 +77,18 @@ export const get_remote_user_data = async (uid) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
 
-export const emotion_detector = async (video) => {
-  Promise.all([
+export const emotion_detector = async ({ video, action }) => {
+  await Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
     faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
     faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-  ]).then(() => {
-    const displaySize = { width: 720, height: 560 };
-    setInterval(async () => {
-      const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceExpressions();
-      const { angry, disgusted, fearful, happy, neutral, sad, surprised } =
-        detections[0]?.expressions || {};
-      console.log({
-        surprised,
-      });
-    }, 1000);
-  });
+  ]);
+  return setInterval(async () => {
+    const detections = await faceapi
+      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      .withFaceExpressions();
+    const { angry, disgusted, fearful, happy, neutral, sad, surprised } =
+      detections[0]?.expressions || {};
+    action({ angry, disgusted, fearful, happy, neutral, sad, surprised });
+  }, 1000);
 };
