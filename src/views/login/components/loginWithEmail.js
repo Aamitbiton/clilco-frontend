@@ -10,6 +10,8 @@ import { login_with_email } from "../../../store/auth/authFunctions";
 import AppStack from "../../../components/AppStack";
 import AppIconButton from "../../../components/Buttons/AppIconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Title from "../../../components/title/title";
+import CenterLayout from "../../../components/CenterLayout";
 function LoginWithEmail({ close }) {
   const flex = {
     display: "flex",
@@ -28,7 +30,8 @@ function LoginWithEmail({ close }) {
     password: Yup.string().required(),
   });
   return (
-    <React.Fragment>
+    <CenterLayout direction={"column"}>
+      <Title title={"התחברות עם אימייל"} />
       <AppIconButton onClick={close}>
         <CloseIcon color={"primary"} />
       </AppIconButton>
@@ -42,7 +45,7 @@ function LoginWithEmail({ close }) {
           password: "",
         }}
       >
-        <div style={flex}>
+        <AppStack direction={"column"}>
           <FormFiled label={"אימייל"} name={"email"} />
           <FormFiled label={"סיסמא"} name={"password"} />
           <Text
@@ -55,15 +58,17 @@ function LoginWithEmail({ close }) {
           <AppStack margin={1}>
             <Text color={"error"}>{errorMessage}</Text>
           </AppStack>
-        </div>
+        </AppStack>
       </AppForm>
-      <AppModal
-        modalVisible={modalVisible}
-        setModalVisible={(val) => setModalVisible(val)}
-      >
-        <ResetPassword />
-      </AppModal>
-    </React.Fragment>
+      {modalVisible && (
+        <AppModal
+          modalVisible={modalVisible}
+          setModalVisible={(val) => setModalVisible(val)}
+        >
+          <ResetPassword />
+        </AppModal>
+      )}
+    </CenterLayout>
   );
 }
 

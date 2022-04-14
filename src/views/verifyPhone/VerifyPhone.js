@@ -4,7 +4,8 @@ import "./verifyPhone.css";
 import PhoneInput from "./components/phoneInput";
 import PasswordInput from "./components/passwordInput";
 import { send_sms, check_password } from "../../store/auth/authFunctions";
-import { useNavigate } from "react-router-dom";
+import Title from "../../components/title/title";
+import CenterLayout from "../../components/CenterLayout";
 
 export const VerifyPhone = () => {
   const [smsSent, setSmsSent] = useState(false);
@@ -23,7 +24,8 @@ export const VerifyPhone = () => {
   };
 
   return (
-    <>
+    <CenterLayout direction={"column"}>
+      <Title title={"אימות פלאפון"} mb={2} />
       {!smsSent ? (
         <PhoneInput smsSent={send_code_sms} />
       ) : (
@@ -32,6 +34,6 @@ export const VerifyPhone = () => {
           sendSmsAgain={send_code_sms}
         />
       )}
-    </>
+    </CenterLayout>
   );
 };

@@ -6,6 +6,7 @@ import FormFiled from "../../../components/Form/FormFiled";
 import AppStack from "../../../components/AppStack";
 import { phoneSchema } from "../SchemaValidation";
 import CenterLayout from "../../../components/CenterLayout";
+import SubmitButton from "../../../components/Form/SubmitButton";
 
 export const PhoneInput = ({ smsSent }) => {
   const [Loading, setLoading] = useState(false);
@@ -16,31 +17,30 @@ export const PhoneInput = ({ smsSent }) => {
   };
 
   return (
-    <CenterLayout>
-      <AppForm
-        initialValues={{
-          phoneNumber: "",
-        }}
-        validationSchema={phoneSchema}
-        onSubmit={handleSubmit}
-      >
-        <AppStack direction={"column"} spacing={2}>
-          <FormFiled
-            width={270}
-            label={"הכנס מספר טלפון"}
-            name={"phoneNumber"}
-          />
-          <LoadingButton
-            className="submit-btn"
-            type="submit"
-            loading={Loading}
-            variant="contained"
-          >
-            שלח קוד
-          </LoadingButton>
-        </AppStack>
-      </AppForm>
-    </CenterLayout>
+    <AppForm
+      initialValues={{
+        phoneNumber: "",
+      }}
+      validationSchema={phoneSchema}
+      onSubmit={handleSubmit}
+    >
+      <AppStack direction={"column"} spacing={2}>
+        <FormFiled width={270} label={"הכנס מספר טלפון"} name={"phoneNumber"} />
+        <SubmitButton
+          loadingButton={true}
+          loading={Loading}
+          label={"שלח קוד"}
+        />
+        {/*<LoadingButton*/}
+        {/*  className="submit-btn"*/}
+        {/*  type="submit"*/}
+        {/*  loading={Loading}*/}
+        {/*  variant="contained"*/}
+        {/*>*/}
+        {/*  שלח קוד*/}
+        {/*</LoadingButton>*/}
+      </AppStack>
+    </AppForm>
   );
 };
 

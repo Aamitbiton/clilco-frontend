@@ -3,7 +3,7 @@ import "./notDateTime.css";
 import { Timer } from "../../../../components/timer/timer";
 import Typography from "@mui/material/Typography";
 import AppStack from "../../../../components/AppStack";
-import AppButton from "../../../../components/AppButton";
+import AppButton from "../../../../components/Buttons/AppButton";
 
 export const NotDateTime = ({ datesStartedMilliseconds }) => {
   return (

@@ -6,9 +6,7 @@ import { StartDate } from "./components/startDate/StartDate";
 import { NotDateTime } from "./components/notDateTime/NotDateTime";
 import { Header } from "./components/header/header";
 import { APP_ROUTS } from "../constants";
-import Menu from "./components/Menu/Menu";
 import Title from "../../components/title/title";
-import Typography from "@mui/material/Typography";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -21,7 +19,6 @@ export const Home = () => {
     <>
       <div className="home full-screen ">
         <Header />
-        <Menu />
         <Title title={"חווית ספיד דייט חכם"} />
         <div className="content">
           {videoState.its_dating_time ? (

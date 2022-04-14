@@ -2,7 +2,7 @@ import * as firestore from "../../firebase/firestore";
 import USER_CONSTANTS from "./constants";
 import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
-import { store } from "../index";
+import { stateParser, store } from "../index";
 import APP_CONSTANTS from "../app/constants";
 import { update_user_public } from "../../services/user";
 
@@ -27,7 +27,12 @@ export const handle_user_availability = async (available) => {
 };
 
 export const upload_profile_image = async (image) => {
-  return await userService.upload_image(image);
+  const imageUploaded = await userService.upload_image(image);
+  // if (imageUploaded) {
+  //   const user = stateParser(getState().user.user);
+  //   user.public.imgUrl = { url: image };
+  //   await actionsCreator(USER_CONSTANTS.SET_USER_PUBLIC, user);
+  // }
 };
 
 export const set_user_details = async (userDetails) => {

@@ -10,6 +10,7 @@ import FormFiled from "../../../components/Form/FormFiled";
 import CenterLayout from "../../../components/CenterLayout";
 import AppStack from "../../../components/AppStack";
 import { codeSchema } from "../SchemaValidation";
+import SubmitButton from "../../../components/Form/SubmitButton";
 
 function PasswordInput({ checkPassword, sendSmsAgain }) {
   const [Loading, setLoading] = useState(false);
@@ -25,28 +26,27 @@ function PasswordInput({ checkPassword, sendSmsAgain }) {
     setSendAgainLoading(false);
   };
   return (
-    <CenterLayout>
-      <AppForm
-        initialValues={{ code: "" }}
-        validationSchema={codeSchema}
-        onSubmit={handleSubmit}
-      >
-        <AppStack direction={"column"}>
-          <FormFiled name={"code"} label={"הזן את הקוד שקיבלת"} />
-          <LoadingButton type="submit" loading={Loading} variant="contained">
-            אישור
-          </LoadingButton>
-          <LoadingButton
-            className="submit-btn"
-            onClick={() => send_sms_again()}
-            loading={sendAgainLoading}
-            variant="flat"
-          >
-            שלח שוב
-          </LoadingButton>
-        </AppStack>
-      </AppForm>
-    </CenterLayout>
+    <AppForm
+      initialValues={{ code: "" }}
+      validationSchema={codeSchema}
+      onSubmit={handleSubmit}
+    >
+      <AppStack direction={"column"}>
+        <FormFiled name={"code"} label={"הזן את הקוד שקיבלת"} />
+        <SubmitButton loadingButton={true} loading={Loading} label={"אישור"} />
+        {/*<LoadingButton type="submit" loading={Loading} variant="contained">*/}
+        {/*  אישור*/}
+        {/*</LoadingButton>*/}
+        <LoadingButton
+          className="submit-btn"
+          onClick={() => send_sms_again()}
+          loading={sendAgainLoading}
+          variant="flat"
+        >
+          שלח שוב
+        </LoadingButton>
+      </AppStack>
+    </AppForm>
   );
 }
 

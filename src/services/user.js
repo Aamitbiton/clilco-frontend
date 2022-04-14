@@ -28,5 +28,5 @@ export async function update_user_private(data) {
 
 export async function upload_image(image) {
   const id = authService.get_current_user().uid;
-  await storageLayer.uploadImage({ image, id });
+  return await storageLayer.uploadImage({ image, id });
 }

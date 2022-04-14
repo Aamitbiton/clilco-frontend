@@ -1,10 +1,11 @@
 import React from "react";
 
-function CenterLayout({ children }) {
+function CenterLayout({ children, direction = "row" }) {
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: direction,
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",

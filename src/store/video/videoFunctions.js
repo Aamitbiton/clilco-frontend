@@ -3,7 +3,7 @@ import * as videoService from "../../services/video";
 import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
 import { send_offer_or_answer, update_me_in_room } from "../../services/video";
-import * as faceapi from "face-api.js";
+import { nets, detectAllFaces, TinyFaceDetectorOptions } from "face-api.js";
 const { getState, dispatch } = store;
 
 export const watch_room = async () => {
@@ -91,15 +91,17 @@ export const test_ai = async (video) => {
   //
   // runFaceMesh();
   Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-    faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-    faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-    faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    nets.tinyFaceDetector.loadFromUri("/models"),
+    nets.faceLandmark68Net.loadFromUri("/models"),
+    nets.faceRecognitionNet.loadFromUri("/models"),
+    nets.faceExpressionNet.loadFromUri("/models"),
   ]).then(() => {
     const displaySize = { width: 720, height: 560 };
     setInterval(async () => {
-      const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      const detections = await detectAllFaces(
+        video,
+        new TinyFaceDetectorOptions()
+      )
         .withFaceLandmarks()
         .withFaceExpressions();
       const { angry, disgusted, fearful, happy, neutral, sad, surprised } =
@@ -113,6 +115,6 @@ export const test_ai = async (video) => {
         sad,
         surprised,
       });
-    }, 100);
+    }, 1000);
   });
 };

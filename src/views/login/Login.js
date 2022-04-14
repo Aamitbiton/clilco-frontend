@@ -19,13 +19,13 @@ export const Login = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const [enter_with_web, set_enter_with_web] = useState(false);
   return (
-    <CenterLayout>
+    <CenterLayout direction={"column"}>
       <div>
-        <Title title={translate("Welcome_title")} />
         {enter_with_web ? (
           <LoginWithEmail close={() => set_enter_with_web(false)} />
         ) : (
           <AppStack direction={"column"}>
+            <Title title={translate("Welcome_title")} />
             <AppButton
               endIcon={googleIcon}
               labelColor={"white"}

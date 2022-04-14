@@ -14,9 +14,11 @@ const storage = getStorage(App);
 async function uploadImgAsString({ image, path }) {
   const storageRef = ref(storage, path);
   try {
-    return await uploadString(storageRef, image, "data_url");
+    await uploadString(storageRef, image, "data_url");
+    return true;
   } catch (e) {
     errorLog(e);
+    return false;
   }
 }
 
