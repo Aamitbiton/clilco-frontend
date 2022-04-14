@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import AppStack from "../../../../components/AppStack";
 import AppButton from "../../../../components/Buttons/AppButton";
 
-export const NotDateTime = ({ datesStartedMilliseconds }) => {
+export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
   return (
     <div className="flex-center  full-width ">
       <AppStack direction="column" spacing={1}>
@@ -13,7 +13,11 @@ export const NotDateTime = ({ datesStartedMilliseconds }) => {
           מתחילים בעוד
         </Typography>
         <Timer expiredMilliseconds={datesStartedMilliseconds} />
-        <AppButton labelColor={"white"} label={"צפה במשתמשים נוספים"} />
+        <AppButton
+          onClick={() => navigate("/users")}
+          labelColor={"white"}
+          label={"צפה במשתמשים נוספים"}
+        />
         <AppButton
           borderColor={"purple"}
           labelColor={"white"}

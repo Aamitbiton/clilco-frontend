@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import IconRender from "../iconRender";
 
 function AppButton({
+  backgroundColor,
   labelColor,
   label,
   onClick,
@@ -18,7 +19,10 @@ function AppButton({
 }) {
   const style = {
     borderRadius: rounded && 50,
-    border: `2px solid ${borderColor ? borderColor : "turquoise"}`,
+    border: `2px solid ${
+      borderColor ? borderColor : !backgroundColor && "turquoise"
+    }`,
+    background: backgroundColor && backgroundColor,
     justifyContent: "center",
     width,
   };
