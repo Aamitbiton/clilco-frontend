@@ -1,4 +1,5 @@
 import * as dbLayer from "../apiMiddleware/dbLayer";
+import * as storageLayer from "../apiMiddleware/storageLayer";
 import * as authService from "./auth";
 import { get_user_public } from "../apiMiddleware/dbLayer";
 
@@ -18,6 +19,7 @@ export async function send_offer_or_answer({ data, roomId }) {
     data,
   });
 }
+
 export async function set_go_to_decision({ roomId }) {
   const id = authService.get_current_user()?.uid;
   return await dbLayer.update_room({
@@ -50,4 +52,8 @@ export async function update_me_in_room({ roomId, data }) {
     roomId,
     data,
   });
+}
+
+export async function get_first_question() {
+  return await storageLayer.get_question({ index: "0" });
 }

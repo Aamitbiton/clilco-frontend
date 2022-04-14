@@ -77,7 +77,12 @@ export const get_remote_user_data = async (uid) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
 
+export const get_first_question = async () => {
+  const url = await videoService.get_first_question();
+  await actionsCreator(VIDEO_CONSTANTS.SET_CURRENT_QUESTION, { url, index: 0 });
+};
 
+export const get_random_question = async () => {};
 
 export const set_its_dating_time = async (payload) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
