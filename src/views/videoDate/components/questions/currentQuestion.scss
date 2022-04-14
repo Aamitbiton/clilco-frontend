@@ -1,0 +1,19 @@
+@import "../../../../style/variables";
+.question-area{
+    position: absolute;
+    left: 0%;
+    bottom: 20%;
+    width: 100vw;
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.question-text{
+    border: 1px solid white;
+    bottom: 20%;
+    width: 50vw;
+    height: 15vh;
+    padding: 10px;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "./myVideo.scss";
 import { emotion_detector } from "../../../../store/video/videoFunctions";
 import EmotionsChart_pie from "../../../../components/charts/emotionsChart/EmotionsChart_pie";
+import EmotionsChart_inline from "../../../../components/charts/emotionsChart/EmotionsChart_inline";
 
 export const MyVideo = ({
   dateStarted,
@@ -25,11 +26,11 @@ export const MyVideo = ({
       });
       setLocalStream(localStream);
       videoRef.current.srcObject = localStream;
-      const intervalId = await emotion_detector({
-        video: videoRef.current,
-        action: handle_emotion_results,
-      });
-      setIntervalId(intervalId);
+      // const intervalId = await emotion_detector({
+      //   video: videoRef.current,
+      //   action: handle_emotion_results,
+      // });
+      // setIntervalId(intervalId);
     } catch (e) {
       handle_no_permissions();
     }
@@ -61,7 +62,8 @@ export const MyVideo = ({
   return (
     <>
       <div style={{ position: "absolute" }}>
-        <EmotionsChart_pie emotionsData={emotions} />
+        {/*<EmotionsChart_pie emotionsData={emotions} />*/}
+        {/*<EmotionsChart_inline emotionsData={emotions} />*/}
       </div>
 
       <video

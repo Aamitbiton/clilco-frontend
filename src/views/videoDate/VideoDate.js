@@ -14,6 +14,7 @@ import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useSelector } from "react-redux";
 import { MyVideo } from "./components/myVideo/MyVideo";
+import { CurrentQuestion } from "./components/questions/CurrentQuestion.js";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
 import { VideoButtons } from "./components/videoButtons/VideoButtons";
 import { webRTCConfiguration } from "./videoUtils";
@@ -63,7 +64,7 @@ export const VideoDate = () => {
   const signal_answer = (answer) => {
     peer?.signal(answer);
   };
-  const handle_got_stream = (stream) => {
+  const handle_got_stream = async (stream) => {
     setRemoteStream(new MediaStream(stream));
     set_remote_video_error_handler(stream);
     create_snackBar({
@@ -159,6 +160,7 @@ export const VideoDate = () => {
         {remoteStream && (
           <>
             <RemoteVideo remoteStream={remoteStream} />
+            <CurrentQuestion />
             <VideoButtons
               end_video_date={end_video_date}
               next_question={next_question}
