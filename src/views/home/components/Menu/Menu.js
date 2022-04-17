@@ -4,6 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import "./Menu.scss";
 import AppIconButton from "../../../../components/Buttons/AppIconButton";
 import MenuList from "./MenuList";
+import "./Menu.scss";
 export default function Menu() {
   const DrawerDirection = "right";
   const [state, setState] = React.useState({
@@ -36,10 +37,17 @@ export default function Menu() {
         onOpen={toggleDrawer(DrawerDirection, true)}
       >
         {
-          <MenuList
-            onClick={toggleDrawer(DrawerDirection, false)}
-            onKeyDown={toggleDrawer(DrawerDirection, false)}
-          />
+          <>
+            <MenuList
+              onClick={toggleDrawer(DrawerDirection, false)}
+              onKeyDown={toggleDrawer(DrawerDirection, false)}
+            />
+            <img
+              className={"menu-logo"}
+              width={200}
+              src={require("../../../../assets/clilco_logo.png")}
+            />
+          </>
         }
       </SwipeableDrawer>
     </div>

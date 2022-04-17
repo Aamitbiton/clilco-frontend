@@ -15,8 +15,8 @@ export const Home = () => {
     <>
       <div className="home full-screen ">
         <Header />
-        <Title title={"חווית ספיד דייט חכם"} />
         <div className="content">
+          <Title title={"חווית ספיד דייט חכם"} />
           {videoState.speed_date_time.its_dating_time ? (
             <StartDate navigate={navigate} />
           ) : (
