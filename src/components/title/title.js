@@ -1,9 +1,25 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-
-function Title({ title, mt = 7, color = "secondary", ...otherProps }) {
+import "./title.css";
+function Title({
+  title,
+  mt = 7,
+  mb = 2,
+  color = "secondary",
+  fontSize,
+  underline = false,
+  ...otherProps
+}) {
   return (
-    <Typography mt={mt} color={color} variant={"h4"} {...otherProps}>
+    <Typography
+      mt={mt}
+      mb={mb}
+      sx={{ textDecoration: underline && "underline" }}
+      color={color}
+      fontSize={fontSize}
+      variant={"h4"}
+      {...otherProps}
+    >
       {title}
     </Typography>
   );

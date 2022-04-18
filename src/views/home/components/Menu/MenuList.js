@@ -10,9 +10,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import { signOut as StoreSignOut } from "../../../../store/auth/authFunctions";
+import { useNavigate } from "react-router-dom";
 function MenuList({ anchor, onClick, onKeyDown }) {
   const signOut = async () => await StoreSignOut();
-
+  const navigator = useNavigate();
   return (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -25,7 +26,10 @@ function MenuList({ anchor, onClick, onKeyDown }) {
           <SettingsIcon />
         </MenuListItem>
         <Divider />{" "}
-        <MenuListItem itemText={"פרופיל אישי"} onClick={() => alert("profile")}>
+        <MenuListItem
+          itemText={"פרופיל אישי"}
+          onClick={() => navigator("profile")}
+        >
           <AccountBoxIcon />
         </MenuListItem>
         <Divider />

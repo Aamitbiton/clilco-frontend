@@ -53,7 +53,7 @@ export const RegistrationForm = () => {
           <AppStack>
             <FormFiled label={"שם פרטי"} width={largeInput} name={"name"} />
           </AppStack>
-          <AppStack margin={2}>
+          <AppStack margin={1}>
             <FormSelectField
               name={"gender"}
               width={midInput}
@@ -65,6 +65,15 @@ export const RegistrationForm = () => {
               width={midInput}
               label={"מחפש להכיר"}
               options={gender}
+            />
+          </AppStack>
+          <AppStack margin={1}>
+            <Title
+              underline={true}
+              mb={0}
+              mt={0}
+              fontSize={20}
+              title={"תאריך לידה"}
             />
           </AppStack>
           <AppStack>

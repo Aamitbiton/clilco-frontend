@@ -1,13 +1,11 @@
-import React from 'react';
-import './profile.css'
-
+import React from "react";
+import "./profile.css";
+import { RegistrationForm } from "../registrationForm/RegistrationForm";
 
 export const Profile = () => {
-    return (
-        <>
-            <h1>Profile</h1>
-        </>
-
-    )
-}
-
+  return (
+    <>
+      <RegistrationForm />
+    </>
+  );
+};
