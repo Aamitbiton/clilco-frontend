@@ -6,11 +6,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import { signOut as StoreSignOut } from "../../../../store/auth/authFunctions";
+import AppRoutes from "../../../../app/AppRoutes";
+import CustomLink from "./CustomLink";
 import { useNavigate } from "react-router-dom";
+
 function MenuList({ anchor, onClick, onKeyDown }) {
   const signOut = async () => await StoreSignOut();
   const navigator = useNavigate();
@@ -22,16 +26,21 @@ function MenuList({ anchor, onClick, onKeyDown }) {
       onKeyDown={onKeyDown}
     >
       <List>
+        <CustomLink to={AppRoutes.ROOT}>
+          <MenuListItem itemText={"בית"}>
+            <HomeIcon />
+          </MenuListItem>
+        </CustomLink>
+        <Divider />{" "}
         <MenuListItem itemText={"הגדרות"} onClick={() => alert("הגדרות")}>
           <SettingsIcon />
         </MenuListItem>
-        <Divider />{" "}
-        <MenuListItem
-          itemText={"פרופיל אישי"}
-          onClick={() => navigator("profile")}
-        >
-          <AccountBoxIcon />
-        </MenuListItem>
+        <Divider />
+        <CustomLink to={AppRoutes.PROFILE}>
+          <MenuListItem itemText={"פרופיל אישי"}>
+            <AccountBoxIcon />
+          </MenuListItem>
+        </CustomLink>
         <Divider />
         <MenuListItem itemText={"צור קשר"} onClick={() => alert("contact")}>
           <ContactSupportIcon />
