@@ -50,7 +50,7 @@ export const end_date = async () => {
 
 export const get_next_speed_date_time = async () => {
   let tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  if (check_if_after_date_time()) tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow = new Date(tomorrow).setMinutes("00");
   tomorrow = new Date(tomorrow).setSeconds("00");
   const start = new Date(tomorrow).setHours("19");
@@ -61,6 +61,11 @@ export const get_next_speed_date_time = async () => {
     end,
     its_dating_time,
   });
+};
+
+const check_if_after_date_time = () => {
+  let currentHour = new Date().getHours();
+  return currentHour >= 22;
 };
 
 const check_if_is_date_time = async (start, end) => {
