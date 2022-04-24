@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./videoDate.scss";
 import {
+  update_question_in_room,
   watch_room,
   add_offer_or_answer,
   clean_room,
@@ -26,6 +27,7 @@ export const VideoDate = () => {
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [questionIndexes, setQuestionIndexes] = useState([0]);
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
@@ -74,7 +76,7 @@ export const VideoDate = () => {
   };
   const handle_caller = async ({ offer, answer }) => {
     if (!offer) await create_offer();
-    else if (answer) await signal_answer(answer);
+    else if (answer && !remoteStream) await signal_answer(answer);
   };
   const handle_answerer = async ({ offer, answer }) => {
     if (offer && !answer) await create_answer(offer);
@@ -104,7 +106,7 @@ export const VideoDate = () => {
   const handle_room_update = async () => {
     if (!room) return;
     const myId = user.private.id;
-    const { caller, answerer, answer, offer, goToDecision } = room;
+    const { caller, answerer, answer, offer, goToDecision, questions } = room;
     if (newProcess && offer) await clean_room();
     setNewProcess(false);
     if (caller.id === myId) await handle_caller(room);
@@ -112,13 +114,28 @@ export const VideoDate = () => {
     if (!remoteUser)
       await get_remote_user_data(caller.id === myId ? answerer.id : caller.id);
     if (goToDecision) {
-      debugger;
       handle_exit();
       navigate(AppRoutes.AFTER_VIDEO);
     }
+    if (questions.length > questionIndexes.length) await next_question({});
   };
 
-  const next_question = () => {};
+  const next_question = async ({ local }) => {
+    //todo : לשמור איזשהו מערך של האינדקסים, ולמחוק ממנו את השאלות שכבר נשאלו, כדי למנוע את הרקורסיה
+    const index = local
+      ? calculate_next_question()
+      : room.questions[room.questions.length - 1];
+    const questions = [...questionIndexes, index];
+    setQuestionIndexes(questions);
+    if (local) await update_question_in_room({ questions, roomId: room.id });
+  };
+  const calculate_next_question = () => {
+    const num = Math.floor(Math.random() * 125);
+    if (questionIndexes.includes(num)) {
+      console.log("recalculate");
+      return calculate_next_question();
+    } else return num;
+  };
   const handle_no_permissions = () => {
     alert("אין לך הרשאות למצלמה");
     //todo: Add here appModal
@@ -160,10 +177,10 @@ export const VideoDate = () => {
         {remoteStream && (
           <>
             <RemoteVideo remoteStream={remoteStream} />
-            <CurrentQuestion />
+            <CurrentQuestion questionIndexes={questionIndexes} />
             <VideoButtons
               end_video_date={end_video_date}
-              next_question={next_question}
+              next_question={() => next_question({ local: true })}
               mute_questions={mute_questions}
             />
           </>

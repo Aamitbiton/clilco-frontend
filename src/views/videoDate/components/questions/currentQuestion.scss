@@ -11,9 +11,14 @@
 }
 
 .question-text{
-    border: 1px solid white;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    text-align: center;
+    border: 1px solid $app-turquoise;
+    border-radius: 50px;
     bottom: 20%;
-    width: 50vw;
-    height: 15vh;
-    padding: 10px;
+    min-width: 50vw;
+    max-width: 80vw;
+    min-height: 10vh;
+    padding: 5%;
 }

@@ -47,6 +47,10 @@ export async function get_remote_user(uid) {
   return await dbLayer.get_user_public(uid);
 }
 
+export async function update_question_in_room({ questions, roomId }) {
+  return await dbLayer.update_room({ roomId, data: { questions } });
+}
+
 export async function update_me_in_room({ roomId, data }) {
   return await dbLayer.update_room({
     roomId,

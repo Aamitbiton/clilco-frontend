@@ -87,8 +87,6 @@ export const get_first_question = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_CURRENT_QUESTION, { url, index: 0 });
 };
 
-export const get_random_question = async () => {};
-
 export const set_its_dating_time = async (payload) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
     its_dating_time: payload,
@@ -109,4 +107,8 @@ export const emotion_detector = async ({ video, action }) => {
       detections[0]?.expressions || {};
     action({ angry, disgusted, fearful, happy, neutral, sad, surprised });
   }, 1000);
+};
+
+export const update_question_in_room = async ({ questions, roomId }) => {
+  await videoService.update_question_in_room({ questions, roomId });
 };
