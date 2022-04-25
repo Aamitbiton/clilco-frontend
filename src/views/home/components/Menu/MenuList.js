@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import CallIcon from "@mui/icons-material/Call";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import { signOut as StoreSignOut } from "../../../../store/auth/authFunctions";
 import AppRoutes from "../../../../app/AppRoutes";
@@ -39,6 +40,12 @@ function MenuList({ anchor, onClick, onKeyDown }) {
         {/*  </MenuListItem>*/}
         {/*</CustomLink>*/}
         {/*<Divider />*/}
+        <CustomLink to={AppRoutes.CALLS}>
+          <MenuListItem itemText={"יומן שיחות"}>
+            <CallIcon />
+          </MenuListItem>
+        </CustomLink>
+
         <CustomLink to={AppRoutes.PROFILE}>
           <MenuListItem itemText={"פרופיל אישי"}>
             <AccountBoxIcon />

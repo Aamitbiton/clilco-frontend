@@ -59,6 +59,18 @@ export const answer_after_date = async (answer) => {
   await videoService.answer_after_date({ room, type, answer });
 };
 
+export const get_calls = async () => {
+  const lastDocs = getState().video.last_calls_docs;
+  const { caller_calls, answerer_calls } = await videoService.get_all_calls({
+    lastDocs,
+  });
+  await actionsCreator(VIDEO_CONSTANTS.SET_LAST_CALLS_DOCS, {
+    callerLastDoc: caller_calls.lastDoc,
+    answererLastDoc: answerer_calls.lastDoc,
+  });
+  return [...caller_calls.docs, ...answerer_calls.docs];
+};
+
 export const get_next_speed_date_time = async () => {
   let tomorrow = new Date();
   if (check_if_after_date_time()) tomorrow.setDate(tomorrow.getDate() + 1);

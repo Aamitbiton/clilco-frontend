@@ -102,7 +102,7 @@ export const VideoDate = () => {
     });
   };
   const handle_remote_video_restarted = async (stream) => {
-    handle_got_stream(stream);
+    await handle_got_stream(stream);
   };
   const handle_room_update = async () => {
     if (!room) return;

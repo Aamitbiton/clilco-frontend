@@ -4,6 +4,7 @@ import {
   answer_after_date,
   end_date,
   delete_room_from_state,
+  clean_room,
 } from "../../store/video/videoFunctions";
 import AppRoutes from "../../app/AppRoutes";
 import Title from "../../components/title/title";
@@ -33,6 +34,7 @@ export const AfterVideo = () => {
     await notify_and_go_back_dating();
   };
   const notify_and_go_back_dating = async () => {
+    clean_room();
     let done = false;
     await create_snackBar({
       message: SNACK_BAR_TYPES.ANSWER_ACCEPTED,

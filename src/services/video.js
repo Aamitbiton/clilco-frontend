@@ -68,3 +68,8 @@ export async function update_me_in_room({ roomId, data }) {
 export async function get_question_audio({ index }) {
   return await storageLayer.get_question({ index });
 }
+
+export async function get_all_calls({ lastDocs }) {
+  const id = authService.get_current_user()?.uid;
+  return await dbLayer.get_all_calls({ id, lastDocs });
+}
