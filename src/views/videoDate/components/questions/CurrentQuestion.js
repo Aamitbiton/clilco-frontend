@@ -3,13 +3,13 @@ import "./currentQuestion.scss";
 import { get_question_audio } from "../../../../store/video/videoFunctions";
 import { question_texts } from "./question_texts";
 
-export const CurrentQuestion = ({ questionIndexes }) => {
+export const CurrentQuestion = ({ questionIndexes, muted }) => {
   const [src, setSrc] = useState(null);
-
   const handle_next_question = async () => {
     const currentIndex = [...questionIndexes].pop();
     await handle_question_url({ index: currentIndex });
   };
+
   const handle_question_url = async ({ index }) => {
     const url = await get_question_audio({ index: index.toString() });
     setSrc(url);
@@ -27,7 +27,12 @@ export const CurrentQuestion = ({ questionIndexes }) => {
             {question_texts[questionIndexes[questionIndexes.length - 1]]}
           </span>
         </div>
-        <audio autoPlay={true} src={src}></audio>
+        <audio
+          autoPlay={true}
+          src={muted ? null : src}
+          muted={muted}
+          style={{ visibility: "hidden" }}
+        />
       </div>
     </>
   );

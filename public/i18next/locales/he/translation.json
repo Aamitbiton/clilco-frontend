@@ -3,6 +3,7 @@
   "video_page": {
     "end-call": "ניתוק",
     "mute": "השתק שאלות",
+    "unMute": "ביטול השתקה",
     "next-question":"שאלה הבאה"
   }
 }

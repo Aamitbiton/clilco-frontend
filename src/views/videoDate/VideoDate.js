@@ -28,6 +28,7 @@ export const VideoDate = () => {
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [muted, setMuted] = useState(false);
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
@@ -142,7 +143,9 @@ export const VideoDate = () => {
     alert("אין לך הרשאות למצלמה");
     //todo: Add here appModal
   };
-  const mute_questions = () => {};
+  const handle_mute_questions = () => {
+    setMuted(!muted);
+  };
   const stop_my_video = async () => {
     let tracks = localStream?.getTracks();
     tracks?.forEach((track) => {
@@ -179,11 +182,12 @@ export const VideoDate = () => {
         {remoteStream && (
           <>
             <RemoteVideo remoteStream={remoteStream} />
-            <CurrentQuestion questionIndexes={room.questions} />
+            <CurrentQuestion questionIndexes={room.questions} muted={muted} />
             <VideoButtons
               end_video_date={end_video_date}
               next_question={go_to_next_question_local}
-              mute_questions={mute_questions}
+              mute_questions={handle_mute_questions}
+              muted={muted}
             />
           </>
         )}

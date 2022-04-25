@@ -3,6 +3,7 @@
   "video_page": {
     "end-call": "End call",
     "mute": "Mute questions",
+    "unMute": "Un mute",
     "next-question":"Next question"
   }
 }
