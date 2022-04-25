@@ -11,8 +11,13 @@ export const CallsHistory = () => {
   useEffect(created, []);
   return (
     <>
-      <h1>CallsHistory</h1>
-      <p>{JSON.stringify(calls)}</p>
+      <div className="calls">
+        {calls.map((call, i) => (
+          <div className="call" key={i}>
+            {JSON.stringify(call)}
+          </div>
+        ))}
+      </div>
     </>
   );
 };
