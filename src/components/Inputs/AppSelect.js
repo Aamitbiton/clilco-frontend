@@ -12,20 +12,20 @@ function AppSelect({
   label,
   options,
   handleChange,
+  defaultValue = "",
   value,
   error,
 }) {
-
   return (
     <FormControl>
       <InputLabel id="demo-simple-select-label">{label}</InputLabel>
       <Select
-        defaultValue={""}
+        defaultValue={defaultValue}
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={value}
         style={{
-            width
+          width,
         }}
         label={label}
         onChange={handleChange}
