@@ -58,6 +58,6 @@ export async function update_me_in_room({ roomId, data }) {
   });
 }
 
-export async function get_first_question() {
-  return await storageLayer.get_question({ index: "0" });
+export async function get_question_audio({ index }) {
+  return await storageLayer.get_question({ index });
 }

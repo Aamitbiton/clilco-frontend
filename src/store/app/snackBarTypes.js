@@ -3,4 +3,5 @@ export const SNACK_BAR_TYPES = {
     `${userName} יצא מהפגישה `,
   REMOTE_USER_JOINED_ROOM: (userName = "המשתמש השני") =>
     `${userName} הצטרף לפגישה `,
+  NO_MORE_QUESTIONS: "נגמרו השאלות",
 };

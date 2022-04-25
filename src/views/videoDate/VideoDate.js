@@ -21,13 +21,13 @@ import { VideoButtons } from "./components/videoButtons/VideoButtons";
 import { webRTCConfiguration } from "./videoUtils";
 import Peer from "simple-peer";
 import AppRoutes from "../../app/AppRoutes";
+import { question_texts } from "./components/questions/question_texts";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
-  const [questionIndexes, setQuestionIndexes] = useState([0]);
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
@@ -117,24 +117,26 @@ export const VideoDate = () => {
       handle_exit();
       navigate(AppRoutes.AFTER_VIDEO);
     }
-    if (questions.length > questionIndexes.length) await next_question({});
   };
 
-  const next_question = async ({ local }) => {
-    //todo : לשמור איזשהו מערך של האינדקסים, ולמחוק ממנו את השאלות שכבר נשאלו, כדי למנוע את הרקורסיה
-    const index = local
-      ? calculate_next_question()
-      : room.questions[room.questions.length - 1];
-    const questions = [...questionIndexes, index];
-    setQuestionIndexes(questions);
-    if (local) await update_question_in_room({ questions, roomId: room.id });
+  const go_to_next_question_local = async () => {
+    const index = calculate_next_question();
+    if (!Number.isNaN(index)) {
+      const questions = [...room.questions, index];
+      await update_question_in_room({ questions, roomId: room.id });
+    } else {
+      create_snackBar({
+        message: SNACK_BAR_TYPES.NO_MORE_QUESTIONS,
+        action: reset_snackBar,
+      });
+    }
   };
   const calculate_next_question = () => {
-    const num = Math.floor(Math.random() * 125);
-    if (questionIndexes.includes(num)) {
-      console.log("recalculate");
-      return calculate_next_question();
-    } else return num;
+    const options = Object.keys(question_texts).filter(
+      (i) => !room.questions.includes(Number(i))
+    );
+    const num = Math.floor(Math.random() * (options.length - 1));
+    return Number(options[num]);
   };
   const handle_no_permissions = () => {
     alert("אין לך הרשאות למצלמה");
@@ -177,10 +179,10 @@ export const VideoDate = () => {
         {remoteStream && (
           <>
             <RemoteVideo remoteStream={remoteStream} />
-            <CurrentQuestion questionIndexes={questionIndexes} />
+            <CurrentQuestion questionIndexes={room.questions} />
             <VideoButtons
               end_video_date={end_video_date}
-              next_question={() => next_question({ local: true })}
+              next_question={go_to_next_question_local}
               mute_questions={mute_questions}
             />
           </>

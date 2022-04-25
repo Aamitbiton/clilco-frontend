@@ -6,7 +6,6 @@ const {
   SET_SPEED_DATE_TIME,
   SET_DATE_STARTED,
   SET_REMOTE_USER,
-  SET_CURRENT_QUESTION,
 } = VIDEO_CONSTANTS;
 const videoInterface = {
   room: null,
@@ -36,9 +35,6 @@ export default function video(state = videoInterface, action) {
 
     case SET_REMOTE_USER:
       return { ...state, remote_user: action.payload };
-
-    case SET_CURRENT_QUESTION:
-      return { ...state, current_question: action.payload };
 
     default:
       return state;

@@ -1,18 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./currentQuestion.scss";
-import { get_first_question } from "../../../../store/video/videoFunctions";
+import { get_question_audio } from "../../../../store/video/videoFunctions";
 import { question_texts } from "./question_texts";
 
 export const CurrentQuestion = ({ questionIndexes }) => {
   const [src, setSrc] = useState(null);
 
   const handle_next_question = async () => {
-    const questionUrl = ""; // get the question from storage
-    setSrc(questionUrl);
+    const currentIndex = [...questionIndexes].pop();
+    await handle_question_url({ index: currentIndex });
+  };
+  const handle_question_url = async ({ index }) => {
+    const url = await get_question_audio({ index: index.toString() });
+    setSrc(url);
   };
   useEffect(handle_next_question, [questionIndexes]);
   useEffect(async () => {
-    await get_first_question();
+    await handle_question_url({ index: "0" });
   }, []);
 
   return (
