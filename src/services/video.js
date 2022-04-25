@@ -36,6 +36,13 @@ export async function end_date({ roomId }) {
   });
 }
 
+export async function answer_after_date({ room, type, answer }) {
+  return await dbLayer.update_room({
+    roomId: room.id,
+    data: { [type]: { ...room[type], ...answer } },
+  });
+}
+
 export async function clean_room({ room }) {
   return await dbLayer.update_room({
     roomId: room.id,

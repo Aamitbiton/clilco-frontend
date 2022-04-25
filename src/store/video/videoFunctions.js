@@ -16,6 +16,10 @@ export const watch_room = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
 
+export const delete_room_from_state = async () => {
+  await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, null);
+};
+
 export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
   const { success, error } = await send_offer_or_answer({
     data: { [type]: offerOrAnswer },
@@ -46,6 +50,13 @@ export const set_go_to_decision = async () => {
 export const end_date = async () => {
   const room = getState().video.room;
   await videoService.end_date({ roomId: room.id });
+};
+
+export const answer_after_date = async (answer) => {
+  const room = getState().video.room;
+  let userId = getState().user.user.private.id;
+  const type = room.answerer.id === userId ? "answerer" : "caller";
+  await videoService.answer_after_date({ room, type, answer });
 };
 
 export const get_next_speed_date_time = async () => {
