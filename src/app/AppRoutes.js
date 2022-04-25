@@ -8,4 +8,6 @@ export default Object.freeze({
   AFTER_VIDEO: "/after-video",
   VERIFY_PHONE: "/verify-phone",
   VIDEO_DATE: "/video-date",
+  CONTACT: "/contact",
+  SETTINGS: "/settings",
 });

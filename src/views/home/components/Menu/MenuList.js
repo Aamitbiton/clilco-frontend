@@ -31,20 +31,25 @@ function MenuList({ anchor, onClick, onKeyDown }) {
             <HomeIcon />
           </MenuListItem>
         </CustomLink>
-        <Divider />{" "}
-        <MenuListItem itemText={"הגדרות"} onClick={() => alert("הגדרות")}>
-          <SettingsIcon />
-        </MenuListItem>
         <Divider />
+        {/*todo: add this when the settings page ready...*/}
+        {/*<CustomLink to={AppRoutes.SETTINGS}>*/}
+        {/*  <MenuListItem itemText={"הגדרות"}>*/}
+        {/*    <SettingsIcon />*/}
+        {/*  </MenuListItem>*/}
+        {/*</CustomLink>*/}
+        {/*<Divider />*/}
         <CustomLink to={AppRoutes.PROFILE}>
           <MenuListItem itemText={"פרופיל אישי"}>
             <AccountBoxIcon />
           </MenuListItem>
         </CustomLink>
         <Divider />
-        <MenuListItem itemText={"צור קשר"} onClick={() => alert("contact")}>
-          <ContactSupportIcon />
-        </MenuListItem>
+        <CustomLink to={AppRoutes.CONTACT}>
+          <MenuListItem itemText={"צור קשר"}>
+            <ContactSupportIcon />
+          </MenuListItem>
+        </CustomLink>
         <Divider />
         <MenuListItem onClick={signOut} itemText={"התנתק"}>
           <LogoutIcon />

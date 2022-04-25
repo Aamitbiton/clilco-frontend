@@ -11,6 +11,8 @@ import { Missed } from "../../views/missed/Missed";
 import React, { useEffect } from "react";
 import AppRoutes from "../AppRoutes";
 import { useSelector } from "react-redux";
+import Contact from "../../views/Contact/Contact";
+import Settings from "../../views/Settings/Settings";
 
 export const AuthenticatedLayout = () => {
   const location = useLocation();
@@ -25,6 +27,8 @@ export const AuthenticatedLayout = () => {
     VERIFY_PHONE,
     VIDEO_DATE,
     VIEW_USERS,
+    CONTACT,
+    SETTINGS,
   } = AppRoutes;
   return (
     <>
@@ -38,6 +42,8 @@ export const AuthenticatedLayout = () => {
           <Route path={AFTER_VIDEO} element={<AfterVideo />} />
           <Route path={VERIFY_PHONE} element={<VerifyPhone />} />
           <Route path={VIDEO_DATE} element={<VideoDate />} />
+          <Route path={CONTACT} element={<Contact />} />
+          <Route path={SETTINGS} element={<Settings />} />
           <Route path="*" element={<Missed />} />
         </Routes>
       )}
