@@ -41,6 +41,7 @@ function AppButton({
       <b className={"flex-center"} style={{ color: labelColor }}>
         {label}
       </b>
+      {otherProps.children && otherProps.children}
     </Button>
   );
 }

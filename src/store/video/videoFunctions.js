@@ -16,6 +16,10 @@ export const watch_room = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
 
+export const delete_room_from_state = async () => {
+  await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, null);
+};
+
 export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
   const { success, error } = await send_offer_or_answer({
     data: { [type]: offerOrAnswer },
@@ -46,6 +50,25 @@ export const set_go_to_decision = async () => {
 export const end_date = async () => {
   const room = getState().video.room;
   await videoService.end_date({ roomId: room.id });
+};
+
+export const answer_after_date = async (answer) => {
+  const room = getState().video.room;
+  let userId = getState().user.user.private.id;
+  const type = room.answerer.id === userId ? "answerer" : "caller";
+  await videoService.answer_after_date({ room, type, answer });
+};
+
+export const get_calls = async () => {
+  const lastDocs = getState().video.last_calls_docs;
+  const { caller_calls, answerer_calls } = await videoService.get_all_calls({
+    lastDocs,
+  });
+  await actionsCreator(VIDEO_CONSTANTS.SET_LAST_CALLS_DOCS, {
+    callerLastDoc: caller_calls.lastDoc,
+    answererLastDoc: answerer_calls.lastDoc,
+  });
+  return [...caller_calls.docs, ...answerer_calls.docs];
 };
 
 export const get_next_speed_date_time = async () => {
@@ -82,12 +105,9 @@ export const get_remote_user_data = async (uid) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_REMOTE_USER, remote_user);
 };
 
-export const get_first_question = async () => {
-  const url = await videoService.get_first_question();
-  await actionsCreator(VIDEO_CONSTANTS.SET_CURRENT_QUESTION, { url, index: 0 });
+export const get_question_audio = async ({ index }) => {
+  return await videoService.get_question_audio({ index });
 };
-
-export const get_random_question = async () => {};
 
 export const set_its_dating_time = async (payload) => {
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
@@ -109,4 +129,8 @@ export const emotion_detector = async ({ video, action }) => {
       detections[0]?.expressions || {};
     action({ angry, disgusted, fearful, happy, neutral, sad, surprised });
   }, 1000);
+};
+
+export const update_question_in_room = async ({ questions, roomId }) => {
+  await videoService.update_question_in_room({ questions, roomId });
 };

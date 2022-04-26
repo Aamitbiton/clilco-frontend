@@ -5,6 +5,7 @@ function SubmitButton({
   label,
   endIcon,
   loading,
+  width,
   loadingButton = false,
   ...otherProps
 }) {
@@ -15,6 +16,7 @@ function SubmitButton({
         <LoadingButton
           onClick={() => handleSubmit()}
           loading={loading}
+          sx={{ width }}
           variant={"outlined"}
           {...otherProps}
         >

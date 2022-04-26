@@ -128,7 +128,6 @@ async function create_random_id(path) {
     console.log(e);
   }
 }
-
 async function add_to_array({ path, prop, val }) {
   try {
     await updateDoc(doc(db, path), {

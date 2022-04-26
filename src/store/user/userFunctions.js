@@ -4,6 +4,7 @@ import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
 import { stateParser, store } from "../index";
 import APP_CONSTANTS from "../app/constants";
+import { get_user_public, update_user_public } from "../../services/user";
 import { get_all_users } from "../../apiMiddleware/dbLayer";
 
 const { getState, dispatch } = store;
@@ -46,4 +47,8 @@ export const f_get_all_users = async () => {
   //dispatch lastDoc in the state
   await actionsCreator(USER_CONSTANTS.SET_LAST_DOC, lastDoc);
   return docs;
+};
+
+export const get_user_public_data = async (id) => {
+  return await userService.get_user_public(id);
 };

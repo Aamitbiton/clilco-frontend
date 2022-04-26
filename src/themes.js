@@ -4,7 +4,7 @@ import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
-const { background, turquoise, light, purple, grey } = Object.freeze({
+export const { background, turquoise, light, purple, grey } = Object.freeze({
   turquoise: "#0ae5c0",
   background: "#2d3138",
   grey: "#c5c9d6",

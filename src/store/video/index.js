@@ -5,8 +5,8 @@ const {
   SET_ROOM,
   SET_SPEED_DATE_TIME,
   SET_DATE_STARTED,
+  SET_LAST_CALLS_DOCS,
   SET_REMOTE_USER,
-  SET_CURRENT_QUESTION,
 } = VIDEO_CONSTANTS;
 const videoInterface = {
   room: null,
@@ -15,6 +15,7 @@ const videoInterface = {
   room_unsubscribes: false,
   remote_user: null,
   current_question: { index: 0, url: null },
+  last_calls_docs: {},
 };
 
 export default function video(state = videoInterface, action) {
@@ -36,9 +37,8 @@ export default function video(state = videoInterface, action) {
 
     case SET_REMOTE_USER:
       return { ...state, remote_user: action.payload };
-
-    case SET_CURRENT_QUESTION:
-      return { ...state, current_question: action.payload };
+    case SET_LAST_CALLS_DOCS:
+      return { ...state, last_calls_docs: action.payload };
 
     default:
       return state;
