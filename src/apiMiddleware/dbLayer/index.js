@@ -2,7 +2,7 @@ import firestore from "../../firebase/firestore";
 import * as constants from "./constants";
 
 export async function get_user(id) {
-  return await firestore.getDocument(constants.dbPaths.singleUser(id));
+  return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
 }
 
 export async function get_user_public(id) {
@@ -41,6 +41,28 @@ export async function watch_room({ id, callBack }) {
     wheres: wheres_answerer,
   });
   return { unsubscribe_answerer, unsubscribe_caller };
+}
+
+export async function get_all_calls({ id, lastDocs }) {
+  const { callerLastDoc, answererLastDoc } = lastDocs;
+  const wheres_caller = [{ key: "caller.id", operator: "==", value: id }];
+  const caller_calls = await firestore.getCollection(
+    constants.dbPaths.rooms,
+    wheres_caller,
+    [],
+    15,
+    callerLastDoc
+  );
+
+  const wheres_answerer = [{ key: "answerer.id", operator: "==", value: id }];
+  const answerer_calls = await firestore.getCollection(
+    constants.dbPaths.rooms,
+    wheres_answerer,
+    [],
+    100,
+    answererLastDoc
+  );
+  return { caller_calls, answerer_calls };
 }
 
 export async function update_user_public({ id, data }) {

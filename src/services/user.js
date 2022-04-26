@@ -3,9 +3,8 @@ import * as authService from "../services/auth";
 import * as storageLayer from "../apiMiddleware/storageLayer";
 import * as api from "../services/api";
 
-export async function get_user() {
-  const uid = authService.get_current_user()?.uid;
-  if (uid) return await dbLayer.get_user(uid);
+export async function get_user_public(id) {
+  return await dbLayer.get_user_public(id);
 }
 
 export async function watch_user({ privateCallBack, publicCallBack }) {

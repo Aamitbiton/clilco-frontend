@@ -10,4 +10,5 @@ export default Object.freeze({
   VIDEO_DATE: "/video-date",
   CONTACT: "/contact",
   SETTINGS: "/settings",
+  CALLS: "/video-dates-history",
 });

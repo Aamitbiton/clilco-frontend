@@ -1,24 +1,38 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./currentQuestion.scss";
-import { get_first_question } from "../../../../store/video/videoFunctions";
-import { useSelector } from "react-redux";
+import { get_question_audio } from "../../../../store/video/videoFunctions";
 import { question_texts } from "./question_texts";
 
-export const CurrentQuestion = () => {
-  const currentQuestion = useSelector((state) => state.video.current_question);
-  const handle_next_question = async () => {};
-  useEffect(handle_next_question, [currentQuestion]);
+export const CurrentQuestion = ({ questionIndexes, muted }) => {
+  const [src, setSrc] = useState(null);
+  const handle_next_question = async () => {
+    const currentIndex = [...questionIndexes].pop();
+    await handle_question_url({ index: currentIndex });
+  };
+
+  const handle_question_url = async ({ index }) => {
+    const url = await get_question_audio({ index: index.toString() });
+    setSrc(url);
+  };
+  useEffect(handle_next_question, [questionIndexes]);
   useEffect(async () => {
-    await get_first_question();
+    await handle_question_url({ index: "0" });
   }, []);
 
   return (
     <>
       <div className="question-area">
         <div className="question-text">
-          <span>{question_texts[currentQuestion.index]}</span>
+          <span>
+            {question_texts[questionIndexes[questionIndexes.length - 1]]}
+          </span>
         </div>
-        <audio autoPlay={true} src={currentQuestion.url}></audio>
+        <audio
+          autoPlay={true}
+          src={muted ? null : src}
+          muted={muted}
+          style={{ visibility: "hidden" }}
+        />
       </div>
     </>
   );

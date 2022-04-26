@@ -3,7 +3,19 @@
   "video_page": {
     "end-call": "End call",
     "mute": "Mute questions",
+    "unMute": "Un mute",
     "next-question":"Next question"
+  },
+  "after_date": {
+    "title": "The date ended!",
+    "sub-title": "would you like to exchange contact information?",
+    "interested": "yes",
+    "not-interested": "no",
+    "report": "report user"
+  },
+  "calls": {
+    "you_refused": "you refused",
+    "you_were_rejected": "rejected"
   }
 }
 
