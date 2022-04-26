@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Header } from "../home/components/header/header";
 import Title from "../../components/title/title";
+import { useSelector } from "react-redux";
 
 export const ViewUsers = () => {
   const settings = {
@@ -26,9 +27,9 @@ export const ViewUsers = () => {
     get_more_users();
   }, []);
   return users ? (
-    <>
+    <div className={"flex-center"}>
       <Header />
-      <div className="carousel-container">
+      <div className={"carousel-container"}>
         <Slider
           beforeChange={(oldIndex, newIndex) => {
             if (users.length - newIndex < 2) get_more_users();
@@ -48,7 +49,7 @@ export const ViewUsers = () => {
           ))}
         </Slider>
       </div>
-    </>
+    </div>
   ) : (
     <div>no users</div>
   );

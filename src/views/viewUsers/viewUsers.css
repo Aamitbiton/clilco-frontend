@@ -4,6 +4,7 @@
     height: 100%;
     margin-top: 15vh;
     position: relative;
+    max-width: 600px;
 }
 .slick-dots li button:before {
     color: white !important;
@@ -11,7 +12,9 @@
 .slick-slide img {
     margin: auto;
     max-height: 80vh;
-    max-width: 80vw;
+    width: 80vw;
+    max-width: 500px;
+
 }
 
 .view-users-title{
@@ -23,4 +26,6 @@
 
 .img-container{
     position: relative;
+    max-width: 500px;
+
 }
