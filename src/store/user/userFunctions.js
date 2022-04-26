@@ -52,3 +52,7 @@ export const f_get_all_users = async () => {
 export const get_user_public_data = async (id) => {
   return await userService.get_user_public(id);
 };
+
+export const send_contact_form = async (contactDetails) => {
+  return await userService.send_contact_form(contactDetails);
+};

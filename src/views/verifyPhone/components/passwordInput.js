@@ -11,6 +11,7 @@ import CenterLayout from "../../../components/CenterLayout";
 import AppStack from "../../../components/AppStack";
 import { codeSchema } from "../SchemaValidation";
 import SubmitButton from "../../../components/Form/SubmitButton";
+import defaultStyles from "../../../style/defaultStyles";
 
 function PasswordInput({ checkPassword, sendSmsAgain }) {
   const [Loading, setLoading] = useState(false);
@@ -32,11 +33,12 @@ function PasswordInput({ checkPassword, sendSmsAgain }) {
       onSubmit={handleSubmit}
     >
       <AppStack direction={"column"}>
-        <FormFiled name={"code"} label={"הזן את הקוד שקיבלת"} />
+        <FormFiled
+          width={defaultStyles.inputs.STATIC_WIDTH}
+          name={"code"}
+          label={"הזן את הקוד שקיבלת"}
+        />
         <SubmitButton loadingButton={true} loading={Loading} label={"אישור"} />
-        {/*<LoadingButton type="submit" loading={Loading} variant="contained">*/}
-        {/*  אישור*/}
-        {/*</LoadingButton>*/}
         <LoadingButton
           className="submit-btn"
           onClick={() => send_sms_again()}

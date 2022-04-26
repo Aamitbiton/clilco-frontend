@@ -1,6 +1,7 @@
 import * as dbLayer from "../apiMiddleware/dbLayer";
 import * as authService from "../services/auth";
 import * as storageLayer from "../apiMiddleware/storageLayer";
+import * as api from "../services/api";
 
 export async function get_user_public(id) {
   return await dbLayer.get_user_public(id);
@@ -28,4 +29,9 @@ export async function update_user_private(data) {
 export async function upload_image(image) {
   const id = authService.get_current_user().uid;
   return await storageLayer.uploadImage({ image, id });
+}
+
+export async function send_contact_form(contactDetails) {
+  const id = authService.get_current_user().uid;
+  return await api.send_contact_form(contactDetails);
 }

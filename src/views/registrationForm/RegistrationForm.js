@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./registrationForm.css";
 import AppForm from "../../components/Form/AppForm";
 import registrationSchema from "./validationSchema";
@@ -18,7 +18,9 @@ const midInput = 125;
 const smallInput = 80;
 
 export const RegistrationForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (values) => {
+    setIsLoading(true);
     const { day, month, year, name, religion, city, gender, wanted } = values;
     const birthday = getBirthdayTime({ day, month, year });
     const userDetails = {
@@ -30,6 +32,7 @@ export const RegistrationForm = () => {
       wanted,
     };
     await set_user_details(userDetails);
+    setIsLoading(false);
   };
 
   return (
@@ -106,8 +109,11 @@ export const RegistrationForm = () => {
             <FormAutoComplete width={largeInput} name={"city"} />
           </AppStack>
           <SubmitButton
+            width={270}
+            loading={isLoading}
+            loadingButton={true}
             customIcon={false}
-            startIcon={<ArrowLeftIcon />}
+            // endIcon={<ArrowLeftIcon />}
             label={"המשך"}
           />
         </div>

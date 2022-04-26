@@ -26,6 +26,7 @@ export default function Menu() {
     <div>
       <AppIconButton
         className={"drawer-button"}
+        size={"large"}
         onClick={toggleDrawer(DrawerDirection, true)}
       >
         <MenuIcon />

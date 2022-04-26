@@ -8,11 +8,14 @@ function AppButton({
   label,
   onClick,
   width,
+  height,
   disabled = false,
   variant = "outlined",
   startIcon,
   endIcon,
   borderColor,
+  margin,
+  children,
   customIcon = true,
   rounded = true,
   ...otherProps
@@ -25,6 +28,8 @@ function AppButton({
     background: backgroundColor && backgroundColor,
     justifyContent: "center",
     width,
+    height,
+    margin,
   };
 
   return (
@@ -41,7 +46,7 @@ function AppButton({
       <b className={"flex-center"} style={{ color: labelColor }}>
         {label}
       </b>
-      {otherProps.children && otherProps.children}
+      {children && children}
     </Button>
   );
 }

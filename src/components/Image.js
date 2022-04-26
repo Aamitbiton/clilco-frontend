@@ -18,17 +18,24 @@ function Image({
     >
       {removeImage && (
         <Button
-          style={{ position: "absolute" }}
-          startIcon={"x"}
-          variant={"outlined"}
+          sx={{
+            position: "absolute",
+            borderRadius: 100,
+            padding: 0,
+          }}
+          variant={"text"}
           onClick={() => removeImage(src)}
+        >
+          x
+        </Button>
+      )}
+      {src && (
+        <img
+          style={{ width: "inherit", height: "inherit", objectFit: "contain" }}
+          src={src}
+          alt={alt}
         />
       )}
-      <img
-        style={{ width: "inherit", height: "inherit", objectFit: "contain" }}
-        src={src}
-        alt={alt}
-      />
     </Paper>
   );
 }

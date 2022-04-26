@@ -5,6 +5,7 @@ function Title({
   title,
   mt = 7,
   mb = 2,
+  textAlign,
   color = "secondary",
   fontSize,
   underline = false,
@@ -15,7 +16,7 @@ function Title({
     <Typography
       mt={mt}
       mb={mb}
-      sx={{ textDecoration: underline && "underline" }}
+      sx={{ textAlign, textDecoration: underline && "underline" }}
       color={color}
       fontSize={fontSize}
       variant={"h4"}
