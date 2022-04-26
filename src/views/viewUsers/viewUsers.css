@@ -1,0 +1,13 @@
+.carousel-container {
+    padding: 40px;
+    width: 90%;
+    height: 100%;
+}
+.slick-dots li button:before {
+    color: white !important;
+}
+.slick-slide img {
+    margin: auto;
+    max-height: 40vh;
+    max-width: 60vw;
+}

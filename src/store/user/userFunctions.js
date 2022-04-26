@@ -4,7 +4,7 @@ import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
 import { stateParser, store } from "../index";
 import APP_CONSTANTS from "../app/constants";
-import { update_user_public } from "../../services/user";
+import { get_all_users } from "../../apiMiddleware/dbLayer";
 
 const { getState, dispatch } = store;
 
@@ -37,4 +37,13 @@ export const upload_profile_image = async (image) => {
 
 export const set_user_details = async (userDetails) => {
   await userService.update_user_public(userDetails);
+};
+
+export const f_get_all_users = async () => {
+  console.log("getUsrs");
+  let current_last_doc = getState().user.lastDoc;
+  const { docs, lastDoc } = await get_all_users(current_last_doc);
+  //dispatch lastDoc in the state
+  await actionsCreator(USER_CONSTANTS.SET_LAST_DOC, lastDoc);
+  return docs;
 };

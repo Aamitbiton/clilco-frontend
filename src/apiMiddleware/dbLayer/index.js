@@ -5,6 +5,17 @@ export async function get_user(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser(id));
 }
 
+export async function get_all_users(lastDoc) {
+  return await firestore.getCollection(
+    "public",
+    constants.basics_wheres,
+    [],
+    3,
+    lastDoc,
+    true
+  );
+}
+
 export async function get_user_public(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
 }
