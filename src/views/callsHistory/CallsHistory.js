@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./callsHistory.scss";
 import { get_calls } from "../../store/video/videoFunctions";
 import { SingleCall } from "./components/singleCall/SingleCall";
+import { Header } from "../home/components/header/header";
 
 export const CallsHistory = () => {
   const [calls, setCalls] = useState([]);
@@ -12,6 +13,7 @@ export const CallsHistory = () => {
   useEffect(created, []);
   return (
     <>
+      <Header />
       <div className="calls">
         {calls
           .sort((a, b) => b.startTime - a.startTime)
