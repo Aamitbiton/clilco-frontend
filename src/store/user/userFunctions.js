@@ -38,3 +38,7 @@ export const upload_profile_image = async (image) => {
 export const set_user_details = async (userDetails) => {
   await userService.update_user_public(userDetails);
 };
+
+export const send_contact_form = async (contactDetails) => {
+  return await userService.send_contact_form(contactDetails);
+};

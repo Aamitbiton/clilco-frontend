@@ -23,7 +23,7 @@ function useRouterGuard(props) {
     else if (isAuthRoute()) navigate(ROOT);
     else return null;
   };
-  useEffect(handleNavigation, [user]);
+  useEffect(handleNavigation, [user, appState.app_ready]);
 }
 
 export default useRouterGuard;
