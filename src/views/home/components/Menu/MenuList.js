@@ -45,7 +45,7 @@ function MenuList({ anchor, onClick, onKeyDown }) {
             <CallIcon />
           </MenuListItem>
         </CustomLink>
-
+        <Divider />
         <CustomLink to={AppRoutes.PROFILE}>
           <MenuListItem itemText={"פרופיל אישי"}>
             <AccountBoxIcon />
