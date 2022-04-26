@@ -32,7 +32,7 @@ export async function end_date({ roomId }) {
   const id = authService.get_current_user()?.uid;
   return await dbLayer.update_room({
     roomId,
-    data: { ended: true },
+    data: { ended: true, endTime: new Date().getTime() },
   });
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./callsHistory.scss";
 import { get_calls } from "../../store/video/videoFunctions";
+import { SingleCall } from "./components/singleCall/SingleCall";
 
 export const CallsHistory = () => {
   const [calls, setCalls] = useState([]);
@@ -12,11 +13,11 @@ export const CallsHistory = () => {
   return (
     <>
       <div className="calls">
-        {calls.map((call, i) => (
-          <div className="call" key={i}>
-            {JSON.stringify(call)}
-          </div>
-        ))}
+        {calls
+          .sort((a, b) => b.startTime - a.startTime)
+          .map((call, i) => (
+            <SingleCall key={i} call={call} />
+          ))}
       </div>
     </>
   );

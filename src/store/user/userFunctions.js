@@ -4,7 +4,7 @@ import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
 import { stateParser, store } from "../index";
 import APP_CONSTANTS from "../app/constants";
-import { update_user_public } from "../../services/user";
+import { get_user_public, update_user_public } from "../../services/user";
 
 const { getState, dispatch } = store;
 
@@ -37,4 +37,8 @@ export const upload_profile_image = async (image) => {
 
 export const set_user_details = async (userDetails) => {
   await userService.update_user_public(userDetails);
+};
+
+export const get_user_public_data = async (id) => {
+  return await userService.get_user_public(id);
 };

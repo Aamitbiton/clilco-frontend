@@ -12,6 +12,10 @@
     "interested": "yes",
     "not-interested": "no",
     "report": "report user"
+  },
+  "calls": {
+    "you_refused": "you refused",
+    "you_were_rejected": "rejected"
   }
 }
 
