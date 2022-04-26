@@ -14,7 +14,6 @@ function AppButton({
   startIcon,
   endIcon,
   borderColor,
-  height,
   margin,
   children,
   customIcon = true,
