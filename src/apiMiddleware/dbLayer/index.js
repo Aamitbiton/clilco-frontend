@@ -10,7 +10,7 @@ export async function get_all_users(lastDoc) {
     "public",
     constants.basics_wheres,
     [],
-    3,
+    30,
     lastDoc,
     true
   );
