@@ -8,6 +8,7 @@ function AppButton({
   label,
   onClick,
   width,
+  height,
   disabled = false,
   variant = "outlined",
   startIcon,
@@ -25,6 +26,7 @@ function AppButton({
     background: backgroundColor && backgroundColor,
     justifyContent: "center",
     width,
+    height,
   };
 
   return (
