@@ -15,7 +15,10 @@ function Title({
     <Typography
       mt={mt}
       mb={mb}
-      sx={{ textAlign, textDecoration: underline && "underline" }}
+      sx={{
+        textAlign,
+        textDecoration: underline && "underline",
+      }}
       color={color}
       fontSize={fontSize}
       variant={"h4"}

@@ -61,7 +61,7 @@ export const Login = () => {
                 height={inputs.STATIC_HEIGHT}
                 endIcon={emailIcon}
                 labelColor={"white"}
-                label={"התחבר עם שם משתמש"}
+                label={"התחבר עם אימייל"}
                 onClick={() => set_enter_with_web(true)}
               />
             </AppStack>
