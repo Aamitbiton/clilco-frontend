@@ -5,6 +5,17 @@ export async function get_user(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
 }
 
+export async function get_all_users(lastDoc) {
+  return await firestore.getCollection(
+    "public",
+    constants.basics_wheres,
+    [],
+    30,
+    lastDoc,
+    true
+  );
+}
+
 export async function get_user_public(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
 }
@@ -49,8 +60,8 @@ export async function get_all_calls({ id, lastDocs }) {
   const caller_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
     wheres_caller,
-    [],
-    15,
+    [["startTime", "desc"]],
+    5,
     callerLastDoc
   );
 
@@ -58,8 +69,8 @@ export async function get_all_calls({ id, lastDocs }) {
   const answerer_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
     wheres_answerer,
-    [],
-    100,
+    [["startTime", "desc"]],
+    5,
     answererLastDoc
   );
   return { caller_calls, answerer_calls };

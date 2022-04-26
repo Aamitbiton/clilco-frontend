@@ -9,6 +9,7 @@ function Title({
   color = "secondary",
   fontSize,
   underline = false,
+  className = "",
   ...otherProps
 }) {
   return (
@@ -22,6 +23,7 @@ function Title({
       color={color}
       fontSize={fontSize}
       variant={"h4"}
+      className={className}
       {...otherProps}
     >
       {title}

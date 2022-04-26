@@ -11,3 +11,4 @@ export const dbPaths = {
   user_offers: "offers",
   users_left_room: "users_left_room",
 };
+export const basics_wheres = [{ key: "imgUrl", operator: "!=", value: null }];

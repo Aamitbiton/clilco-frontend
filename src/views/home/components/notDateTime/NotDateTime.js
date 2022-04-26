@@ -12,7 +12,10 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
         <Typography className={"flex-center"} color={"white"} variant={"h5"}>
           מתחילים בעוד
         </Typography>
-        <Timer expiredMilliseconds={datesStartedMilliseconds} />
+        <Timer
+          style={{ width: "100%" }}
+          expiredMilliseconds={datesStartedMilliseconds}
+        />
         <AppButton
           onClick={() => navigate("/users")}
           labelColor={"white"}

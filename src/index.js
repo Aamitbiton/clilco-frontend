@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
+import "./wdyr";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import "./style/index.scss";

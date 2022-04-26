@@ -54,7 +54,8 @@ async function getCollection(
   wheres = [],
   orderBys = [],
   myLimit = 100,
-  start
+  start,
+  subCollection = false
 ) {
   try {
     const filter = [
@@ -63,7 +64,9 @@ async function getCollection(
     ];
     if (start) filter.push(startAfter(start));
     if (myLimit) filter.push(limit(myLimit));
-    const q = query(collection(db, path), ...filter);
+    const q = subCollection
+      ? query(collectionGroup(db, path), ...filter)
+      : query(collection(db, path), ...filter);
     const queryDocs = (await getDocs(q)).docs;
     const docs = queryDocs.map((d) => {
       return { ...d.data(), id: d.id };

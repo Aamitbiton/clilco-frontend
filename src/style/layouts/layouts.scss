@@ -41,4 +41,12 @@
     flex-direction: column;
 }
 
+.blur-background{
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+}
+.half-width{
+    width: 50vw !important;
+}
+
 
