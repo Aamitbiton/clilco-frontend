@@ -15,7 +15,8 @@
   },
   "calls": {
     "you_refused": "דחית",
-    "you_were_rejected": "סורבת"
+    "you_were_rejected": "סורבת",
+    "get_more_calls": "טען פגישות נוספות"
   }
 }
 

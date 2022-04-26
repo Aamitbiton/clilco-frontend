@@ -9,7 +9,6 @@ export const SingleCall = ({ call }) => {
   const [otherUserData, setOtherUserData] = useState(null);
   const [userTypeInCall, setUserTypeInCall] = useState(null);
   const [otherUserTypeInCall, setOtherUserTypeInCall] = useState(null);
-  const [otherUserPhone, setOtherUserPhone] = useState("0547718468");
   const myId = useSelector((state) => state.user.user.private.id);
   const created = async () => {
     await determine_user_type();
@@ -17,7 +16,6 @@ export const SingleCall = ({ call }) => {
   const init_data_fetch = async () => {
     if (userTypeInCall) {
       await get_other_user_data();
-      await get_other_user_phone();
       setOtherUserTypeInCall(
         userTypeInCall === "caller" ? "answerer" : "caller"
       );
@@ -30,9 +28,6 @@ export const SingleCall = ({ call }) => {
     const otherUserId =
       call.caller.id === myId ? call.answerer.id : call.caller.id;
     setOtherUserData(await get_user_public_data(otherUserId));
-  };
-  const get_other_user_phone = async () => {
-    // setOtherUserPhone(null);
   };
   const get_date_time = () => {
     const d = new Date(call.startTime);

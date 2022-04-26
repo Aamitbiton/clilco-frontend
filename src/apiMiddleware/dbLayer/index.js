@@ -49,8 +49,8 @@ export async function get_all_calls({ id, lastDocs }) {
   const caller_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
     wheres_caller,
-    [],
-    15,
+    [["startTime", "desc"]],
+    5,
     callerLastDoc
   );
 
@@ -58,8 +58,8 @@ export async function get_all_calls({ id, lastDocs }) {
   const answerer_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
     wheres_answerer,
-    [],
-    100,
+    [["startTime", "desc"]],
+    5,
     answererLastDoc
   );
   return { caller_calls, answerer_calls };
