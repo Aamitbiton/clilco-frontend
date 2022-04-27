@@ -22,12 +22,17 @@ import { webRTCConfiguration } from "./videoUtils";
 import Peer from "simple-peer";
 import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
+import { infoLog } from "../../utils/logs";
+import { Timer } from "../../components/timer/timer";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
+  const [showTimer, setShowTimer] = useState(null);
+  const [startedTimer, setStartedTimer] = useState(false);
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [muted, setMuted] = useState(false);
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
@@ -104,6 +109,7 @@ export const VideoDate = () => {
   const handle_remote_video_restarted = async (stream) => {
     await handle_got_stream(stream);
   };
+
   const handle_room_update = async () => {
     if (!room) return;
     const myId = user.private.id;
@@ -118,8 +124,23 @@ export const VideoDate = () => {
       handle_exit();
       navigate(AppRoutes.AFTER_VIDEO);
     }
+    if (!dateEndInMilliseconds)
+      setDateEndInMilliseconds(room.startTime + 1000 * 60 * 10);
   };
-
+  const handle_date_time = () => {
+    if (startedTimer || !dateEndInMilliseconds) return;
+    setStartedTimer(true);
+    const secondsLeftForDate = Math.floor(
+      (dateEndInMilliseconds - now()) / 1000
+    );
+    Array.apply(null, Array(secondsLeftForDate)).forEach((item, i) => {
+      setTimeout(
+        () => secondsLeftForDate - i === 60 && setShowTimer(true),
+        1000 * i
+      );
+    });
+  };
+  const now = () => new Date().getTime();
   const go_to_next_question_local = async () => {
     const index = calculate_next_question();
     if (!Number.isNaN(index)) {
@@ -165,9 +186,9 @@ export const VideoDate = () => {
     stop_my_video();
     peer?.destroy();
   };
-
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
+  useEffect(handle_date_time, [dateEndInMilliseconds]);
 
   return (
     <>
@@ -177,12 +198,18 @@ export const VideoDate = () => {
           setLocalStream={setLocalStream}
           handle_no_permissions={handle_no_permissions}
         />
-        {remoteStream && <>{/*timer for date*/}</>}
 
         {remoteStream && (
           <>
+            {showTimer && (
+              <Timer
+                endAction={end_video_date}
+                style={{ position: "absolute", zIndex: 3, width: "100%" }}
+                expiredMilliseconds={room.startTime + 1000 * 60 * 10}
+              />
+            )}
             <RemoteVideo remoteStream={remoteStream} />
-            <CurrentQuestion questionIndexes={room.questions} muted={muted} />
+            {/*<CurrentQuestion questionIndexes={room.questions} muted={muted} />*/}
             <VideoButtons
               end_video_date={end_video_date}
               next_question={go_to_next_question_local}

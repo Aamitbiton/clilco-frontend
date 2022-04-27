@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import AppStack from "../../../../components/AppStack";
 import AppButton from "../../../../components/Buttons/AppButton";
 import AppRoutes from "../../../../app/AppRoutes";
+import { set_its_dating_time } from "../../../../store/video/videoFunctions";
 
 export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
   const { PROFILE, VIEW_USERS } = AppRoutes;
@@ -15,6 +16,7 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
           מתחילים בעוד
         </Typography>
         <Timer
+          endAction={() => set_its_dating_time(true)}
           style={{ width: "100%" }}
           expiredMilliseconds={datesStartedMilliseconds}
         />
