@@ -3,7 +3,20 @@
   "video_page": {
     "end-call": "ניתוק",
     "mute": "השתק שאלות",
-    "next-question":"שאלה הבאה"
+    "unMute": "ביטול השתקה",
+    "next-question": "שאלה הבאה"
+  },
+  "after_date": {
+    "title": "הדייט הסתיים!",
+    "sub-title": " מעוניינים להחליף פרטים?",
+    "interested": "מעוניין",
+    "not-interested": "לא מעוניין",
+    "report": "דווח על משתמש"
+  },
+  "calls": {
+    "you_refused": "דחית",
+    "you_were_rejected": "סורבת",
+    "get_more_calls": "טען פגישות נוספות"
   }
 }
 

@@ -1,0 +1,64 @@
+@import "../../../../style/variables";
+
+.single-call{
+  width: 95%;
+  height: 10vh;
+  display: flex;
+  justify-content: start;
+  align-items: stretch;
+  margin: 5px 0 ;
+}
+
+.image-area{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .user-image{
+    transform: translateX(-10px);
+    width: 90%;
+    max-height: 90%;
+    clip-path: circle();
+    object-fit: contain;
+  }
+}
+
+.information{
+  flex:4;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+  transform: translateX(-15px);
+  .name{
+    font-size: 18px;
+  }
+}
+
+.phone-area{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  transform: translateX(20px);
+
+  .phone-number{
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+  }
+}
+
+.desktop-call{
+  width: 75%;
+}
+
+.success{
+  border: 1px solid $app-turquoise;
+  border-radius: 10px;
+}
+.fail{
+  border: 1px solid $app-purple;
+  border-radius: 10px;
+
+}

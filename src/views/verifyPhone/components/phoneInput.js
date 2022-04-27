@@ -7,8 +7,10 @@ import AppStack from "../../../components/AppStack";
 import { phoneSchema } from "../SchemaValidation";
 import CenterLayout from "../../../components/CenterLayout";
 import SubmitButton from "../../../components/Form/SubmitButton";
+import defaultStyles from "../../../style/defaultStyles";
 
 export const PhoneInput = ({ smsSent }) => {
+  const { inputs } = defaultStyles;
   const [Loading, setLoading] = useState(false);
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -25,8 +27,13 @@ export const PhoneInput = ({ smsSent }) => {
       onSubmit={handleSubmit}
     >
       <AppStack direction={"column"} spacing={2}>
-        <FormFiled width={270} label={"הכנס מספר טלפון"} name={"phoneNumber"} />
+        <FormFiled
+          width={inputs.STATIC_WIDTH}
+          label={"הכנס מספר טלפון"}
+          name={"phoneNumber"}
+        />
         <SubmitButton
+          width={inputs.STATIC_WIDTH}
           loadingButton={true}
           loading={Loading}
           label={"שלח קוד"}

@@ -9,8 +9,15 @@ import {
 import Image from "../../components/Image";
 import { Button } from "@mui/material";
 import { upload_profile_image } from "../../store/user/userFunctions";
+import CenterLayout from "../../components/CenterLayout";
+import Title from "../../components/title/title";
+import AppButton from "../../components/Buttons/AppButton";
+import defaultStyles from "../../style/defaultStyles";
+import AppStack from "../../components/AppStack";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export const AddImage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const handleSetImage = async (imageFile) => {
     const base64 = await convertToBase64(imageFile);
@@ -19,24 +26,34 @@ export const AddImage = () => {
   const removeImage = () => {
     setImage(null);
   };
+
+  const handle_upload_profile_image = async () => {
+    setIsLoading(true);
+    await upload_profile_image(image);
+    setTimeout(() => setIsLoading(false), 3000);
+  };
   return (
-    <div className={"add-image-page"}>
-      {image && (
-        <Image removeImage={removeImage} src={image} alt={"image-url"} />
-      )}
-      <FilePiker
-        title={"add image"}
-        onChange={handleSetImage}
-        rules={filterOnlyImages}
-        errorMessage={IMAGE_FILE_PICKER_ERROR_MESSAGE}
-      />
-      <Button
-        disabled={!image}
-        onClick={() => upload_profile_image(image)}
-        variant={"contained"}
-      >
-        SUBMIT
-      </Button>
-    </div>
+    <CenterLayout direction={"column"}>
+      <Title title={"התמונה שלי"} />
+      <Image removeImage={image && removeImage} src={image} alt={"image-url"} />
+      <AppStack direction={"column"} spacing={2} margin={2}>
+        <FilePiker
+          title={"העלה תמונה"}
+          onChange={handleSetImage}
+          rules={filterOnlyImages}
+          errorMessage={IMAGE_FILE_PICKER_ERROR_MESSAGE}
+        />
+        <LoadingButton
+          onClick={handle_upload_profile_image}
+          loading={isLoading}
+          style={{ width: defaultStyles.inputs.STATIC_WIDTH }}
+          variant={"outlined"}
+          color={"secondary"}
+          disabled={!image}
+        >
+          העלה תמונה
+        </LoadingButton>
+      </AppStack>
+    </CenterLayout>
   );
 };

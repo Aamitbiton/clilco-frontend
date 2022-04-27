@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
-import { Button } from "@mui/material";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import Image from "../../components/Image";
+import AppButton from "../Buttons/AppButton";
+import defaultStyles from "../../style/defaultStyles";
+import AppToastContainer from "../Toast/AppToastContainer";
 function FilePiker({
   onChange,
   title = "add file",
@@ -10,6 +11,7 @@ function FilePiker({
   src,
   rules,
   errorMessage,
+  className,
 }) {
   const file = useRef(null);
   const handleFilePiker = ([file]) => {
@@ -18,19 +20,17 @@ function FilePiker({
   };
   return (
     <div>
-      <div>
-        <ToastContainer closeOnClick={true} draggable={true} />
-      </div>
+      <AppToastContainer />
       {imgPicker ? (
         <Image onClick={() => file.current.click()} src={src} />
       ) : (
-        <Button
-          style={{ margin: 10 }}
-          variant={"outlined"}
+        <AppButton
+          className={className}
+          rounded={false}
+          width={defaultStyles.inputs.STATIC_WIDTH}
+          label={title}
           onClick={() => file.current.click()}
-        >
-          {title}
-        </Button>
+        />
       )}
       <input
         type={"file"}
