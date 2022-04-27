@@ -24,7 +24,7 @@ export async function set_go_to_decision({ roomId }) {
   const id = authService.get_current_user()?.uid;
   return await dbLayer.update_room({
     roomId,
-    data: { hungUpBy: id, goToDecision: true },
+    data: { endedBy: id, goToDecision: true },
   });
 }
 

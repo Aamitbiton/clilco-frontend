@@ -6,7 +6,7 @@
   display: flex;
   justify-content: start;
   align-items: stretch;
-  margin: 5px 0 ;
+  margin: 10px 0 ;
 }
 
 .image-area{
@@ -17,7 +17,6 @@
 
   .user-image{
     transform: translateX(-10px);
-    width: 90%;
     max-height: 90%;
     clip-path: circle();
     object-fit: contain;

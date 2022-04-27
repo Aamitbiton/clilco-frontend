@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import "./startDate.css";
 import AppStack from "../../../../components/AppStack";
 import Typography from "@mui/material/Typography";
-import { Timer } from "../../../../components/timer/timer";
 import AppButton from "../../../../components/Buttons/AppButton";
 
 export const StartDate = ({ navigate }) => {
