@@ -17,7 +17,7 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
           expiredMilliseconds={datesStartedMilliseconds}
         />
         <AppButton
-          onClick={() => navigate("/users")}
+          onClick={() => navigate("/view-users")}
           labelColor={"white"}
           label={"צפה במשתמשים נוספים"}
         />

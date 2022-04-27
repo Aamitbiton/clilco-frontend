@@ -40,9 +40,9 @@ export const set_user_details = async (userDetails) => {
   await userService.update_user_public(userDetails);
 };
 
-export const f_get_all_users = async () => {
-  console.log("getUsrs");
-  let current_last_doc = getState().user.lastDoc;
+export const f_get_all_users = async (already_have_users) => {
+  console.log(already_have_users);
+  let current_last_doc = already_have_users ? getState().user.lastDoc : null;
   const { docs, lastDoc } = await get_all_users(current_last_doc);
   //dispatch lastDoc in the state
   await actionsCreator(USER_CONSTANTS.SET_LAST_DOC, lastDoc);

@@ -19,7 +19,7 @@ export const ViewUsers = () => {
   };
   const [users, setUsers] = useState(null);
   const get_more_users = async () => {
-    const newUsers = await f_get_all_users();
+    const newUsers = await f_get_all_users(!!users);
     const allUsers = users ? users.concat(newUsers) : newUsers;
     setUsers(allUsers);
   };
@@ -41,9 +41,9 @@ export const ViewUsers = () => {
               <img src={user.imgUrl?.url} />
               <Title
                 className={"view-users-title blur-background"}
-                title={user.name + "," + user.city.lodge}
+                title={user.name + "," + user.city.name}
                 color={"white"}
-                fontSize={20}
+                fontSize={25}
               />
             </div>
           ))}
