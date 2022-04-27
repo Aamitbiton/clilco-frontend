@@ -18,7 +18,11 @@ import {
 } from "../../store/user/userFunctions";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import FilePiker from "../../components/Inputs/FilePicker";
-import { convertToBase64, filterOnlyImages } from "../../utils/images";
+import {
+  convertToBase64,
+  filterOnlyImages,
+  IMAGE_FILE_PICKER_ERROR_MESSAGE,
+} from "../../utils/images";
 
 export const Profile = () => {
   const user = useSelector((s) => s.user.user.public);
@@ -64,6 +68,7 @@ export const Profile = () => {
                 onChange={handleNewImage}
                 rules={(file) => filterOnlyImages(file)}
                 imgPicker={true}
+                errorMessage={IMAGE_FILE_PICKER_ERROR_MESSAGE}
                 src={newImage ? newImage : user.imgUrl.url}
               />
               <AppStack>

@@ -1,6 +1,6 @@
-const MOBILE_SCREEN_MAX_WIDTH = 550;
-const isMobile = window.screen.width < MOBILE_SCREEN_MAX_WIDTH;
-
+import { store } from "../store";
+const { getState } = store;
+const isMobile = getState().app.isMobile;
 export default {
   inputs: {
     LARGE_INPUT_WIDTH: isMobile ? 270 : 650,
