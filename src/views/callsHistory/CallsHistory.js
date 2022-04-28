@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./callsHistory.scss";
 import { get_calls } from "../../store/video/videoFunctions";
-import { SingleCall } from "./components/singleCall2/SingleCall";
+import { SingleCall } from "./components/singleCall/SingleCall";
 import { Header } from "../home/components/header/header";
 import AppButton from "../../components/Buttons/AppButton";
 import { useSelector } from "react-redux";
