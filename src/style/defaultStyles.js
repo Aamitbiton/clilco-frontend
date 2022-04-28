@@ -1,6 +1,7 @@
 import { store } from "../store";
 const { getState } = store;
 const isMobile = getState().app.isMobile;
+
 export default {
   inputs: {
     LARGE_INPUT_WIDTH: isMobile ? 270 : 650,

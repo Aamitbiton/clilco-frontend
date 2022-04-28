@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import Image from "../../components/Image";
 import AppButton from "../Buttons/AppButton";
 import defaultStyles from "../../style/defaultStyles";
-import AppToastContainer from "../Toast/AppToastContainer";
 function FilePiker({
   onChange,
   title = "add file",
@@ -20,7 +19,6 @@ function FilePiker({
   };
   return (
     <div>
-      <AppToastContainer />
       {imgPicker ? (
         <Image onClick={() => file.current.click()} src={src} />
       ) : (

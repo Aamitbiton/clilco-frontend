@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "./profile.css";
 import { Header } from "../home/components/header/header";
 import AppForm from "../../components/Form/AppForm";
@@ -16,13 +16,13 @@ import {
   set_user_details,
   upload_profile_image,
 } from "../../store/user/userFunctions";
-import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import FilePiker from "../../components/Inputs/FilePicker";
 import {
   convertToBase64,
   filterOnlyImages,
   IMAGE_FILE_PICKER_ERROR_MESSAGE,
 } from "../../utils/images";
+import { toast } from "react-toastify";
 
 export const Profile = () => {
   const user = useSelector((s) => s.user.user.public);
@@ -37,6 +37,9 @@ export const Profile = () => {
   const handleUploadImage = async () => {
     newImage && (await upload_profile_image(newImage));
   };
+
+  const SUCCESS_MESSAGE = "העדכון בוצע בהצלחה!";
+  const ERROR_MESSAGE = "ארעה שגיאה..";
   return (
     <>
       <Header />
@@ -47,13 +50,14 @@ export const Profile = () => {
             validationSchema={profileValidationSchema}
             onSubmit={async (values) => {
               setIsLoading(true);
-              await set_user_details(values);
-              await handleUploadImage();
+              try {
+                await set_user_details(values);
+                await handleUploadImage();
+                toast(SUCCESS_MESSAGE, { type: "success" });
+              } catch (e) {
+                toast(ERROR_MESSAGE, { type: "error" });
+              }
               setIsLoading(false);
-              await create_snackBar({
-                message: "העדכון בוצע בהצלחה",
-                action: reset_snackBar,
-              });
             }}
             initialValues={{
               name: user.name,

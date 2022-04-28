@@ -10,6 +10,7 @@ import { RTL } from "../themes";
 import ConditionalWrapper from "../components/ConditionalWrapper";
 import useRouterGuard from "../hooks/useRouterGuard";
 import SimpleSnackbar from "../components/snackBar/SnackBar";
+import AppToastContainer from "../components/Toast/AppToastContainer";
 
 function App() {
   const appState = useSelector((state) => state.app);
@@ -18,6 +19,7 @@ function App() {
   useRouterGuard();
   return (
     <>
+      <AppToastContainer />
       {appState.app_ready && (
         <ConditionalWrapper
           condition={appState.lng === "he"}

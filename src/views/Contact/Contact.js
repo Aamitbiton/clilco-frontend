@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CenterLayout from "../../components/CenterLayout";
-import Typography from "@mui/material/Typography";
 import { Header } from "../home/components/header/header";
 import Title from "../../components/title/title";
 import AppForm from "../../components/Form/AppForm";
@@ -11,16 +10,14 @@ import ContactValidation from "./contactValidation";
 import { send_contact_form } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import defaultStyles from "../../style/defaultStyles";
-import AppToastContainer from "../../components/Toast/AppToastContainer";
 import { toast } from "react-toastify";
 
 function Contact(props) {
-  const inputWidth = 270;
   const { inputs } = defaultStyles;
   const [isLoading, setIsLoading] = useState(false);
   const user = useSelector((s) => s.user.user);
   const SUCCESS_MESSAGE = "פנייתך נתקבלה בהצלחה.";
-  const ERROR_MESSAGE = "ארעה שגיאה..";
+  // const ERROR_MESSAGE = "ארעה שגיאה..";
   const handleSubmit = async (values) => {
     setIsLoading(true);
     const res = await send_contact_form({ user, ...values });
@@ -30,7 +27,6 @@ function Contact(props) {
   return (
     <>
       <Header />
-      <AppToastContainer />
       <CenterLayout direction={"column"}>
         <Title title={"צור קשר"} />
         <AppForm

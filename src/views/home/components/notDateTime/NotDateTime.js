@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./notDateTime.css";
 import { Timer } from "../../../../components/timer/timer";
 import Typography from "@mui/material/Typography";
