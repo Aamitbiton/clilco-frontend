@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./singleCall.scss";
 import { useSelector } from "react-redux";
 import { get_user_public_data } from "../../../../store/user/userFunctions";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import CloseIcon from "@mui/icons-material/Close";
+import SimpleTooltip from "../../../../components/tooltips/simpleTooltip/SimpleTooltip";
 
 export const SingleCall = ({ call }) => {
   const isMobile = useSelector((state) => state.app.isMobile);
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const [otherUserData, setOtherUserData] = useState(null);
+  const [showImgFullScreen, setShowImgFullScreen] = useState(false);
   const [userTypeInCall, setUserTypeInCall] = useState(null);
   const [otherUserTypeInCall, setOtherUserTypeInCall] = useState(null);
-  const myId = useSelector((state) => state.user.user.private.id);
+  const user = useSelector((state) => state.user.user);
   const created = async () => {
     await determine_user_type();
   };
@@ -22,20 +26,21 @@ export const SingleCall = ({ call }) => {
     }
   };
   const determine_user_type = () => {
-    setUserTypeInCall(call.caller.id === myId ? "caller" : "answerer");
+    setUserTypeInCall(
+      call.caller.id === user.private.id ? "caller" : "answerer"
+    );
   };
   const get_other_user_data = async () => {
     const otherUserId =
-      call.caller.id === myId ? call.answerer.id : call.caller.id;
+      call.caller.id === user.private.id ? call.answerer.id : call.caller.id;
     setOtherUserData(await get_user_public_data(otherUserId));
   };
+  const get_date_date = () => new Date(call.startTime).toLocaleDateString();
   const get_date_time = () => {
     const d = new Date(call.startTime);
-    const day = d.toLocaleDateString();
     const hours = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
     const minutes = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
-    const time = hours + ":" + minutes;
-    return day + " " + time;
+    return hours + ":" + minutes;
   };
   useEffect(created, []);
   useEffect(init_data_fetch, [userTypeInCall]);
@@ -50,32 +55,70 @@ export const SingleCall = ({ call }) => {
           }
         >
           <div className="image-area">
-            <img
-              className="user-image"
-              src={otherUserData?.imgUrl?.url}
-              alt={"user-image"}
-            />
+            <div
+              className="image-border"
+              onClick={() => setShowImgFullScreen(true)}
+            >
+              <div
+                className="user-image"
+                style={{
+                  backgroundImage: `url(${otherUserData?.imgUrl?.url})`,
+                }}
+              />
+            </div>
           </div>
 
           <div className="information">
             <b className="name">{otherUserData.name}</b>
-            <div>{get_date_time()}</div>
+            <b>{get_date_date()}</b>
+            <b>{get_date_time()}</b>
           </div>
 
           <div className="phone-area">
-            <b>
-              {call[userTypeInCall]?.negative && translate("calls.you_refused")}
+            {call[otherUserTypeInCall]?.phone ? (
+              <b>
+                <a
+                  className="phone-number"
+                  href={"tel:" + call[otherUserTypeInCall]?.phone}
+                >
+                  {call[otherUserTypeInCall].phone}
+                </a>
+              </b>
+            ) : (
+              <>
+                {call[otherUserTypeInCall]?.negative && (
+                  <SimpleTooltip
+                    title={translate("calls.canceled_by") + otherUserData.name}
+                  >
+                    <SentimentVeryDissatisfiedIcon
+                      fontSize="large"
+                      color={"secondary"}
+                    />
+                  </SimpleTooltip>
+                )}
 
-              {call[otherUserTypeInCall]?.negative &&
-                translate("calls.you_were_rejected")}
-              <a
-                className="phone-number"
-                href={"tel:" + call[otherUserTypeInCall]?.phone}
-              >
-                {call[otherUserTypeInCall]?.phone}
-              </a>
-            </b>
+                {call[userTypeInCall]?.negative && (
+                  <SimpleTooltip
+                    title={translate("calls.canceled_by") + user.public.name}
+                  >
+                    <CloseIcon color={"secondary"} fontSize="large" />
+                  </SimpleTooltip>
+                )}
+              </>
+            )}
           </div>
+
+          {showImgFullScreen && (
+            <img
+              onClick={() => setShowImgFullScreen(false)}
+              className={
+                isMobile
+                  ? "full-screen-image-mobile"
+                  : "full-screen-image-desktop"
+              }
+              src={otherUserData?.imgUrl?.url}
+            />
+          )}
         </div>
       )}
     </>
