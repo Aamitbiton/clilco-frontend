@@ -1,0 +1,11 @@
+.my-profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.img-picker-position {
+    bottom: 10px;
+    left: 10px;
+}

@@ -9,7 +9,6 @@ import ResetPassword from "./ResetPassword";
 import { login_with_email } from "../../../store/auth/authFunctions";
 import AppStack from "../../../components/AppStack";
 import AppIconButton from "../../../components/Buttons/AppIconButton";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../../components/title/title";
 import CenterLayout from "../../../components/CenterLayout";
@@ -29,13 +28,13 @@ function LoginWithEmail({ close }) {
   });
   return (
     <CenterLayout direction={"column"}>
-      <Title title={"התחברות עם אימייל"} />
       <AppIconButton
         onClick={close}
         style={{ position: "relative", left: inputs.STATIC_WIDTH / 2 }}
       >
         <ArrowForwardIcon color={"primary"} />
       </AppIconButton>
+      <Title mt={2} title={"התחברות עם אימייל"} />
       <AppForm
         validationSchema={schema}
         onSubmit={async ({ email, password }) => {

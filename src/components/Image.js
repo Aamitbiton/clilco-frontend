@@ -12,7 +12,12 @@ function Image({
   const theme = useTheme();
   return (
     <Paper
-      style={{ height, width, background: "transparent", border: "none" }}
+      style={{
+        height,
+        width,
+        background: "transparent",
+        border: "none",
+      }}
       variant="outlined"
       onClick={onClick}
     >
