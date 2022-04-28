@@ -38,7 +38,7 @@ export const AddImage = () => {
       <Image removeImage={image && removeImage} src={image} alt={"image-url"} />
       <AppStack direction={"column"} spacing={2} margin={2}>
         <FilePiker
-          title={"העלה תמונה"}
+          title={"בחר תמונה"}
           onChange={handleSetImage}
           rules={filterOnlyImages}
           errorMessage={IMAGE_FILE_PICKER_ERROR_MESSAGE}

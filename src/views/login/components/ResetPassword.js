@@ -10,15 +10,19 @@ function ResetPassword(props) {
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
   });
+
+  const [isLoading, setIsLoading] = useState(false);
   const [resultMessage, setResultMessage] = useState(null);
   const handleResetPassword = async (email) => {
+    setIsLoading(true);
     const res = await resetPassword(email);
-    res
-      ? setResultMessage({
-          error: false,
-          message: " שחזור הסיסמא נשלח בהצלחה!",
-        })
-      : setResultMessage({ error: true, message: "המייל אינו קיים" });
+    if (res)
+      setResultMessage({
+        error: false,
+        message: " שחזור הסיסמא נשלח בהצלחה!",
+      });
+    else setResultMessage({ error: true, message: "המייל אינו קיים" });
+    setIsLoading(false);
   };
   return (
     <AppForm
@@ -28,7 +32,7 @@ function ResetPassword(props) {
     >
       <AppStack direction={"column"} margin={2}>
         <FormFiled name={"email"} label={"אימייל"} />
-        <SubmitButton width={50} label={"שלח"} />
+        <SubmitButton loading={isLoading} loadingButton={true} label={"שלח"} />
       </AppStack>
       {resultMessage && (
         <Text
