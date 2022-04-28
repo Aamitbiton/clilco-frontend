@@ -16,7 +16,8 @@
   "calls": {
     "you_refused": "you refused",
     "you_were_rejected": "rejected",
-    "get_more_calls":"Get more meetings"
+    "get_more_calls":"Get more meetings",
+    "canceled_by": "rejected by "
   }
 }
 
