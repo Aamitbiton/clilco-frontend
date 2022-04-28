@@ -6,7 +6,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Header } from "../home/components/header/header";
 import Title from "../../components/title/title";
-import { useSelector } from "react-redux";
+import CenterLayout from "../../components/CenterLayout";
+import Typography from "@mui/material/Typography";
 
 export const ViewUsers = () => {
   const settings = {
@@ -27,31 +28,36 @@ export const ViewUsers = () => {
     get_more_users();
   }, []);
   return users ? (
-    <div className={"flex-center"}>
+    <>
       <Header />
-      <div className={"carousel-container"}>
-        <Slider
-          beforeChange={(oldIndex, newIndex) => {
-            if (users.length - newIndex < 2) get_more_users();
-          }}
-          {...settings}
-        >
-          {users.map((user) => (
-            <div className={"img-container"} key={user.id}>
-              <img src={user.imgUrl?.url} />
-              <Title
-                className={"view-users-title blur-background"}
-                title={user.name + "," + user.city.name}
-                color={"white"}
-                fontSize={25}
-              />
-            </div>
-          ))}
-        </Slider>
-      </div>
-    </div>
+      <CenterLayout>
+        <div className={"carousel-container"}>
+          <Slider
+            arrows={false}
+            beforeChange={(oldIndex, newIndex) => {
+              if (users.length - newIndex < 2) get_more_users();
+            }}
+            {...settings}
+          >
+            {users.map((user) => (
+              <div className={"img-container"} key={user.id}>
+                <img src={user.imgUrl?.url} />
+                <Title
+                  className={"view-users-title blur-background"}
+                  title={user.name + "," + user.city.name}
+                  color={"white"}
+                  fontSize={25}
+                />
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </CenterLayout>
+    </>
   ) : (
-    <div>no users</div>
+    <CenterLayout>
+      <Typography>no users</Typography>
+    </CenterLayout>
   );
 };
 

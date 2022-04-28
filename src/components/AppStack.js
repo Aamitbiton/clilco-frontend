@@ -11,6 +11,7 @@ function AppStack({
   return (
     <Stack
       margin={margin}
+      position={"relative"}
       {...otherProps}
       draggable={true}
       flexWrap={flexWrap}

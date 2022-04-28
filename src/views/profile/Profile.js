@@ -23,6 +23,7 @@ import {
   IMAGE_FILE_PICKER_ERROR_MESSAGE,
 } from "../../utils/images";
 import { toast } from "react-toastify";
+import Image from "../../components/Image";
 
 export const Profile = () => {
   const user = useSelector((s) => s.user.user.public);
@@ -68,13 +69,22 @@ export const Profile = () => {
             }}
           >
             <div className={"flex-column-center"}>
-              <FilePiker
-                onChange={handleNewImage}
-                rules={(file) => filterOnlyImages(file)}
-                imgPicker={true}
-                errorMessage={IMAGE_FILE_PICKER_ERROR_MESSAGE}
-                src={newImage ? newImage : user.imgUrl.url}
-              />
+              <AppStack>
+                <img
+                  className={"my-profile-image"}
+                  src={newImage ? newImage : user.imgUrl.url}
+                />
+                <FilePiker
+                  className={"img-picker-position"}
+                  position={"absolute"}
+                  isIcon={true}
+                  iconName={"add_a_photo"}
+                  iconColor={"secondary"}
+                  onChange={handleNewImage}
+                  rules={(file) => filterOnlyImages(file)}
+                  errorMessage={IMAGE_FILE_PICKER_ERROR_MESSAGE}
+                />
+              </AppStack>
               <AppStack>
                 <FormFiled
                   defaultValue={user.name}

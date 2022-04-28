@@ -30,7 +30,7 @@ export const AddImage = () => {
   const handle_upload_profile_image = async () => {
     setIsLoading(true);
     await upload_profile_image(image);
-    setTimeout(() => setIsLoading(false), 3000);
+    setIsLoading(false);
   };
   return (
     <CenterLayout direction={"column"}>
@@ -51,7 +51,7 @@ export const AddImage = () => {
           color={"secondary"}
           disabled={!image}
         >
-          העלה תמונה
+          שמור תמונה
         </LoadingButton>
       </AppStack>
     </CenterLayout>

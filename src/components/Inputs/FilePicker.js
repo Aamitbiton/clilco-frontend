@@ -3,13 +3,19 @@ import { toast } from "react-toastify";
 import Image from "../../components/Image";
 import AppButton from "../Buttons/AppButton";
 import defaultStyles from "../../style/defaultStyles";
+import { Icon } from "@mui/material";
 function FilePiker({
   onChange,
   title = "add file",
   imgPicker = false,
   src,
   rules,
+  position,
+  isIcon,
+  iconColor = "primary",
+  iconName,
   errorMessage,
+  onBlur,
   className,
 }) {
   const file = useRef(null);
@@ -18,9 +24,11 @@ function FilePiker({
     else toast(errorMessage, { type: "error" });
   };
   return (
-    <div>
-      {imgPicker ? (
-        <Image onClick={() => file.current.click()} src={src} />
+    <div style={{ position }} className={`${className} pointer`}>
+      {isIcon ? (
+        <Icon onClick={() => file.current.click()} color={iconColor}>
+          {iconName}
+        </Icon> // <Image src={src} />
       ) : (
         <AppButton
           className={className}
