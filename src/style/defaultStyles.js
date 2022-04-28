@@ -1,6 +1,6 @@
 import { store } from "../store";
 const { getState } = store;
-const isMobile = getState().app.isMobile;
+const isMobile = window.innerWidth <= 450;
 
 export default {
   inputs: {
