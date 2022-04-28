@@ -86,23 +86,27 @@ export const SingleCall = ({ call }) => {
               </b>
             ) : (
               <>
-                {call[otherUserTypeInCall]?.negative && (
-                  <SimpleTooltip
-                    title={translate("calls.canceled_by") + otherUserData.name}
-                  >
-                    <SentimentVeryDissatisfiedIcon
-                      fontSize="large"
-                      color={"secondary"}
-                    />
-                  </SimpleTooltip>
-                )}
-
-                {call[userTypeInCall]?.negative && (
+                {!call[userTypeInCall]?.positive ? (
                   <SimpleTooltip
                     title={translate("calls.canceled_by") + user.public.name}
                   >
                     <CloseIcon color={"secondary"} fontSize="large" />
                   </SimpleTooltip>
+                ) : (
+                  <>
+                    {!call[otherUserTypeInCall]?.positive && (
+                      <SimpleTooltip
+                        title={
+                          translate("calls.canceled_by") + otherUserData.name
+                        }
+                      >
+                        <SentimentVeryDissatisfiedIcon
+                          fontSize="large"
+                          color={"secondary"}
+                        />
+                      </SimpleTooltip>
+                    )}
+                  </>
                 )}
               </>
             )}
