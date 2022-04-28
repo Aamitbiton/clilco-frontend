@@ -61,7 +61,7 @@ export async function get_all_calls({ id, lastDocs }) {
     constants.dbPaths.rooms,
     wheres_caller,
     [["startTime", "desc"]],
-    5,
+    15,
     callerLastDoc
   );
 
@@ -70,7 +70,7 @@ export async function get_all_calls({ id, lastDocs }) {
     constants.dbPaths.rooms,
     wheres_answerer,
     [["startTime", "desc"]],
-    5,
+    15,
     answererLastDoc
   );
   return { caller_calls, answerer_calls };

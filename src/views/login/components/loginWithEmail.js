@@ -9,21 +9,19 @@ import ResetPassword from "./ResetPassword";
 import { login_with_email } from "../../../store/auth/authFunctions";
 import AppStack from "../../../components/AppStack";
 import AppIconButton from "../../../components/Buttons/AppIconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../../components/title/title";
 import CenterLayout from "../../../components/CenterLayout";
+import defaultStyles from "../../../style/defaultStyles";
 function LoginWithEmail({ close }) {
-  const flex = {
-    display: "flex",
-    alignItems: "center",
-    height: "100vh",
-    flexDirection: "column",
-  };
+  const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
     const res = await login_with_email({ email, password });
     res.error && setErrorMessage(res.message);
   };
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
@@ -32,29 +30,50 @@ function LoginWithEmail({ close }) {
   return (
     <CenterLayout direction={"column"}>
       <Title title={"התחברות עם אימייל"} />
-      <AppIconButton onClick={close}>
-        <CloseIcon color={"primary"} />
+      <AppIconButton
+        onClick={close}
+        style={{ position: "relative", left: inputs.STATIC_WIDTH / 2 }}
+      >
+        <ArrowForwardIcon color={"primary"} />
       </AppIconButton>
       <AppForm
         validationSchema={schema}
-        onSubmit={({ email, password }) =>
-          handleLoginWithEmail({ email, password })
-        }
+        onSubmit={async ({ email, password }) => {
+          setIsLoading(true);
+          await handleLoginWithEmail({ email, password });
+          setIsLoading(false);
+        }}
         initialValues={{
           email: "",
           password: "",
         }}
       >
         <AppStack direction={"column"}>
-          <FormFiled label={"אימייל"} name={"email"} />
-          <FormFiled label={"סיסמא"} name={"password"} />
+          <FormFiled
+            trim={true}
+            label={"אימייל"}
+            name={"email"}
+            width={inputs.STATIC_WIDTH}
+          />
+          <FormFiled
+            label={"סיסמא"}
+            type={"password"}
+            trim={true}
+            name={"password"}
+            width={inputs.STATIC_WIDTH}
+          />
           <Text
             onClick={() => setModalVisible(true)}
             sx={{ cursor: "pointer", textDecoration: "underline" }}
           >
             שכחתי סיסמא
           </Text>
-          <SubmitButton label={"הכנס"} />
+          <SubmitButton
+            width={inputs.STATIC_WIDTH}
+            loadingButton={true}
+            loading={isLoading}
+            label={"הכנס"}
+          />
           <AppStack margin={1}>
             <Text color={"error"}>{errorMessage}</Text>
           </AppStack>

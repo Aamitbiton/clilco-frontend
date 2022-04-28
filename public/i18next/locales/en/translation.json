@@ -4,7 +4,7 @@
     "end-call": "End call",
     "mute": "Mute questions",
     "unMute": "Un mute",
-    "next-question":"Next question"
+    "next-question": "Next question"
   },
   "after_date": {
     "title": "The date ended!",
@@ -16,7 +16,14 @@
   "calls": {
     "you_refused": "you refused",
     "you_were_rejected": "rejected",
-    "get_more_calls":"Get more meetings"
+    "get_more_calls": "Get more meetings",
+    "canceled_by": "rejected by "
+  },
+  "contact": {
+    "report": {
+      "subject": "report user",
+      "content": "I want to report about meeting number: "
+    }
   }
 }
 

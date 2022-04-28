@@ -14,6 +14,7 @@ function AppButton({
   startIcon,
   endIcon,
   borderColor,
+  fontSize = 16,
   margin,
   children,
   customIcon = true,
@@ -22,6 +23,7 @@ function AppButton({
 }) {
   const style = {
     borderRadius: rounded && 50,
+    fontSize,
     border: `2px solid ${
       borderColor ? borderColor : !backgroundColor && "turquoise"
     }`,

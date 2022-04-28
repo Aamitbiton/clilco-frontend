@@ -8,6 +8,7 @@ function FormFiled({
   type,
   width,
   label,
+  trim,
   defaultValue,
   ...otherProps
 }) {
@@ -21,7 +22,10 @@ function FormFiled({
       type={type}
       label={label}
       error={touched[name] && errors[name]}
-      onChange={handleChange}
+      onChange={(e) => {
+        if (trim) e.target.value = e.target.value.trim();
+        handleChange(e);
+      }}
       helperText={touched[name] && errors[name]}
       placeholder={placeholder}
       {...otherProps}

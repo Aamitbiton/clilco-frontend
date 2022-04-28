@@ -1,7 +1,5 @@
 import React, { useRef } from "react";
-import { Button } from "@mui/material";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import Image from "../../components/Image";
 import AppButton from "../Buttons/AppButton";
 import defaultStyles from "../../style/defaultStyles";
@@ -21,9 +19,6 @@ function FilePiker({
   };
   return (
     <div>
-      <div>
-        <ToastContainer closeOnClick={true} draggable={true} />
-      </div>
       {imgPicker ? (
         <Image onClick={() => file.current.click()} src={src} />
       ) : (

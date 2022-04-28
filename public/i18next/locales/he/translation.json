@@ -16,7 +16,14 @@
   "calls": {
     "you_refused": "דחית",
     "you_were_rejected": "סורבת",
-    "get_more_calls": "טען פגישות נוספות"
+    "get_more_calls": "טען פגישות נוספות",
+    "canceled_by": "נדחה על ידי "
+  },
+  "contact": {
+    "report": {
+      "subject": "תלונה על משתמש",
+      "content": "ברצוני להתלונן על פגישה שזה עתה סיימתי. קוד הפגישה הוא: "
+    }
   }
 }
 

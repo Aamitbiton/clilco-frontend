@@ -53,7 +53,7 @@ export const CallsHistory = () => {
             labelColor="white"
             borderColor="turquise"
             onClick={get_more_calls}
-            width="75%"
+            width="100%"
             label={translate("calls.get_more_calls")}
           />
         )}

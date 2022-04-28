@@ -21,8 +21,10 @@ import { useNavigate } from "react-router-dom";
 
 export const AfterVideo = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
+  const room = useSelector((s) => s.video.room);
   const navigate = useNavigate();
   const created = async () => {
+    if (!room) navigate(AppRoutes.VIDEO_DATE);
     await end_date();
   };
   const handle_interested_btn = async () => {
@@ -55,7 +57,9 @@ export const AfterVideo = () => {
     await delete_room_from_state();
     navigate(AppRoutes.VIDEO_DATE);
   };
-  const handle_report_btn = async () => {};
+  const handle_report_btn = async () => {
+    navigate(AppRoutes.CONTACT, { state: { report: { room } } });
+  };
 
   useEffect(created, []);
   return (
