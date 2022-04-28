@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./callsHistory.scss";
 import { get_calls } from "../../store/video/videoFunctions";
-import { SingleCall } from "./components/singleCall/SingleCall";
+import { SingleCall } from "./components/singleCall2/SingleCall";
 import { Header } from "../home/components/header/header";
 import AppButton from "../../components/Buttons/AppButton";
 import { useSelector } from "react-redux";
@@ -53,7 +53,7 @@ export const CallsHistory = () => {
             labelColor="white"
             borderColor="turquise"
             onClick={get_more_calls}
-            width="75%"
+            width="100%"
             label={translate("calls.get_more_calls")}
           />
         )}
