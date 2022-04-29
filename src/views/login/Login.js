@@ -10,11 +10,12 @@ import Title from "../../components/title/title";
 import googleIcon from "../../assets/Google-play-icon.png";
 import facebookIcon from "../../assets/Facebook-icon.png";
 import appleIcon from "../../assets/apple-icon.png";
-import emailIcon from "../../assets/clilco_logo_naked.png";
+import emailIcon from "../../assets/email-icon.png";
 import LoginWithEmail from "./components/loginWithEmail";
 import { useSelector } from "react-redux";
 import CenterLayout from "../../components/CenterLayout";
 import defaultStyles from "../../style/defaultStyles";
+import AppLogo from "../../components/AppLogo";
 
 export const Login = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
@@ -27,6 +28,7 @@ export const Login = () => {
           <LoginWithEmail close={() => set_enter_with_web(false)} />
         ) : (
           <>
+            <AppLogo />
             <Title textAlign={"center"} title={translate("Welcome_title")} />
             <AppStack direction={"column"}>
               <AppButton
