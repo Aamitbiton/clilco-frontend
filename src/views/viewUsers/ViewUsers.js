@@ -6,10 +6,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Header } from "../home/components/header/header";
 import Title from "../../components/title/title";
-import CenterLayout from "../../components/CenterLayout";
-import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
+import swipeAnimation from "../../assets/swipe_3.gif";
 
 export const ViewUsers = () => {
+  const isMobile = useSelector((state) => state.app.isMobile);
+  const swipeAnimation = require("../../assets/swipe_3.gif");
+  const loadingGiff = require("../../assets/loading.gif");
   const settings = {
     dots: false,
     infinite: true,
@@ -17,8 +20,10 @@ export const ViewUsers = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     rtl: false,
+    arrows: !isMobile,
   };
   const [users, setUsers] = useState(null);
+  const [view_animation, set_view_animation] = useState(true);
   const get_more_users = async () => {
     const newUsers = await f_get_all_users(!!users);
     const allUsers = users ? users.concat(newUsers) : newUsers;
@@ -28,36 +33,44 @@ export const ViewUsers = () => {
     get_more_users();
   }, []);
   return users ? (
-    <>
+    <div className={"flex-center"}>
       <Header />
-      <CenterLayout>
-        <div className={"carousel-container"}>
-          <Slider
-            arrows={false}
-            beforeChange={(oldIndex, newIndex) => {
-              if (users.length - newIndex < 2) get_more_users();
-            }}
-            {...settings}
-          >
-            {users.map((user) => (
-              <div className={"img-container"} key={user.id}>
-                <img src={user.imgUrl?.url} />
-                <Title
-                  className={"view-users-title blur-background"}
-                  title={user.name + "," + user.city.name}
-                  color={"white"}
-                  fontSize={25}
-                />
-              </div>
-            ))}
-          </Slider>
-        </div>
-      </CenterLayout>
-    </>
+      {view_animation && (
+        <img
+          className="gif-swipe-animation"
+          src={swipeAnimation}
+          onAnimationEnd={() => {
+            set_view_animation(false);
+          }}
+        />
+      )}
+
+      <div className={"carousel-container"}>
+        <Slider
+          beforeChange={(oldIndex, newIndex) => {
+            if (view_animation) set_view_animation(false);
+            if (users.length - newIndex < 2) get_more_users();
+          }}
+          {...settings}
+        >
+          {users.map((user) => (
+            <div className={"img-container"} key={user.id}>
+              <img src={user.imgUrl?.url} />
+              <Title
+                className={"view-users-title blur-background"}
+                title={user.name + "," + user.city.name}
+                color={"white"}
+                fontSize={25}
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </div>
   ) : (
-    <CenterLayout>
-      <Typography>no users</Typography>
-    </CenterLayout>
+    <div className={"flex-center"}>
+      <img src={loadingGiff} className="loading-giff"></img>
+    </div>
   );
 };
 

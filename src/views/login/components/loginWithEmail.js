@@ -13,6 +13,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Title from "../../../components/title/title";
 import CenterLayout from "../../../components/CenterLayout";
 import defaultStyles from "../../../style/defaultStyles";
+import AppLogo from "../../../components/AppLogo";
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -29,6 +30,8 @@ function LoginWithEmail({ close }) {
   });
   return (
     <CenterLayout direction={"column"}>
+      <AppLogo />
+
       <AppIconButton
         onClick={close}
         style={{ position: "relative", left: inputs.STATIC_WIDTH / 2 }}
