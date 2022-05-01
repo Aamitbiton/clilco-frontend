@@ -56,21 +56,25 @@ export async function watch_room({ id, callBack }) {
 
 export async function get_all_calls({ id, lastDocs }) {
   const { callerLastDoc, answererLastDoc } = lastDocs;
-  const wheres_caller = [{ key: "caller.id", operator: "==", value: id }];
+  const wheres_caller = [
+    { key: "caller.id", operator: "==", value: id },
+    { key: "caller.phone", operator: "!=", value: null },
+  ];
   const caller_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
     wheres_caller,
-    [["startTime", "desc"]],
-    15,
+    [["caller.phone"], ["startTime", "desc"]],
     callerLastDoc
   );
 
-  const wheres_answerer = [{ key: "answerer.id", operator: "==", value: id }];
+  const wheres_answerer = [
+    { key: "answerer.id", operator: "==", value: id },
+    { key: "answerer.phone", operator: "!=", value: null },
+  ];
   const answerer_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
     wheres_answerer,
-    [["startTime", "desc"]],
-    15,
+    [["answerer.phone"], ["startTime", "desc"]],
     answererLastDoc
   );
   return { caller_calls, answerer_calls };

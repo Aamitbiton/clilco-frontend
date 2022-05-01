@@ -209,7 +209,7 @@ export const VideoDate = () => {
               />
             )}
             <RemoteVideo remoteStream={remoteStream} />
-            {/*<CurrentQuestion questionIndexes={room.questions} muted={muted} />*/}
+            <CurrentQuestion questionIndexes={room.questions} muted={muted} />
             <VideoButtons
               end_video_date={end_video_date}
               next_question={go_to_next_question_local}

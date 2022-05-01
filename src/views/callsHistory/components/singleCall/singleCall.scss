@@ -8,6 +8,8 @@
   align-items: stretch;
   margin: 10px 0 ;
   padding: .5% 0;
+  border: 1px solid $app-turquoise;
+  border-radius: 10px;
 }
 
 .image-area{
@@ -65,15 +67,6 @@
   width: 75%;
 }
 
-.success{
-  border: 1px solid $app-turquoise;
-  border-radius: 10px;
-}
-.fail{
-  border: 1px solid $app-purple;
-  border-radius: 10px;
-
-}
 
 .full-screen-image-mobile{
   position: absolute;
