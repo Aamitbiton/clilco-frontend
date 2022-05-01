@@ -72,6 +72,7 @@ export const Profile = () => {
           >
             <div className={"flex-column-center"}>
               <AppModal
+                onClick={() => setModalVisible(false)}
                 setModalVisible={(val) => setModalVisible(val)}
                 modalVisible={modalVisible}
                 padding={0}
