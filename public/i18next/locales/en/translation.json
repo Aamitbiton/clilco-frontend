@@ -18,7 +18,8 @@
     "you_were_rejected": "rejected",
     "get_more_calls": "Get more meetings",
     "canceled_by": "rejected by ",
-    "no_calls": "No call to present"
+    "no_calls": "No call to present",
+    "title": "successful dates"
   },
   "contact": {
     "report": {

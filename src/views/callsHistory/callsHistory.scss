@@ -1,14 +1,31 @@
-.calls{
-  display: flex;
-  align-items: center;
-  //justify-content: space-between;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow-x: hidden;
+
+.calls-page{
   width: 100%;
   height: 100vh;
   padding: 80px 5% ;
+
+  .calls-title{
+    text-align: center;
+  }
+  .calls{
+    display: flex;
+    align-items: start;
+    //justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    width: 100%;
+    height: 80vh;
+    padding: 80px 5% ;
+  }
+
+  .no-calls{
+    text-align: center;
+  }
 }
+
+
+
 
 ::-webkit-scrollbar {
   width: 0;  /* Remove scrollbar space */

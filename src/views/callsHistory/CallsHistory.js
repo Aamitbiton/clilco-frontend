@@ -43,33 +43,35 @@ export const CallsHistory = () => {
   return (
     <>
       <Header />
-      <div className="calls">
+      <div className="calls-page">
+        <h2 className="calls-title">{translate("calls.title")}</h2>
+
         {calls.length ? (
-          <>
+          <div className="calls">
             {calls
               .sort((a, b) => b.startTime - a.startTime)
               .map((call, i) => (
                 <SingleCall key={i} call={call} />
               ))}
 
-            {enabled && (
-              <LoadingButton
-                style={{
-                  height: "50px",
-                  width: "100%",
-                  marginTop: "30px",
-                }}
-                loading={showLoading}
-                className="get-more-btn"
-                variant={"outlined"}
-                onClick={get_more_calls}
-              >
-                {translate("calls.get_more_calls")}
-              </LoadingButton>
-            )}
-          </>
+            {/*{enabled && (*/}
+            {/*  <LoadingButton*/}
+            {/*    style={{*/}
+            {/*      height: "50px",*/}
+            {/*      width: "100%",*/}
+            {/*      marginTop: "30px",*/}
+            {/*    }}*/}
+            {/*    loading={showLoading}*/}
+            {/*    className="get-more-btn"*/}
+            {/*    variant={"outlined"}*/}
+            {/*    onClick={get_more_calls}*/}
+            {/*  >*/}
+            {/*    {translate("calls.get_more_calls")}*/}
+            {/*  </LoadingButton>*/}
+            {/*)}*/}
+          </div>
         ) : (
-          <h1>{translate("calls.no_calls")}</h1>
+          <h1 className="no-calls">{translate("calls.no_calls")}</h1>
         )}
       </div>
     </>

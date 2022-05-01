@@ -47,13 +47,7 @@ export const SingleCall = ({ call }) => {
   return (
     <>
       {otherUserData && (
-        <div
-          className={
-            "single-call " +
-            (!isMobile && "desktop-call") +
-            (call[otherUserTypeInCall]?.phone ? " success" : " fail")
-          }
-        >
+        <div className={"single-call " + (!isMobile && "desktop-call")}>
           <div className="image-area">
             <div
               className="image-border"
@@ -75,41 +69,14 @@ export const SingleCall = ({ call }) => {
           </div>
 
           <div className="phone-area">
-            {call[otherUserTypeInCall]?.phone ? (
-              <b>
-                <a
-                  className="phone-number"
-                  href={"tel:" + call[otherUserTypeInCall]?.phone}
-                >
-                  {call[otherUserTypeInCall].phone}
-                </a>
-              </b>
-            ) : (
-              <>
-                {!call[userTypeInCall]?.positive ? (
-                  <SimpleTooltip
-                    title={translate("calls.canceled_by") + user.public.name}
-                  >
-                    <CloseIcon color={"secondary"} fontSize="large" />
-                  </SimpleTooltip>
-                ) : (
-                  <>
-                    {!call[otherUserTypeInCall]?.positive && (
-                      <SimpleTooltip
-                        title={
-                          translate("calls.canceled_by") + otherUserData.name
-                        }
-                      >
-                        <SentimentVeryDissatisfiedIcon
-                          fontSize="large"
-                          color={"secondary"}
-                        />
-                      </SimpleTooltip>
-                    )}
-                  </>
-                )}
-              </>
-            )}
+            <b>
+              <a
+                className="phone-number"
+                href={"tel:" + call[otherUserTypeInCall]?.phone}
+              >
+                {call[otherUserTypeInCall]?.phone}
+              </a>
+            </b>
           </div>
 
           {showImgFullScreen && (
