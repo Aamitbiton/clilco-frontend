@@ -18,6 +18,7 @@ function LoginWithEmail({ close }) {
   const handleLoginWithEmail = async ({ email, password }) => {
     const res = await login_with_email({ email, password });
     res.error && setErrorMessage(res.message);
+    return res;
   };
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,8 +40,8 @@ function LoginWithEmail({ close }) {
         validationSchema={schema}
         onSubmit={async ({ email, password }) => {
           setIsLoading(true);
-          await handleLoginWithEmail({ email, password });
-          setIsLoading(false);
+          const res = await handleLoginWithEmail({ email, password });
+          res.error && setIsLoading(false);
         }}
         initialValues={{
           email: "",
