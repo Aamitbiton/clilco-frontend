@@ -18,7 +18,19 @@ function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
     const res = await login_with_email({ email, password });
-    res.error && setErrorMessage(res.message);
+    if (res.error) {
+      const errorMessage = handleErrorMessage(res.message);
+      res.error && setErrorMessage(errorMessage);
+    }
+    return res;
+
+    function handleErrorMessage(message) {
+      const wrongPassword = new RegExp(/wrong-password/g).test(message);
+      debugger;
+      if (wrongPassword) {
+        return "סיסמא שגויה";
+      }
+    }
   };
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +54,8 @@ function LoginWithEmail({ close }) {
         validationSchema={schema}
         onSubmit={async ({ email, password }) => {
           setIsLoading(true);
-          await handleLoginWithEmail({ email, password });
-          setIsLoading(false);
+          const res = await handleLoginWithEmail({ email, password });
+          res.error && setIsLoading(false);
         }}
         initialValues={{
           email: "",

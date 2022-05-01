@@ -9,6 +9,7 @@ export default function AppModal({
   modalVisible,
   setModalVisible,
   children,
+  onClick,
   padding = 4,
 }) {
   const style = {
@@ -30,6 +31,7 @@ export default function AppModal({
         aria-describedby="transition-modal-description"
         open={modalVisible}
         onClose={handleClose}
+        onClick={onClick}
         closeAfterTransition
         // BackdropComponent={Backdrop}
         BackdropProps={{
