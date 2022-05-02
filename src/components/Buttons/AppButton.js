@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import IconRender from "../iconRender";
-import "../../style/variables.scss";
+import "../../style/colors.scss";
 
 function AppButton({
   backgroundColor,

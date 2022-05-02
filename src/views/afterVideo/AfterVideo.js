@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import "./afterVideo.scss";
-import "../../style/variables.scss";
-
 import {
   answer_after_date,
   end_date,
@@ -16,7 +14,6 @@ import AppButton from "../../components/Buttons/AppButton";
 import AppStack from "../../components/AppStack";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import EmojiFlagsIcon from "@mui/icons-material/EmojiFlags";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useNavigate } from "react-router-dom";
@@ -67,37 +64,26 @@ export const AfterVideo = () => {
         <Text onClick={() => {}} sx={{ fontSize: "28px" }}>
           {translate("after_date.sub-title")}
         </Text>
-        <AppStack direction="column" spacing={2} margin={2}>
+        <AppStack direction="row" spacing={2} margin={2}>
           <AppButton
             labelColor="white"
             onClick={handle_interested_btn}
             label={translate("after_date.interested")}
-            width="250px"
             children={<CheckIcon style={{ marginRight: "10px" }} />}
           />
           <AppButton
-            borderColor="$app-purple"
+            borderColor="#db1b87"
             labelColor="white"
             onClick={handle_not_interested_btn}
-            width="250px"
-            label={translate("after_date.not-interested")}
+            label={translate("after_date.not_interested")}
             children={
-              <CloseIcon
-                style={{ marginRight: "10px", color: "$app-purple" }}
-              />
-            }
-          />
-          <AppButton
-            labelColor="white"
-            borderColor="white"
-            onClick={handle_report_btn}
-            width="250px"
-            label={translate("after_date.report")}
-            children={
-              <EmojiFlagsIcon style={{ marginRight: "10px", color: "white" }} />
+              <CloseIcon style={{ marginRight: "10px", color: "#db1b87" }} />
             }
           />
         </AppStack>
+        <p onClick={handle_report_btn} className="report">
+          <span>{translate("after_date.report")}</span>
+        </p>
       </div>
     </>
   );

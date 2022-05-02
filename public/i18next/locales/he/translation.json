@@ -9,8 +9,8 @@
   "after_date": {
     "title": "הדייט הסתיים!",
     "sub-title": " מעוניינים להחליף פרטים?",
-    "interested": "מעוניין",
-    "not-interested": "לא מעוניין",
+    "interested": "כן",
+    "not_interested": "לא",
     "report": "דווח על משתמש"
   },
   "calls": {

@@ -10,7 +10,7 @@
     "title": "The date ended!",
     "sub-title": "would you like to exchange contact information?",
     "interested": "yes",
-    "not-interested": "no",
+    "not_interested": "no",
     "report": "report user"
   },
   "calls": {
