@@ -35,19 +35,16 @@ export const SingleCall = ({ call }) => {
       call.caller.id === user.private.id ? call.answerer.id : call.caller.id;
     setOtherUserData(await get_user_public_data(otherUserId));
   };
-  const get_date_date = () => new Date(call.startTime).toLocaleDateString();
-  const get_date_time = () => {
-    const d = new Date(call.startTime);
-    const hours = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
-    const minutes = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
-    return hours + ":" + minutes;
+  const get_other_user_age = (milli) => {
+    return new Date().getFullYear() - new Date(milli).getFullYear();
   };
+  const get_date_date = () => new Date(call.startTime).toLocaleDateString();
   useEffect(created, []);
   useEffect(init_data_fetch, [userTypeInCall]);
   return (
     <>
       {otherUserData && (
-        <div className={"single-call " + (!isMobile && "desktop-call")}>
+        <div className={"single-call " + (!isMobile ? "desktop-call" : "")}>
           <div className="image-area">
             <div
               className="image-border"
@@ -63,9 +60,11 @@ export const SingleCall = ({ call }) => {
           </div>
 
           <div className="information">
-            <b className="name">{otherUserData.name}</b>
+            <b>
+              {otherUserData.name}, {get_other_user_age(otherUserData.birthday)}
+            </b>
+            <b>{otherUserData.city.name}</b>
             <b>{get_date_date()}</b>
-            <b>{get_date_time()}</b>
           </div>
 
           <div className="phone-area">

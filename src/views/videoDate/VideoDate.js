@@ -24,6 +24,9 @@ import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
 import { infoLog } from "../../utils/logs";
 import { Timer } from "../../components/timer/timer";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AppButton from "../../components/Buttons/AppButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -37,6 +40,7 @@ export const VideoDate = () => {
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
+  const translate = useSelector((state) => state.app.global_hooks.translate);
   const navigate = useNavigate();
 
   const init_page = async () => {
@@ -301,6 +305,17 @@ export const VideoDate = () => {
       debugger;
     }
   };
+  const handle_back_btn = async () => {
+    try {
+      await handle_exit();
+      await handle_user_availability(false);
+      navigate("/");
+    } catch (e) {
+      console.error(e);
+      debugger;
+    }
+  };
+
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
@@ -314,7 +329,7 @@ export const VideoDate = () => {
           handle_no_permissions={handle_no_permissions}
         />
 
-        {remoteStream && (
+        {remoteStream ? (
           <>
             {showTimer && (
               <Timer
@@ -332,6 +347,20 @@ export const VideoDate = () => {
               muted={muted}
             />
           </>
+        ) : (
+          <div className="back-btn">
+            <AppButton
+              borderColor="#db1b87"
+              labelColor="white"
+              onClick={handle_back_btn}
+              label={translate("video_page.back")}
+              children={
+                <ChevronRightIcon
+                  style={{ marginRight: "10px", color: "#db1b87" }}
+                />
+              }
+            />
+          </div>
         )}
       </div>
     </>

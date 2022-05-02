@@ -43,6 +43,13 @@ export async function answer_after_date({ room, type, answer }) {
   });
 }
 
+export async function reveal_my_phone({ room, phone, type }) {
+  return await dbLayer.update_room_private({
+    roomId: room.id,
+    data: { [type]: { phone } },
+  });
+}
+
 export async function clean_room({ room }) {
   return await dbLayer.update_room({
     roomId: room.id,

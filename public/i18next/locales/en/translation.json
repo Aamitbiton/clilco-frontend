@@ -4,7 +4,8 @@
     "end-call": "End call",
     "mute": "Mute questions",
     "unMute": "Un mute",
-    "next-question": "Next question"
+    "next-question": "Next question",
+    "back":"Back to home page"
   },
   "after_date": {
     "title": "The date ended!",
