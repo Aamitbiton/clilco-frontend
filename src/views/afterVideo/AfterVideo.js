@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import "./afterVideo.scss";
+import "../../style/variables.scss";
+
 import {
   answer_after_date,
   end_date,
@@ -36,26 +38,22 @@ export const AfterVideo = () => {
     await notify_and_go_back_dating();
   };
   const notify_and_go_back_dating = async () => {
-    clean_room();
     let done = false;
+    const action = () => {
+      done = true;
+      reset_snackBar();
+      go_back_to_video_date_page();
+    };
     await create_snackBar({
       message: SNACK_BAR_TYPES.ANSWER_ACCEPTED,
-      action: async () => {
-        done = true;
-        await reset_snackBar;
-        await go_back_to_video_date_page();
-      },
+      action,
     });
-    setTimeout(() => {
-      if (!done) {
-        reset_snackBar();
-        go_back_to_video_date_page();
-      }
-    }, 2000);
+    setTimeout(action, 2000);
   };
   const go_back_to_video_date_page = async () => {
-    await delete_room_from_state();
-    navigate(AppRoutes.VIDEO_DATE);
+    window.location.reload();
+    // await delete_room_from_state();
+    // navigate(AppRoutes.VIDEO_DATE);
   };
   const handle_report_btn = async () => {
     navigate(AppRoutes.CONTACT, { state: { report: { room } } });
@@ -72,20 +70,21 @@ export const AfterVideo = () => {
         <AppStack direction="column" spacing={2} margin={2}>
           <AppButton
             labelColor="white"
-            borderColor=""
             onClick={handle_interested_btn}
             label={translate("after_date.interested")}
             width="250px"
             children={<CheckIcon style={{ marginRight: "10px" }} />}
           />
           <AppButton
+            borderColor="$app-purple"
             labelColor="white"
-            borderColor="purple"
             onClick={handle_not_interested_btn}
             width="250px"
             label={translate("after_date.not-interested")}
             children={
-              <CloseIcon style={{ marginRight: "10px", color: "purple" }} />
+              <CloseIcon
+                style={{ marginRight: "10px", color: "$app-purple" }}
+              />
             }
           />
           <AppButton
