@@ -2,7 +2,7 @@
   "Welcome_title": "Welcome",
   "video_page": {
     "end-call": "End call",
-    "mute": "Mute questions",
+    "volume": "Questions volume",
     "unMute": "Un mute",
     "next-question": "Next question",
     "back":"Back to home page"

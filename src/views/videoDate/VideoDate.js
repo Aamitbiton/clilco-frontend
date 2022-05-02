@@ -30,13 +30,13 @@ import CloseIcon from "@mui/icons-material/Close";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
+  const [volume, setVolume] = useState(1);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
-  const [muted, setMuted] = useState(false);
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
@@ -268,8 +268,8 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_mute_questions = () => {
-    setMuted(!muted);
+  const handle_questions_volume = (val) => {
+    setVolume(val / 100);
   };
   const stop_my_video = async () => {
     try {
@@ -339,12 +339,11 @@ export const VideoDate = () => {
               />
             )}
             <RemoteVideo remoteStream={remoteStream} />
-            {/*<CurrentQuestion questionIndexes={room.questions} muted={muted} />*/}
+            <CurrentQuestion questionIndexes={room.questions} volume={volume} />
             <VideoButtons
               end_video_date={end_video_date}
               next_question={go_to_next_question_local}
-              mute_questions={handle_mute_questions}
-              muted={muted}
+              handle_questions_volume={handle_questions_volume}
             />
           </>
         ) : (

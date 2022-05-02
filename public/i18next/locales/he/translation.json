@@ -2,7 +2,7 @@
   "Welcome_title": "ברוכים הבאים",
   "video_page": {
     "end-call": "ניתוק",
-    "mute": "השתק שאלות",
+    "volume": "עוצמת שאלות",
     "unMute": "ביטול השתקה",
     "next-question": "שאלה הבאה",
     "back": "חזרה לדף הבית"
