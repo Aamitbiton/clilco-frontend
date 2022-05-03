@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import IconRender from "../iconRender";
+import { useTheme } from "@mui/material";
 
 function AppButton({
   backgroundColor,
@@ -9,6 +10,7 @@ function AppButton({
   onClick,
   width,
   height,
+  fontWeight = "bold",
   disabled = false,
   variant = "outlined",
   startIcon,
@@ -40,14 +42,14 @@ function AppButton({
         endIcon && (customIcon ? <IconRender icon={endIcon} /> : startIcon)
       }
       variant={variant}
-      {...otherProps}
       onClick={onClick}
       disabled={disabled}
       style={style}
+      {...otherProps}
     >
-      <b className={"flex-center"} style={{ color: labelColor }}>
+      <span className={"flex-center"} style={{ color: labelColor, fontWeight }}>
         {label}
-      </b>
+      </span>
       {children && children}
     </Button>
   );
