@@ -4,6 +4,7 @@ import "./startDate.css";
 import AppStack from "../../../../components/AppStack";
 import Typography from "@mui/material/Typography";
 import AppButton from "../../../../components/Buttons/AppButton";
+import defaultStyles from "../../../../style/defaultStyles";
 
 export const StartDate = ({ navigate }) => {
   return (
@@ -14,6 +15,8 @@ export const StartDate = ({ navigate }) => {
             מוכנים?
           </Typography>
           <AppButton
+            width={defaultStyles.inputs.STATIC_WIDTH}
+            height={defaultStyles.inputs.STATIC_HEIGHT}
             backgroundColor={
               "linear-gradient(90deg, rgba(119,42,118,1) 1%, rgba(219,27,135,1) 97%)"
             }
