@@ -49,14 +49,17 @@ export const set_go_to_decision = async () => {
 
 export const end_date = async () => {
   const room = getState().video.room;
-  await videoService.end_date({ roomId: room.id });
+  if (room) await videoService.end_date({ roomId: room.id });
 };
 
 export const answer_after_date = async (answer) => {
   const room = getState().video.room;
   let userId = getState().user.user.private.id;
+  let phone = getState().user.user.private.phone;
   const type = room.answerer.id === userId ? "answerer" : "caller";
   await videoService.answer_after_date({ room, type, answer });
+  if (answer?.positive)
+    await videoService.reveal_my_phone({ room, phone, type });
 };
 
 export const get_calls = async () => {

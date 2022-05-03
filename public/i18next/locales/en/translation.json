@@ -2,15 +2,16 @@
   "Welcome_title": "Welcome",
   "video_page": {
     "end-call": "End call",
-    "mute": "Mute questions",
+    "volume": "Questions volume",
     "unMute": "Un mute",
-    "next-question": "Next question"
+    "next-question": "Next question",
+    "back":"Back to home page"
   },
   "after_date": {
     "title": "The date ended!",
     "sub-title": "would you like to exchange contact information?",
     "interested": "yes",
-    "not-interested": "no",
+    "not_interested": "no",
     "report": "report user"
   },
   "calls": {
