@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import IconRender from "../iconRender";
-import { useTheme } from "@mui/material";
+import "../../style/variables.scss";
 
 function AppButton({
   backgroundColor,
@@ -42,6 +42,7 @@ function AppButton({
         endIcon && (customIcon ? <IconRender icon={endIcon} /> : startIcon)
       }
       variant={variant}
+      {...otherProps}
       onClick={onClick}
       disabled={disabled}
       style={style}

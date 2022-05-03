@@ -91,3 +91,9 @@ export async function update_user_private({ id, data }) {
 export async function update_room({ roomId, data }) {
   return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
 }
+export async function update_room_private({ roomId, data }) {
+  return await firestore.update(
+    constants.dbPaths.singleRoomPrivate(roomId),
+    data
+  );
+}
