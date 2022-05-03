@@ -15,7 +15,6 @@ export async function check_password(userId, code) {
     console.error(e);
   }
 }
-
 export async function send_contact_form(contact_form_details) {
   try {
     return (await callAbleFunction("contactMessage", { contact_form_details }))
@@ -23,5 +22,12 @@ export async function send_contact_form(contact_form_details) {
   } catch (e) {
     console.error(e);
     return false;
+  }
+}
+export async function search_for_match() {
+  try {
+    return (await callAbleFunction("search_for_match")).data;
+  } catch (e) {
+    console.error(e);
   }
 }

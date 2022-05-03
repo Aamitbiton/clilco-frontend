@@ -14,14 +14,20 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
     const url = await get_question_audio({ index: index.toString() });
     setSrc(url);
   };
-  useEffect(handle_next_question, [questionIndexes]);
-  useEffect(async () => {
+  const handle_volume_change = async () => {
+    if (volume && audioRef?.current?.volume) {
+      audioRef.current.volume = volume;
+      localStorage.setItem("questions-volume", JSON.stringify(volume));
+    }
+  };
+  const created = async () => {
     await handle_question_url({ index: "0" });
-  }, []);
-  useEffect(async () => {
-    if (volume && audioRef?.current?.volume) audioRef.current.volume = volume;
-  }, [volume]);
-
+    const vol = JSON.parse(localStorage.getItem("questions-volume"));
+    if (vol && audioRef?.current?.volume) audioRef.current.volume = vol;
+  };
+  useEffect(handle_next_question, [questionIndexes]);
+  useEffect(created, []);
+  useEffect(handle_volume_change, [volume]);
   return (
     <>
       <div className="question-area">

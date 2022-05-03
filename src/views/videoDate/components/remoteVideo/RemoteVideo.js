@@ -38,7 +38,7 @@ export const RemoteVideo = ({ remoteStream }) => {
             ref={remoteVideoRef}
             autoPlay={true}
             className={videoClass}
-            // muted={true}
+            muted={true}
           />
         </>
       )}

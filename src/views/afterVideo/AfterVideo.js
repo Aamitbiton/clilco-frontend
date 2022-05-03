@@ -23,7 +23,6 @@ export const AfterVideo = () => {
   const room = useSelector((s) => s.video.room);
   const navigate = useNavigate();
   const created = async () => {
-    if (!room) navigate(AppRoutes.VIDEO_DATE);
     await end_date();
   };
   const handle_interested_btn = async () => {
@@ -48,9 +47,8 @@ export const AfterVideo = () => {
     setTimeout(action, 2000);
   };
   const go_back_to_video_date_page = async () => {
-    window.location.reload();
-    // await delete_room_from_state();
-    // navigate(AppRoutes.VIDEO_DATE);
+    await delete_room_from_state();
+    navigate(AppRoutes.LOBBY);
   };
   const handle_report_btn = async () => {
     navigate(AppRoutes.CONTACT, { state: { report: { room } } });
