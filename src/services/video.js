@@ -13,6 +13,8 @@ export async function watch_room(handle_room) {
   });
 }
 
+export async function search_for_match() {}
+
 export async function send_offer_or_answer({ data, roomId }) {
   return await dbLayer.update_room({
     roomId,
@@ -40,13 +42,6 @@ export async function answer_after_date({ room, type, answer }) {
   return await dbLayer.update_room({
     roomId: room.id,
     data: { [type]: { ...room[type], ...answer } },
-  });
-}
-
-export async function reveal_my_phone({ room, phone, type }) {
-  return await dbLayer.update_room_private({
-    roomId: room.id,
-    data: { [type]: { phone } },
   });
 }
 

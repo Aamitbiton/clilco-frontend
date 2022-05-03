@@ -10,7 +10,6 @@ import {
   unsubscribe_room_listener,
   set_go_to_decision,
 } from "../../store/video/videoFunctions";
-import { handle_user_availability } from "../../store/user/userFunctions";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useSelector } from "react-redux";
@@ -22,15 +21,14 @@ import { webRTCConfiguration } from "./videoUtils";
 import Peer from "simple-peer";
 import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
-import { infoLog } from "../../utils/logs";
 import { Timer } from "../../components/timer/timer";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import AppButton from "../../components/Buttons/AppButton";
-import CloseIcon from "@mui/icons-material/Close";
+import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(
+    JSON.parse(localStorage.getItem("questions-volume") || 1)
+  );
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
   const [newProcess, setNewProcess] = useState(true);
@@ -40,16 +38,16 @@ export const VideoDate = () => {
   const room = useSelector((state) => state.video.room);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
-  const translate = useSelector((state) => state.app.global_hooks.translate);
+  const room_unsubscribes = useSelector(
+    (state) => state.video.room_unsubscribes
+  );
   const navigate = useNavigate();
 
   const init_page = async () => {
     try {
-      await watch_room();
-      await handle_user_availability(true);
+      if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
-      debugger;
       console.error(e);
     }
   };
@@ -58,15 +56,6 @@ export const VideoDate = () => {
       setPeer(init_peer({ type: "offer" }));
     } catch (e) {
       console.error(e);
-      debugger;
-    }
-  };
-  const create_answer = (offer) => {
-    try {
-      setPeer(init_peer({ type: "answer", offer }));
-    } catch (e) {
-      console.error(e);
-      debugger;
     }
   };
   const init_peer = ({ type, offer }) => {
@@ -83,7 +72,13 @@ export const VideoDate = () => {
       return peer;
     } catch (e) {
       console.error(e);
-      debugger;
+    }
+  };
+  const create_answer = (offer) => {
+    try {
+      setPeer(init_peer({ type: "answer", offer }));
+    } catch (e) {
+      console.error(e);
     }
   };
   const handle_signal = async (offerOrAnswer) => {
@@ -95,7 +90,6 @@ export const VideoDate = () => {
       });
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const signal_answer = (answer) => {
@@ -103,11 +97,6 @@ export const VideoDate = () => {
       peer?.signal(answer);
     } catch (e) {
       console.error(e);
-      debugger;
-      clean_room().then(() => {
-        debugger;
-        window.location.reload();
-      });
     }
   };
   const handle_got_stream = async (stream) => {
@@ -120,7 +109,6 @@ export const VideoDate = () => {
       });
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_caller = async ({ offer, answer, goToDecision }) => {
@@ -130,7 +118,6 @@ export const VideoDate = () => {
         await signal_answer(answer);
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_answerer = async ({ offer, answer }) => {
@@ -138,7 +125,6 @@ export const VideoDate = () => {
       if (offer && !answer) await create_answer(offer);
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
 
@@ -154,20 +140,19 @@ export const VideoDate = () => {
       });
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_remote_video_stopped = async () => {
     try {
-      setRemoteStream(null);
-      peer?.destroy();
-      await create_snackBar({
-        message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
-        action: reset_snackBar,
-      });
+      if (window.location.href.includes("video-date")) {
+        await create_snackBar({
+          message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
+          action: reset_snackBar,
+        });
+        await reset_page();
+      }
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_remote_video_restarted = async (stream) => {
@@ -175,7 +160,16 @@ export const VideoDate = () => {
       await handle_got_stream(stream);
     } catch (e) {
       console.error(e);
-      debugger;
+    }
+  };
+  const reset_page = async () => {
+    try {
+      infoLog("reset page");
+      setRemoteStream(null);
+      peer?.destroy();
+      // window.location.reload();
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -183,15 +177,7 @@ export const VideoDate = () => {
     try {
       if (!room) return;
       const myId = user.private.id;
-      const {
-        caller,
-        answerer,
-        answer,
-        offer,
-        goToDecision,
-        questions,
-        ended,
-      } = room;
+      const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);
       if (caller.id === myId) await handle_caller(room);
@@ -208,7 +194,6 @@ export const VideoDate = () => {
         setDateEndInMilliseconds(room.startTime + 1000 * 60 * 10);
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_date_time = () => {
@@ -226,7 +211,6 @@ export const VideoDate = () => {
       });
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const now = () => new Date().getTime();
@@ -244,7 +228,6 @@ export const VideoDate = () => {
       }
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const calculate_next_question = () => {
@@ -256,7 +239,6 @@ export const VideoDate = () => {
       return Number(options[num]);
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_no_permissions = () => {
@@ -264,7 +246,6 @@ export const VideoDate = () => {
       alert("אין לך הרשאות למצלמה");
       //todo: Add here appModal
     } catch (e) {
-      debugger;
       console.error(e);
     }
   };
@@ -280,7 +261,6 @@ export const VideoDate = () => {
       });
       setLocalStream(null);
     } catch (e) {
-      debugger;
       console.error(e);
     }
   };
@@ -293,7 +273,6 @@ export const VideoDate = () => {
       navigate(AppRoutes.AFTER_VIDEO);
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_exit = () => {
@@ -302,17 +281,6 @@ export const VideoDate = () => {
       peer?.destroy();
     } catch (e) {
       console.error(e);
-      debugger;
-    }
-  };
-  const handle_back_btn = async () => {
-    try {
-      await handle_exit();
-      await handle_user_availability(false);
-      navigate("/");
-    } catch (e) {
-      console.error(e);
-      debugger;
     }
   };
 
@@ -347,19 +315,7 @@ export const VideoDate = () => {
             />
           </>
         ) : (
-          <div className="back-btn">
-            <AppButton
-              borderColor="#db1b87"
-              labelColor="white"
-              onClick={handle_back_btn}
-              label={translate("video_page.back")}
-              children={
-                <ChevronRightIcon
-                  style={{ marginRight: "10px", color: "#db1b87" }}
-                />
-              }
-            />
-          </div>
+          <h1>אין וידאו</h1>
         )}
       </div>
     </>
