@@ -10,6 +10,7 @@ function AppButton({
   onClick,
   width,
   height,
+  fontWeight = "bold",
   disabled = false,
   variant = "outlined",
   startIcon,
@@ -45,10 +46,11 @@ function AppButton({
       onClick={onClick}
       disabled={disabled}
       style={style}
+      {...otherProps}
     >
-      <b className={"flex-center"} style={{ color: labelColor }}>
+      <span className={"flex-center"} style={{ color: labelColor, fontWeight }}>
         {label}
-      </b>
+      </span>
       {children && children}
     </Button>
   );

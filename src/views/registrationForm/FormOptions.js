@@ -9,9 +9,9 @@ export const { MALE, FEMALE, JEWISH, CHRISTIAN, MUSLIM, ATHEIST } =
   });
 
 const religion = [
-  { value: CHRISTIAN, label: "נוצרי" },
   { value: JEWISH, label: "יהודי" },
   { value: MUSLIM, label: "מוסלמי" },
+  { value: CHRISTIAN, label: "נוצרי" },
   { value: ATHEIST, label: "אתאיסט" },
 ];
 

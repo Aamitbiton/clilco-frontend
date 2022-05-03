@@ -5,6 +5,7 @@ import * as userService from "../../services/user";
 import * as api from "../../services/api";
 import { store } from "../index";
 import { watch_user } from "../user/userFunctions";
+import USER_CONSTANTS from "../user/constants";
 const { getState, dispatch } = store;
 
 export const login_with_google = async () => {
@@ -42,7 +43,11 @@ export const send_sms = async (phoneNumber) => {
 
 export const check_password = async (code) => {
   let userId = getState().user.user.private.id;
-  return await api.check_password(userId, code);
+  const res = await api.check_password(userId, code);
+  if (res.data.name) {
+    await actionsCreator(USER_CONSTANTS.SET_TEMP_USER, res.data);
+  }
+  return res;
 };
 
 export const signOut = async () => {

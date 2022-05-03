@@ -1,13 +1,19 @@
 import USER_CONSTANTS from "./constants";
 
-const { SET_USER_PRIVATE, SET_USER_PUBLIC, SET_LAST_DOC, SET_IMAGE } =
-  USER_CONSTANTS;
+const {
+  SET_USER_PRIVATE,
+  SET_USER_PUBLIC,
+  SET_LAST_DOC,
+  SET_TEMP_USER,
+  SET_IMAGE,
+} = USER_CONSTANTS;
 
 const userInterface = {
   user: {
     private: {},
     public: {},
   },
+  temp_user: {},
   lastDoc: null,
 };
 
@@ -25,6 +31,8 @@ export default function user(state = userInterface, action) {
       };
     case SET_LAST_DOC:
       return { ...state, lastDoc: action.payload };
+    case SET_TEMP_USER:
+      return { ...state, temp_user: action.payload };
     case SET_IMAGE:
       return {
         ...state,

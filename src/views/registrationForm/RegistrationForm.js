@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./registrationForm.css";
 import AppForm from "../../components/Form/AppForm";
 import registrationSchema from "./validationSchema";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import SubmitButton from "../../components/Form/SubmitButton";
 import FormFiled from "../../components/Form/FormFiled";
 import AppStack from "../../components/AppStack";
@@ -12,6 +11,9 @@ import { gender, religion } from "./FormOptions";
 import FormAutoComplete from "./CitiesAutoComplete";
 import Title from "../../components/title/title";
 import { set_user_details } from "../../store/user/userFunctions";
+import AppModal from "../../components/AppModal";
+import RestoreTiptopUser from "./RestoreTiptopUser/RestoreTiptopUser";
+import { useSelector } from "react-redux";
 
 const largeInput = 270;
 const midInput = 125;
@@ -19,6 +21,9 @@ const smallInput = 80;
 
 export const RegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const tipTopUser = useSelector((s) => s.user.temp_user);
+  useEffect(() => tipTopUser?.name && setModalVisible(true), [tipTopUser]);
   const handleSubmit = async (values) => {
     setIsLoading(true);
     const { day, month, year, name, religion, city, gender, wanted } = values;
@@ -35,9 +40,30 @@ export const RegistrationForm = () => {
     setIsLoading(false);
   };
 
+  const accept_tiptop_details = async () => {
+    setIsLoading(true);
+    setModalVisible(false);
+    await set_user_details(tipTopUser);
+    setIsLoading(false);
+  };
+
   return (
     <div className={"full-height flex-column-center"}>
       <Title title={"פרטים אישיים"} />
+
+      <AppModal
+        modalVisible={modalVisible}
+        setModalVisible={(val) => setModalVisible(val)}
+      >
+        {tipTopUser?.name && (
+          <RestoreTiptopUser
+            acceptIntegration={accept_tiptop_details}
+            closeModal={() => setModalVisible(false)}
+            user={tipTopUser}
+          />
+        )}
+      </AppModal>
+
       <AppForm
         validationSchema={registrationSchema}
         onSubmit={(values) => handleSubmit(values)}

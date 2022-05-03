@@ -36,7 +36,11 @@ function Image({
       )}
       {src && (
         <img
-          style={{ width: "inherit", height: "inherit", objectFit: "contain" }}
+          style={{
+            width: "inherit",
+            height: "inherit",
+            objectFit: "contain",
+          }}
           src={src}
           alt={alt}
         />
