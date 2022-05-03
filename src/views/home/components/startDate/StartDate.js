@@ -22,12 +22,7 @@ export const StartDate = ({ navigate }) => {
             labelColor={"white"}
             label={"קח אותי לדייט"}
           />
-          <AppButton labelColor={"white"} label={"צפה במשתמשים נוספים"} />
-          <AppButton
-            borderColor={"purple"}
-            labelColor={"white"}
-            label={"ערוך פרטים אישיים"}
-          />
+          <AppButton labelColor={"white"} label={"צפה במשתמשים "} />
         </AppStack>
       </div>
     </>

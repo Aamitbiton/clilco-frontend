@@ -27,15 +27,7 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
           height={inputs.STATIC_HEIGHT}
           onClick={() => navigate(VIEW_USERS)}
           labelColor={"white"}
-          label={"צפה במשתמשים נוספים"}
-        />
-        <AppButton
-          width={inputs.STATIC_WIDTH}
-          height={inputs.STATIC_HEIGHT}
-          borderColor={"purple"}
-          labelColor={"white"}
-          onClick={() => navigate(PROFILE)}
-          label={"פרטים אישיים"}
+          label={"צפה במשתמשים "}
         />
       </AppStack>
     </div>
