@@ -85,7 +85,7 @@ export const Lobby = () => {
             borderColor="#db1b87"
             labelColor="white"
             onClick={handle_back_btn}
-            label={translate("video_page.back")}
+            label={translate("lobby.back")}
             children={
               <ChevronRightIcon
                 style={{ marginRight: "10px", color: "#db1b87" }}

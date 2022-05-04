@@ -1,11 +1,14 @@
 {
   "Welcome_title": "Welcome",
+  "lobby": {
+    "back": "Back to home page"
+  },
   "video_page": {
     "end-call": "End call",
     "volume": "Questions volume",
     "unMute": "Un mute",
     "next-question": "Next question",
-    "back":"Back to home page"
+    "waiting_for_video": "Waiting for "
   },
   "after_date": {
     "title": "The date ended!",

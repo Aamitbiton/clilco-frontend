@@ -22,7 +22,6 @@ import Peer from "simple-peer";
 import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
-import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -36,6 +35,7 @@ export const VideoDate = () => {
   const [remoteStream, setRemoteStream] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const room = useSelector((state) => state.video.room);
+  const translate = useSelector((state) => state.app.global_hooks.translate);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
   const room_unsubscribes = useSelector(
@@ -314,7 +314,13 @@ export const VideoDate = () => {
             />
           </>
         ) : (
-          <h1>אין וידאו</h1>
+          <div className="full-screen flex-center">
+            {remoteUser?.name && (
+              <h1>
+                {translate("video_page.waiting_for_video") + remoteUser?.name}
+              </h1>
+            )}
+          </div>
         )}
       </div>
     </>

@@ -1,11 +1,13 @@
 {
   "Welcome_title": "ברוכים הבאים",
+  "lobby": {
+    "back": "חזרה לדף הבית"
+  },
   "video_page": {
     "end-call": "ניתוק",
     "volume": "עוצמת שאלות",
-    "unMute": "ביטול השתקה",
     "next-question": "שאלה הבאה",
-    "back": "חזרה לדף הבית"
+    "waiting_for_video": "ממתין ל"
   },
   "after_date": {
     "title": "הדייט הסתיים!",
