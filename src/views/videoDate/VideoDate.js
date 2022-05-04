@@ -45,10 +45,19 @@ export const VideoDate = () => {
 
   const init_page = async () => {
     try {
+      make_sure_one_reload_before_start();
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
+    }
+  };
+  const make_sure_one_reload_before_start = () => {
+    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
+    localStorage.setItem("video-date-once", "false");
+    if (!wasHereOnce) {
+      localStorage.setItem("video-date-once", "true");
+      window.location.reload(true);
     }
   };
   const create_offer = async () => {
@@ -149,7 +158,7 @@ export const VideoDate = () => {
           message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
           action: reset_snackBar,
         });
-        await reset_page();
+        await end_video_date();
       }
     } catch (e) {
       console.error(e);
@@ -162,17 +171,6 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const reset_page = async () => {
-    try {
-      infoLog("reset page");
-      setRemoteStream(null);
-      peer?.destroy();
-      // window.location.reload();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const handle_room_update = async () => {
     try {
       if (!room) return;
@@ -312,6 +310,7 @@ export const VideoDate = () => {
               end_video_date={end_video_date}
               next_question={go_to_next_question_local}
               handle_questions_volume={handle_questions_volume}
+              volume={volume * 100}
             />
           </>
         ) : (
