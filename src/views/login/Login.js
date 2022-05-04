@@ -32,7 +32,7 @@ export const Login = () => {
             <Title textAlign={"center"} title={translate("Welcome_title")} />
             <AppStack direction={"column"}>
               <AppButton
-                rounded={false}
+                rounded={true}
                 width={inputs.STATIC_WIDTH}
                 height={inputs.STATIC_HEIGHT}
                 endIcon={googleIcon}
@@ -41,7 +41,7 @@ export const Login = () => {
                 onClick={login_with_google}
               />
               <AppButton
-                rounded={false}
+                rounded={true}
                 width={inputs.STATIC_WIDTH}
                 height={inputs.STATIC_HEIGHT}
                 endIcon={facebookIcon}
@@ -50,7 +50,7 @@ export const Login = () => {
                 onClick={login_with_facebook}
               />
               <AppButton
-                rounded={false}
+                rounded={true}
                 width={inputs.STATIC_WIDTH}
                 height={inputs.STATIC_HEIGHT}
                 endIcon={appleIcon}
@@ -58,7 +58,7 @@ export const Login = () => {
                 label={"התחבר עם אפל"}
               />
               <AppButton
-                rounded={false}
+                rounded={true}
                 width={inputs.STATIC_WIDTH}
                 height={inputs.STATIC_HEIGHT}
                 endIcon={emailIcon}

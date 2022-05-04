@@ -20,18 +20,20 @@ export const VerifyPhone = () => {
   };
   const send_code_sms = async (phoneNumber) => {
     if (!phoneNumber) phoneNumber = userPhoneNumber;
-    let smsSendSuccesfully = await send_sms(phoneNumber);
-    if (smsSendSuccesfully.data.status === 403) {
+    const res = await send_sms(phoneNumber);
+    console.log(res);
+    if (res.status === 403) {
       return handle_existed_phone_validation();
     }
-    if (smsSendSuccesfully) {
+    if (res.status === 200) {
       setUserPhoneNumber(phoneNumber);
       setSmsSent(true);
     }
   };
   const check_if_password_verified = async (code) => {
-    let code_verified = (await check_password(code)).data;
-    if (!code_verified) alert(WRONG_PASSWORD_MESSAGE);
+    const res = await check_password(code);
+    console.log(res);
+    if (res.status === 403) alert(WRONG_PASSWORD_MESSAGE);
   };
 
   return (

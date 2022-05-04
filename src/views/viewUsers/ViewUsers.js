@@ -7,7 +7,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { Header } from "../home/components/header/header";
 import Title from "../../components/title/title";
 import { useSelector } from "react-redux";
-import swipeAnimation from "../../assets/swipe_3.gif";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AppStack from "../../components/AppStack";
 
 export const ViewUsers = () => {
   const isMobile = useSelector((state) => state.app.isMobile);
@@ -28,6 +29,12 @@ export const ViewUsers = () => {
     const newUsers = await f_get_all_users(!!users);
     const allUsers = users ? users.concat(newUsers) : newUsers;
     setUsers(allUsers);
+  };
+  const get_age = (birthday) => {
+    let birthdate = new Date(birthday);
+    let cur = new Date();
+    let diff = cur - birthdate;
+    return Math.floor(diff / 31557600000);
   };
   useEffect(() => {
     get_more_users();
@@ -56,12 +63,19 @@ export const ViewUsers = () => {
           {users.map((user) => (
             <div className={"img-container"} key={user.id}>
               <img src={user.imgUrl?.url} />
-              <Title
-                className={"view-users-title blur-background"}
-                title={user.name + "," + user.city.name}
-                color={"white"}
-                fontSize={25}
-              />
+              <div className={"details-container blur-background full-width"}>
+                <p className={"details"}>
+                  {user.name + "," + " " + get_age(user.birthday)}
+                </p>
+                <AppStack direction={"row"}>
+                  <LocationOnIcon
+                    className={"details-icon"}
+                    fontSize={"inherit"}
+                    color={"secondary"}
+                  />
+                  <p className={"details"}>{user.city.name}</p>
+                </AppStack>
+              </div>
             </div>
           ))}
         </Slider>
