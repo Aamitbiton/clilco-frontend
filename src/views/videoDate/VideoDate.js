@@ -306,12 +306,6 @@ export const VideoDate = () => {
             )}
             <RemoteVideo remoteStream={remoteStream} />
             <CurrentQuestion questionIndexes={room.questions} volume={volume} />
-            <VideoButtons
-              end_video_date={end_video_date}
-              next_question={go_to_next_question_local}
-              handle_questions_volume={handle_questions_volume}
-              volume={volume * 100}
-            />
           </>
         ) : (
           <div className="full-screen flex-center">
@@ -322,6 +316,12 @@ export const VideoDate = () => {
             )}
           </div>
         )}
+        <VideoButtons
+          end_video_date={end_video_date}
+          next_question={go_to_next_question_local}
+          handle_questions_volume={handle_questions_volume}
+          volume={volume * 100}
+        />
       </div>
     </>
   );

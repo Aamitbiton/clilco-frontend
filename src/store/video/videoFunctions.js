@@ -49,7 +49,7 @@ export const unsubscribe_room_listener = async () => {
 
 export const set_go_to_decision = async () => {
   const room = getState().video.room;
-  await videoService.set_go_to_decision({ roomId: room.id });
+  if (room) await videoService.set_go_to_decision({ roomId: room.id });
 };
 
 export const end_date = async () => {
