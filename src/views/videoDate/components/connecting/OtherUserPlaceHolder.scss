@@ -2,4 +2,10 @@
 
 .date-place-holder-image {
   clip-path: circle();
+  max-width:30% ;
+}
+
+.date-place-holder-title{
+  margin: 0;
+  transform: translateY(-20px);
 }

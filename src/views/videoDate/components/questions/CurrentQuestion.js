@@ -21,7 +21,7 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
     }
   };
   const created = async () => {
-    await handle_question_url({ index: "0" });
+    if (questionIndexes?.length < 2) await handle_question_url({ index: "0" });
     const vol = JSON.parse(localStorage.getItem("questions-volume"));
     if (vol && audioRef?.current?.volume) audioRef.current.volume = vol;
   };

@@ -159,7 +159,7 @@ export const VideoDate = () => {
           message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
           action: reset_snackBar,
         });
-        await end_video_date();
+        setRemoteStream(null);
       }
     } catch (e) {
       console.error(e);
