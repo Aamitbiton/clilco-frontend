@@ -8,6 +8,7 @@ function Image({
   width = "200px",
   removeImage = false,
   onClick,
+  className,
 }) {
   const theme = useTheme();
   return (

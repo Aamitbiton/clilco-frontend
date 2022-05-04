@@ -22,6 +22,7 @@ import Peer from "simple-peer";
 import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
+import { OtherUserPlaceHolder } from "./components/connecting/otherUserPlaceHolder";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -309,11 +310,7 @@ export const VideoDate = () => {
           </>
         ) : (
           <div className="full-screen flex-center">
-            {remoteUser?.name && (
-              <h1>
-                {translate("video_page.waiting_for_video") + remoteUser?.name}
-              </h1>
-            )}
+            {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
           </div>
         )}
         <VideoButtons
