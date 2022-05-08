@@ -6,7 +6,7 @@ export async function login_with_google() {
 }
 
 export async function login_with_facebook() {
-  return await auth.logInWithProvider("facebook");
+  return await auth.login_with_facebook();
 }
 
 export async function watch_auth_changes(callBack) {

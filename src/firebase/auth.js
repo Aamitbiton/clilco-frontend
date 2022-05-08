@@ -75,6 +75,24 @@ export async function resetPassword(email) {
   }
 }
 
+export async function login_with_facebook() {
+  try {
+    const res = await signInWithPopup(Auth, facebook_provider);
+    const credential = facebook_provider.credentialFromResult(res);
+    const token = credential.accessToken;
+    const user = res.user;
+    console.log({ token, user });
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // AuthCredential type that was used.
+    const credential = FacebookAuthProvider.credentialFromError(error);
+    console.error({ errorCode, errorMessage, email, credential });
+  }
+}
+
 export async function logInWithProvider(providerName) {
   try {
     const provider =
