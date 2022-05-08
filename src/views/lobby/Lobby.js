@@ -14,6 +14,8 @@ export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
+  const isMobile = useSelector((state) => state.app.isMobile);
+
   const navigate = useNavigate();
 
   const init_page = async () => {
@@ -21,16 +23,23 @@ export const Lobby = () => {
       await watch_room();
       const res = await search_for_match(true);
       if (!res?.found) await handle_user_availability(true);
-      handle_page_abortion();
+      handle_page_leaving();
     } catch (e) {
       debugger;
       console.error(e);
     }
   };
-  const handle_page_abortion = () => {
-    ["beforeunload", "popstate"].forEach((e) =>
-      window.addEventListener(e, handle_exit)
+  const handle_page_leaving = () => {
+    ["beforeunload", "popstate"].forEach((eventType) =>
+      window.addEventListener(eventType, handle_exit)
     );
+    if (isMobile)
+      window.addEventListener("visibilitychange", (event) => {
+        if (document.visibilityState === "hidden") handle_exit();
+        else if (document.visibilityState === "visible")
+          handle_user_availability(true);
+        console.log(document.visibilityState);
+      });
   };
 
   const handle_room_update = async () => {
