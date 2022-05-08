@@ -11,6 +11,7 @@ export const VideoButtons = ({
   end_video_date,
   next_question,
   handle_questions_volume,
+  volume,
 }) => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const isMobile = useSelector((s) => s.app.isMobile);
@@ -33,7 +34,10 @@ export const VideoButtons = ({
       >
         <div>
           <div className="video-btn">
-            <VolumeBar handle_questions_volume={handle_questions_volume} />
+            <VolumeBar
+              handle_questions_volume={handle_questions_volume}
+              initialValue={volume}
+            />
           </div>
           <div className="icon-text">{translate("video_page.volume")}</div>
         </div>

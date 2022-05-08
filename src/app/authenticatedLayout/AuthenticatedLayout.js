@@ -7,6 +7,7 @@ import { AfterVideo } from "../../views/afterVideo/AfterVideo";
 import { RegistrationForm } from "../../views/registrationForm/RegistrationForm";
 import { VerifyPhone } from "../../views/verifyPhone/VerifyPhone";
 import { VideoDate } from "../../views/videoDate/VideoDate";
+import { Lobby } from "../../views/lobby/Lobby";
 import { Missed } from "../../views/missed/Missed";
 import { CallsHistory } from "../../views/callsHistory/CallsHistory";
 import React, { useEffect } from "react";
@@ -31,6 +32,7 @@ export const AuthenticatedLayout = () => {
     CONTACT,
     SETTINGS,
     CALLS,
+    LOBBY,
   } = AppRoutes;
   return (
     <>
@@ -47,6 +49,7 @@ export const AuthenticatedLayout = () => {
           <Route path={CONTACT} element={<Contact />} />
           <Route path={SETTINGS} element={<Settings />} />
           <Route path={CALLS} element={<CallsHistory />} />
+          <Route path={LOBBY} element={<Lobby />} />
           <Route path="*" element={<Missed />} />
         </Routes>
       )}

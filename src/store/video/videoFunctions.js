@@ -4,16 +4,21 @@ import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
 import { send_offer_or_answer, update_me_in_room } from "../../services/video";
 import * as faceapi from "face-api.js";
+import * as api from "../../services/api";
 
 const { getState, dispatch } = store;
 
 export const watch_room = async () => {
   const unsubscribes = await videoService.watch_room(async (room) => {
-    if (room) await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
-    // after date consider to delete the room or add parameter to stop listening
-    // dont forget to stop watching rooms if not available
+    if (room) {
+      await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
+    }
   });
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
+};
+
+export const search_for_match = async () => {
+  return await api.search_for_match();
 };
 
 export const delete_room_from_state = async () => {
@@ -44,7 +49,7 @@ export const unsubscribe_room_listener = async () => {
 
 export const set_go_to_decision = async () => {
   const room = getState().video.room;
-  await videoService.set_go_to_decision({ roomId: room.id });
+  if (room) await videoService.set_go_to_decision({ roomId: room.id });
 };
 
 export const end_date = async () => {
@@ -53,13 +58,15 @@ export const end_date = async () => {
 };
 
 export const answer_after_date = async (answer) => {
-  const room = getState().video.room;
-  let userId = getState().user.user.private.id;
-  let phone = getState().user.user.private.phone;
-  const type = room.answerer.id === userId ? "answerer" : "caller";
-  await videoService.answer_after_date({ room, type, answer });
-  if (answer?.positive)
-    await videoService.reveal_my_phone({ room, phone, type });
+  try {
+    const room = getState().video.room;
+    let userId = getState().user.user.private.id;
+    if (answer?.positive) answer.phone = getState().user.user.private.phone;
+    const type = room.answerer.id === userId ? "answerer" : "caller";
+    await videoService.answer_after_date({ room, type, answer });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const get_calls = async () => {
@@ -79,7 +86,7 @@ export const get_next_speed_date_time = async () => {
   if (check_if_after_date_time()) tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow = new Date(tomorrow).setMinutes("00");
   tomorrow = new Date(tomorrow).setSeconds("00");
-  const start = new Date(tomorrow).setHours("19");
+  const start = new Date(tomorrow).setHours("01"); // todo: 19
   const end = new Date(tomorrow).setHours("22");
   const its_dating_time = await check_if_is_date_time(start, end);
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {

@@ -20,7 +20,7 @@ export const StartDate = ({ navigate }) => {
             backgroundColor={
               "linear-gradient(90deg, rgba(119,42,118,1) 1%, rgba(219,27,135,1) 97%)"
             }
-            onClick={() => navigate("/video-date")}
+            onClick={() => navigate("/lobby")}
             variant={"contained"}
             labelColor={"white"}
             label={"קח אותי לדייט"}
