@@ -8,11 +8,14 @@ import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
+import { toast } from "react-toastify";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
+  const isMobile = useSelector((state) => state.app.isMobile);
+
   const navigate = useNavigate();
 
   const init_page = async () => {
@@ -20,22 +23,29 @@ export const Lobby = () => {
       await watch_room();
       const res = await search_for_match(true);
       if (!res?.found) await handle_user_availability(true);
-      window.addEventListener("beforeunload", handle_exit);
+      handle_page_leaving();
     } catch (e) {
       console.error(e);
     }
   };
+  const handle_page_leaving = () => {
+    ["beforeunload", "popstate"].forEach((eventType) =>
+      window.addEventListener(eventType, handle_exit)
+    );
+    if (isMobile)
+      window.addEventListener("visibilitychange", (event) => {
+        if (document.visibilityState === "hidden") handle_exit();
+        else if (document.visibilityState === "visible")
+          handle_user_availability(true);
+        console.log(document.visibilityState);
+      });
+  };
+
   const handle_room_update = async () => {
     if (room) navigate(AppRoutes.VIDEO_DATE);
   };
-  const handle_no_permissions = () => {
-    try {
-      alert("אין לך הרשאות למצלמה");
-      //todo: Add here appModal
-    } catch (e) {
-      debugger;
-      console.error(e);
-    }
+  const handle_no_permissions = async () => {
+    await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const stop_my_video = () => {
     try {
@@ -52,6 +62,7 @@ export const Lobby = () => {
   };
   const handle_exit = () => {
     try {
+      handle_user_availability(false);
       stop_my_video();
     } catch (e) {
       console.error(e);
@@ -61,7 +72,6 @@ export const Lobby = () => {
   const handle_back_btn = async () => {
     try {
       await handle_exit();
-      await handle_user_availability(false);
       navigate("/");
     } catch (e) {
       console.error(e);

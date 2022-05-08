@@ -23,6 +23,7 @@ import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
 import { OtherUserPlaceHolder } from "./components/connecting/otherUserPlaceHolder";
+import { toast } from "react-toastify";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -53,6 +54,7 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
+
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
@@ -240,13 +242,8 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_no_permissions = () => {
-    try {
-      alert("אין לך הרשאות למצלמה");
-      //todo: Add here appModal
-    } catch (e) {
-      console.error(e);
-    }
+  const handle_no_permissions = async () => {
+    await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const handle_questions_volume = (val) => {
     setVolume(val / 100);
