@@ -21,12 +21,18 @@ export const Lobby = () => {
       await watch_room();
       const res = await search_for_match(true);
       if (!res?.found) await handle_user_availability(true);
-      window.addEventListener("beforeunload", handle_exit);
+      handle_page_abortion();
     } catch (e) {
       debugger;
       console.error(e);
     }
   };
+  const handle_page_abortion = () => {
+    ["beforeunload", "popstate"].forEach((e) =>
+      window.addEventListener(e, handle_exit)
+    );
+  };
+
   const handle_room_update = async () => {
     if (room) navigate(AppRoutes.VIDEO_DATE);
   };
@@ -48,6 +54,7 @@ export const Lobby = () => {
   };
   const handle_exit = () => {
     try {
+      handle_user_availability(false);
       stop_my_video();
     } catch (e) {
       console.error(e);
@@ -57,7 +64,6 @@ export const Lobby = () => {
   const handle_back_btn = async () => {
     try {
       await handle_exit();
-      await handle_user_availability(false);
       navigate("/");
     } catch (e) {
       console.error(e);

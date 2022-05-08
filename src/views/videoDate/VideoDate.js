@@ -54,6 +54,7 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
+
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
