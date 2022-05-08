@@ -8,6 +8,7 @@ import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
+import { toast } from "react-toastify";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
@@ -29,14 +30,8 @@ export const Lobby = () => {
   const handle_room_update = async () => {
     if (room) navigate(AppRoutes.VIDEO_DATE);
   };
-  const handle_no_permissions = () => {
-    try {
-      alert("אין לך הרשאות למצלמה");
-      //todo: Add here appModal
-    } catch (e) {
-      debugger;
-      console.error(e);
-    }
+  const handle_no_permissions = async () => {
+    await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const stop_my_video = () => {
     try {
