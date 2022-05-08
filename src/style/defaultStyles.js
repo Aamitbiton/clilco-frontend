@@ -13,4 +13,7 @@ export default {
   header: {
     HEIGHT: isMobile ? 70 : 90,
   },
+  icons: {
+    DEFAULT_LARGE_SIZE: 90,
+  },
 };

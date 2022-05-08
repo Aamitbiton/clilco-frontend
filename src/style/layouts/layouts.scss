@@ -4,6 +4,11 @@
     align-items: center;
 }
 
+@mixin flex-justify($justify) {
+    display: flex;
+    justify-content: $justify;
+}
+
 .column{
     flex-direction: column;
 }
@@ -39,6 +44,10 @@
 .flex-column-center {
 @include flex-center;
     flex-direction: column;
+}
+
+.flex-row_around {
+    @include flex-justify(space-around);
 }
 
 .blur-background{

@@ -22,7 +22,6 @@ export const Lobby = () => {
       if (!res?.found) await handle_user_availability(true);
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
-      debugger;
       console.error(e);
     }
   };
