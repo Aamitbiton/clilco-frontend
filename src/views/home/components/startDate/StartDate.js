@@ -9,25 +9,23 @@ import defaultStyles from "../../../../style/defaultStyles";
 export const StartDate = ({ navigate }) => {
   return (
     <>
-      <div className="start-date flex-center full-width">
-        <AppStack direction="column" spacing={1}>
-          <Typography className={"flex-center"} color={"white"} variant={"h5"}>
-            מוכנים?
-          </Typography>
-          <AppButton
-            width={defaultStyles.inputs.STATIC_WIDTH}
-            height={defaultStyles.inputs.STATIC_HEIGHT}
-            backgroundColor={
-              "linear-gradient(90deg, rgba(119,42,118,1) 1%, rgba(219,27,135,1) 97%)"
-            }
-            onClick={() => navigate("/lobby")}
-            variant={"contained"}
-            labelColor={"white"}
-            label={"קח אותי לדייט"}
-          />
-          <AppButton labelColor={"white"} label={"צפה במשתמשים "} />
-        </AppStack>
-      </div>
+      <AppStack direction="column" spacing={1}>
+        <Typography className={"flex-center"} color={"white"} variant={"h5"}>
+          מוכנים?
+        </Typography>
+        <AppButton
+          width={defaultStyles.inputs.STATIC_WIDTH}
+          height={defaultStyles.inputs.STATIC_HEIGHT}
+          backgroundColor={
+            "linear-gradient(90deg, rgba(119,42,118,1) 1%, rgba(219,27,135,1) 97%)"
+          }
+          onClick={() => navigate("/lobby")}
+          variant={"contained"}
+          labelColor={"white"}
+          label={"קח אותי לדייט"}
+        />
+        <AppButton labelColor={"white"} label={"צפה במשתמשים "} />
+      </AppStack>
     </>
   );
 };

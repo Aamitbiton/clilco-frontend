@@ -53,6 +53,7 @@ export const RegistrationForm = () => {
 
       <AppModal
         modalVisible={modalVisible}
+        lockBackdrop={true}
         setModalVisible={(val) => setModalVisible(val)}
       >
         {tipTopUser?.name && (

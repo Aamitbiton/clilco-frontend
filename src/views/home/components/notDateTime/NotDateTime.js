@@ -12,7 +12,7 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
   const { inputs } = defaultStyles;
   const { PROFILE, VIEW_USERS } = AppRoutes;
   return (
-    <div className="flex-center  full-width ">
+    <>
       <AppStack direction="column" spacing={1.5}>
         <Typography className={"flex-center"} color={"white"} variant={"h5"}>
           מתחילים בעוד
@@ -30,6 +30,6 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
           label={"צפה במשתמשים "}
         />
       </AppStack>
-    </div>
+    </>
   );
 };
