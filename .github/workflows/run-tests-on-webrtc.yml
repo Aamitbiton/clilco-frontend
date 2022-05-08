@@ -1,0 +1,18 @@
+name: run e2e myltiple times to check webrtc
+'on': pull_request
+
+jobs:
+  cypress-run:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: CypressRun1
+        uses: cypress-io/github-action@v2
+        with:
+          ref: tests
+          build: npm run build
+          start: npm run start

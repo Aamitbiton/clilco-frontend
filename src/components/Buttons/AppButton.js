@@ -4,6 +4,7 @@ import IconRender from "../iconRender";
 import "../../style/variables.scss";
 
 function AppButton({
+  data_cy,
   backgroundColor,
   labelColor,
   label,
@@ -38,6 +39,7 @@ function AppButton({
 
   return (
     <Button
+      data_cy={data_cy}
       endIcon={
         endIcon && (customIcon ? <IconRender icon={endIcon} /> : startIcon)
       }

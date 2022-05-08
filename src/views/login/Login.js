@@ -65,6 +65,7 @@ export const Login = () => {
                 labelColor={"white"}
                 label={"התחבר עם אימייל"}
                 onClick={() => set_enter_with_web(true)}
+                data_cy="login-with-email"
               />
             </AppStack>
           </>
