@@ -1,6 +1,7 @@
 import actionsCreator from "../actionsCreator";
 import { watch_auth_changes } from "../auth/authFunctions";
 import { get_next_speed_date_time } from "../video/videoFunctions";
+import { startReactNativeHandle } from "../reactNative/rnFunctions";
 import { store } from "../index";
 import APP_CONSTANTS from "./constants";
 import { init_i18next } from "../../i18next";
@@ -12,6 +13,7 @@ export const init_app = async ({ navigator }) => {
     await actionsCreator("GLOBAL_HOOKS", { navigator, translate });
     await actionsCreator(APP_CONSTANTS.SET_APP_READY, true);
     await actionsCreator(APP_CONSTANTS.LNG, lng);
+    await startReactNativeHandle();
   });
   await get_next_speed_date_time();
   const isMobile = window.innerWidth < 450;
