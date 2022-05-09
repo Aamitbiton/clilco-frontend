@@ -2,6 +2,7 @@ import React from "react";
 import { useFormikContext } from "formik";
 import TextInput from "../Inputs/TextInput";
 function FormFiled({
+  data_cy,
   placeholder,
   id,
   name,
@@ -15,6 +16,7 @@ function FormFiled({
   const { handleChange, errors, touched } = useFormikContext();
   return (
     <TextInput
+      data_cy
       id={id}
       width={width}
       defaultValue={defaultValue}

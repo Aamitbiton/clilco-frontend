@@ -1,3 +1,4 @@
+#-------------- run multiple tests in parallel: https://glebbahmutov.com/blog/run-two-cypress-runners/ -------
 name: run e2e myltiple times to check webrtc
 'on': pull_request
 

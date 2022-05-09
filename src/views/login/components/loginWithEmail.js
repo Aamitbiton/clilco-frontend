@@ -64,12 +64,14 @@ function LoginWithEmail({ close }) {
       >
         <AppStack direction={"column"}>
           <FormFiled
+            data_cy="login-email-input"
             trim={true}
             label={"אימייל"}
             name={"email"}
             width={inputs.STATIC_WIDTH}
           />
           <FormFiled
+            data_cy="login-pass-input"
             label={"סיסמא"}
             type={"password"}
             trim={true}

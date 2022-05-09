@@ -10,9 +10,7 @@ const { getState, dispatch } = store;
 
 export const watch_room = async () => {
   const unsubscribes = await videoService.watch_room(async (room) => {
-    if (room) {
-      await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
-    }
+    if (room) await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
   });
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
@@ -42,9 +40,7 @@ export const clean_room = async () => {
 
 export const unsubscribe_room_listener = async () => {
   const unsubscribes = getState().video.room_unsubscribes;
-  Object.keys(unsubscribes).every((key) => {
-    unsubscribes[key]();
-  });
+  Object.keys(unsubscribes).forEach((key) => unsubscribes[key]());
 };
 
 export const set_go_to_decision = async () => {
