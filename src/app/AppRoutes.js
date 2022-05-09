@@ -11,4 +11,5 @@ export default Object.freeze({
   CONTACT: "/contact",
   SETTINGS: "/settings",
   CALLS: "/video-dates-history",
+  LOBBY: "/lobby",
 });

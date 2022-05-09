@@ -26,7 +26,6 @@ function LoginWithEmail({ close }) {
 
     function handleErrorMessage(message) {
       const wrongPassword = new RegExp(/wrong-password/g).test(message);
-      debugger;
       if (wrongPassword) {
         return "סיסמא שגויה";
       }

@@ -3,7 +3,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
 
 export default function AppModal({
   modalVisible,
@@ -11,6 +10,7 @@ export default function AppModal({
   children,
   onClick,
   padding = 4,
+  lockBackdrop = false,
 }) {
   const style = {
     position: "absolute",
@@ -23,7 +23,10 @@ export default function AppModal({
     // boxShadow: 24,
     p: padding,
   };
-  const handleClose = () => setModalVisible(false);
+  const handleClose = (event, reason) => {
+    if (lockBackdrop && reason === "backdropClick") return;
+    setModalVisible(false);
+  };
   return (
     <div>
       <Modal
@@ -33,7 +36,6 @@ export default function AppModal({
         onClose={handleClose}
         onClick={onClick}
         closeAfterTransition
-        // BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}

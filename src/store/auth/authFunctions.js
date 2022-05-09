@@ -60,3 +60,7 @@ export const login_with_email = async ({ email, password }) => {
 export const resetPassword = async (email) => {
   return await authService.resetPassword(email);
 };
+
+export const remove_account = async () => {
+  return await authService.remove_account();
+};

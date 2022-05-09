@@ -1,16 +1,19 @@
 import * as auth from "../firebase/auth";
-import { create_user_with_email } from "../firebase/auth";
 
 export async function login_with_google() {
   return await auth.logInWithProvider("google");
 }
 
 export async function login_with_facebook() {
-  return await auth.logInWithProvider("facebook");
+  return await auth.login_with_facebook();
 }
 
 export async function watch_auth_changes(callBack) {
   await auth.on_auth_state_changed(callBack);
+}
+
+export async function remove_account() {
+  await auth.deleteAccount();
 }
 
 export function get_current_user() {

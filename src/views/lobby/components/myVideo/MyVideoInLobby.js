@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./myVideo.scss";
+import "./myVideoInLobby.scss";
 import { emotion_detector } from "../../../../store/video/videoFunctions";
 import EmotionsChart_pie from "../../../../components/charts/emotionsChart/EmotionsChart_pie";
 import EmotionsChart_inline from "../../../../components/charts/emotionsChart/EmotionsChart_inline";
 
-export const MyVideo = ({
+export const MyVideoInLobby = ({
   dateStarted,
   setLocalStream,
   handle_no_permissions,
@@ -68,7 +68,7 @@ export const MyVideo = ({
 
       <video
         playsInline
-        className="reverse-video my-video-in-date"
+        className="reverse-video my-video-before-date"
         ref={videoRef}
         autoPlay={true}
         muted={true}

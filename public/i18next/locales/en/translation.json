@@ -1,11 +1,14 @@
 {
   "Welcome_title": "Welcome",
+  "lobby": {
+    "back": "Back to home page"
+  },
   "video_page": {
     "end-call": "End call",
     "volume": "Questions volume",
     "unMute": "Un mute",
     "next-question": "Next question",
-    "back":"Back to home page"
+    "waiting_for_video": "Waiting for "
   },
   "after_date": {
     "title": "The date ended!",
@@ -19,7 +22,7 @@
     "you_were_rejected": "rejected",
     "get_more_calls": "Get more meetings",
     "canceled_by": "rejected by ",
-    "no_calls": "No call to present",
+    "no_calls": "Users who shared there phone number with you ",
     "title": "successful dates"
   },
   "contact": {
