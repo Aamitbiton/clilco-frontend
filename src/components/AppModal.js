@@ -11,6 +11,7 @@ export default function AppModal({
   onClick,
   padding = 4,
   lockBackdrop = false,
+  ...otherProps
 }) {
   const style = {
     position: "absolute",
@@ -31,6 +32,7 @@ export default function AppModal({
   return (
     <div>
       <Modal
+        {...otherProps}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={modalVisible}
