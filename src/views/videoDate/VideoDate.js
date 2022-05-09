@@ -23,6 +23,7 @@ import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
 import { OtherUserPlaceHolder } from "./components/connecting/otherUserPlaceHolder";
+import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -306,6 +307,7 @@ export const VideoDate = () => {
               />
             )}
             <RemoteVideo remoteStream={remoteStream} />
+            <CounterAnimation />
             <CurrentQuestion questionIndexes={room.questions} volume={volume} />
           </>
         ) : (
