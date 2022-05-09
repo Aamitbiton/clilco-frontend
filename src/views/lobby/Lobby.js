@@ -21,7 +21,7 @@ export const Lobby = () => {
   const init_page = async () => {
     try {
       await watch_room();
-      const res = await search_for_match(true);
+      const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
       handle_page_leaving();
     } catch (e) {
@@ -72,7 +72,7 @@ export const Lobby = () => {
   const handle_back_btn = async () => {
     try {
       await handle_exit();
-      navigate("/");
+      navigate(AppRoutes.ROOT);
     } catch (e) {
       console.error(e);
       debugger;

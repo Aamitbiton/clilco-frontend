@@ -4,7 +4,6 @@ import {
   answer_after_date,
   end_date,
   delete_room_from_state,
-  clean_room,
 } from "../../store/video/videoFunctions";
 import AppRoutes from "../../app/AppRoutes";
 import Title from "../../components/title/title";
