@@ -13,8 +13,8 @@ import Title from "../../components/title/title";
 import { set_user_details } from "../../store/user/userFunctions";
 import AppModal from "../../components/AppModal";
 import RestoreTiptopUser from "./RestoreTiptopUser/RestoreTiptopUser";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import USER_CONSTANTS from "../../store/user/constants";
 const largeInput = 270;
 const midInput = 125;
 const smallInput = 80;
@@ -22,8 +22,15 @@ const smallInput = 80;
 export const RegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
   const tipTopUser = useSelector((s) => s.user.temp_user);
   useEffect(() => tipTopUser?.name && setModalVisible(true), [tipTopUser]);
+  const onCloseModalHandler = () =>
+    dispatch({
+      type: USER_CONSTANTS.SET_TEMP_USER,
+      payload: {},
+    });
+
   const handleSubmit = async (values) => {
     setIsLoading(true);
     const { day, month, year, name, religion, city, gender, wanted } = values;
@@ -50,11 +57,11 @@ export const RegistrationForm = () => {
   return (
     <div className={"full-height flex-column-center"}>
       <Title title={"פרטים אישיים"} />
-
       <AppModal
         modalVisible={modalVisible}
         lockBackdrop={true}
         setModalVisible={(val) => setModalVisible(val)}
+        onCloseHandler={onCloseModalHandler}
       >
         {tipTopUser?.name && (
           <RestoreTiptopUser
@@ -140,7 +147,6 @@ export const RegistrationForm = () => {
             loading={isLoading}
             loadingButton={true}
             customIcon={false}
-            // endIcon={<ArrowLeftIcon />}
             label={"המשך"}
           />
         </div>

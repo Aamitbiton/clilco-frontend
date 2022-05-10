@@ -13,6 +13,7 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
   const handle_question_url = async ({ index }) => {
     const url = await get_question_audio({ index: index.toString() });
     setSrc(url);
+    audioRef.current.play();
   };
   const handle_volume_change = async () => {
     if (volume && audioRef?.current?.volume) {
@@ -25,6 +26,7 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
     const vol = JSON.parse(localStorage.getItem("questions-volume"));
     if (vol && audioRef?.current?.volume) audioRef.current.volume = vol;
   };
+
   useEffect(handle_next_question, [questionIndexes]);
   useEffect(created, []);
   useEffect(handle_volume_change, [volume]);
@@ -37,8 +39,8 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
           </span>
         </div>
         <audio
+          playsInline={true}
           ref={audioRef}
-          autoPlay={true}
           src={src}
           style={{ visibility: "hidden" }}
         />
