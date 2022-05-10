@@ -24,6 +24,7 @@ import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
 import { OtherUserPlaceHolder } from "./components/connecting/otherUserPlaceHolder";
 import { toast } from "react-toastify";
+import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -58,13 +59,13 @@ export const VideoDate = () => {
   };
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
-    [1, 2, 3, 4, 5].forEach((item) => {
+    infoLog("other user not in the date. refreshing every five minutes");
+    [1, 2, 3, 4, 5].forEach((number) => {
       setTimeout(() => {
-        if (item === 5 && !remoteStreamRef.current) {
-          // window.location.reload(true);
-          clean_room();
-        }
-      }, 1000 * item);
+        infoLog(number);
+        if (number === 5 && !remoteStreamRef.current)
+          window.location.reload(true);
+      }, 1000 * number);
     });
   };
   const make_sure_one_reload_before_start = () => {
