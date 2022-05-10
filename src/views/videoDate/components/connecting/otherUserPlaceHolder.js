@@ -2,10 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import "./OtherUserPlaceHolder.scss";
 import Title from "../../../../components/title/title";
 import { useSelector } from "react-redux";
+import {
+  create_snackBar,
+  reset_snackBar,
+} from "../../../../store/app/appFunctions";
+import { SNACK_BAR_TYPES } from "../../../../store/app/snackBarTypes";
 
 export const OtherUserPlaceHolder = ({ user }) => {
   const translate = useSelector((state) => state.app.global_hooks.translate);
   const [imgLoaded, setImgLoaded] = useState(false);
+
   return (
     <>
       <div

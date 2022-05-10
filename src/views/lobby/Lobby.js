@@ -6,6 +6,7 @@ import { handle_user_availability } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
 import { toast } from "react-toastify";
@@ -21,7 +22,7 @@ export const Lobby = () => {
   const init_page = async () => {
     try {
       await watch_room();
-      const res = await search_for_match(true);
+      const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
       handle_page_leaving();
     } catch (e) {
@@ -72,7 +73,7 @@ export const Lobby = () => {
   const handle_back_btn = async () => {
     try {
       await handle_exit();
-      navigate("/");
+      navigate(AppRoutes.ROOT);
     } catch (e) {
       console.error(e);
       debugger;
@@ -89,14 +90,15 @@ export const Lobby = () => {
           handle_no_permissions={handle_no_permissions}
         />
 
-        <div className="back-btn">
+        <div className="back-btn-from-lobby-to-home">
           <AppButton
+            width="100%"
             borderColor="#db1b87"
             labelColor="white"
             onClick={handle_back_btn}
             label={translate("lobby.back")}
             children={
-              <ChevronRightIcon
+              <ChevronLeftOutlined
                 style={{ marginRight: "10px", color: "#db1b87" }}
               />
             }
