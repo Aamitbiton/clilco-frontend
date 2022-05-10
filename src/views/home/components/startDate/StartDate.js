@@ -5,6 +5,7 @@ import AppStack from "../../../../components/AppStack";
 import Typography from "@mui/material/Typography";
 import AppButton from "../../../../components/Buttons/AppButton";
 import defaultStyles from "../../../../style/defaultStyles";
+import AppRoutes from "../../../../app/AppRoutes";
 
 export const StartDate = ({ navigate }) => {
   return (
@@ -24,7 +25,11 @@ export const StartDate = ({ navigate }) => {
           labelColor={"white"}
           label={"קח אותי לדייט"}
         />
-        <AppButton labelColor={"white"} label={"צפה במשתמשים "} />
+        <AppButton
+          labelColor={"white"}
+          label={"צפה במשתמשים "}
+          onClick={() => navigate(AppRoutes.VIEW_USERS)}
+        />
       </AppStack>
     </>
   );

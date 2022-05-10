@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./viewUsers.css";
+import "./viewUsers.scss";
 import { f_get_all_users } from "../../store/user/userFunctions";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";

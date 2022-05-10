@@ -92,16 +92,17 @@ export const Lobby = () => {
         />
 
         {!room && (
-          <div className="back-btn-from-lobby-to-home">
+          <div className="back-btn-from-lobby-to-home flex-center">
             <AppButton
-              width="100%"
-              borderColor="#db1b87"
+              variant="contained"
+              width="250"
+              backgroundColor="#db1b87"
               labelColor="white"
               onClick={handle_back_btn}
               label={translate("lobby.back")}
               children={
                 <ChevronLeftOutlined
-                  style={{ marginRight: "10px", color: "#db1b87" }}
+                  style={{ marginRight: "10px", color: "white" }}
                 />
               }
             />
