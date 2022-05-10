@@ -34,13 +34,12 @@ function MenuList({ anchor, onClick, onKeyDown }) {
           </MenuListItem>
         </CustomLink>
         <Divider />
-        {/*todo: add this when the settings page ready...*/}
-        {/*<CustomLink to={AppRoutes.SETTINGS}>*/}
-        {/*  <MenuListItem itemText={"הגדרות"}>*/}
-        {/*    <SettingsIcon />*/}
-        {/*  </MenuListItem>*/}
-        {/*</CustomLink>*/}
-        {/*<Divider />*/}
+        <CustomLink to={AppRoutes.SETTINGS}>
+          <MenuListItem itemText={"הגדרות"}>
+            <SettingsIcon />
+          </MenuListItem>
+        </CustomLink>
+        <Divider />
         <CustomLink to={AppRoutes.CALLS}>
           <MenuListItem itemText={"יומן שיחות"}>
             <CallIcon />

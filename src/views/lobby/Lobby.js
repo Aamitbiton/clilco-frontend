@@ -6,37 +6,47 @@ import { handle_user_availability } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
+import { toast } from "react-toastify";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
+  const isMobile = useSelector((state) => state.app.isMobile);
+
   const navigate = useNavigate();
 
   const init_page = async () => {
     try {
       await watch_room();
-      const res = await search_for_match(true);
+      const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
-      window.addEventListener("beforeunload", handle_exit);
+      handle_page_leaving();
     } catch (e) {
-      debugger;
       console.error(e);
     }
   };
+  const handle_page_leaving = () => {
+    ["beforeunload", "popstate"].forEach((eventType) =>
+      window.addEventListener(eventType, handle_exit)
+    );
+    if (isMobile)
+      window.addEventListener("visibilitychange", (event) => {
+        if (document.visibilityState === "hidden") handle_exit();
+        else if (document.visibilityState === "visible")
+          handle_user_availability(true);
+        console.log(document.visibilityState);
+      });
+  };
+
   const handle_room_update = async () => {
     if (room) navigate(AppRoutes.VIDEO_DATE);
   };
-  const handle_no_permissions = () => {
-    try {
-      alert("אין לך הרשאות למצלמה");
-      //todo: Add here appModal
-    } catch (e) {
-      debugger;
-      console.error(e);
-    }
+  const handle_no_permissions = async () => {
+    await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const stop_my_video = () => {
     try {
@@ -53,6 +63,7 @@ export const Lobby = () => {
   };
   const handle_exit = () => {
     try {
+      handle_user_availability(false);
       stop_my_video();
     } catch (e) {
       console.error(e);
@@ -62,8 +73,7 @@ export const Lobby = () => {
   const handle_back_btn = async () => {
     try {
       await handle_exit();
-      await handle_user_availability(false);
-      navigate("/");
+      navigate(AppRoutes.ROOT);
     } catch (e) {
       console.error(e);
       debugger;
@@ -80,14 +90,15 @@ export const Lobby = () => {
           handle_no_permissions={handle_no_permissions}
         />
 
-        <div className="back-btn">
+        <div className="back-btn-from-lobby-to-home">
           <AppButton
+            width="100%"
             borderColor="#db1b87"
             labelColor="white"
             onClick={handle_back_btn}
             label={translate("lobby.back")}
             children={
-              <ChevronRightIcon
+              <ChevronLeftOutlined
                 style={{ marginRight: "10px", color: "#db1b87" }}
               />
             }

@@ -23,9 +23,10 @@ export async function deleteAccount() {
   try {
     const token = await Auth.currentUser.getIdToken();
     const uid = Auth.currentUser.uid;
-    const res = await callAbleFunction("deleteAccountByUser", { token, uid });
-    if (res.data.success) console.log("user removed");
-    if (res.data.error) alert("הפעולה נכשלה, אנא פנה לתמיכה.");
+    const res = (await callAbleFunction("deleteAccountByUser", { token, uid }))
+      .data;
+    if (res.success) console.log("user removed");
+    if (res.error) alert("הפעולה נכשלה, אנא פנה לתמיכה.");
   } catch (e) {
     alert("הפעולה נכשלה, בדוק את חיבור האינטרנט שלך או פנה לתמיכה");
   }
@@ -72,6 +73,24 @@ export async function resetPassword(email) {
   } catch (e) {
     console.error(e);
     return false;
+  }
+}
+
+export async function login_with_facebook() {
+  try {
+    const res = await signInWithPopup(Auth, facebook_provider);
+    const credential = facebook_provider.credentialFromResult(res);
+    const token = credential.accessToken;
+    const user = res.user;
+    console.log({ token, user });
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // AuthCredential type that was used.
+    const credential = FacebookAuthProvider.credentialFromError(error);
+    console.error({ errorCode, errorMessage, email, credential });
   }
 }
 

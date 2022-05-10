@@ -1,16 +1,17 @@
 import * as React from "react";
-import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
 
 export default function AppModal({
   modalVisible,
   setModalVisible,
   children,
+  onCloseHandler = () => {},
   onClick,
   padding = 4,
+  lockBackdrop = false,
+  ...otherProps
 }) {
   const style = {
     position: "absolute",
@@ -23,17 +24,21 @@ export default function AppModal({
     // boxShadow: 24,
     p: padding,
   };
-  const handleClose = () => setModalVisible(false);
+  const handleClose = (event, reason) => {
+    if (lockBackdrop && reason === "backdropClick") return;
+    setModalVisible(false);
+    onCloseHandler();
+  };
   return (
     <div>
       <Modal
+        {...otherProps}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={modalVisible}
         onClose={handleClose}
         onClick={onClick}
         closeAfterTransition
-        // BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
