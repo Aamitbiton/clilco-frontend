@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./videoDate.scss";
 import {
@@ -24,6 +24,7 @@ import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
 import { OtherUserPlaceHolder } from "./components/connecting/otherUserPlaceHolder";
 import { toast } from "react-toastify";
+import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -44,6 +45,8 @@ export const VideoDate = () => {
     (state) => state.video.room_unsubscribes
   );
   const navigate = useNavigate();
+  const remoteStreamRef = useRef(remoteStream);
+  remoteStreamRef.current = remoteStream;
 
   const init_page = async () => {
     try {
@@ -54,7 +57,17 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-
+  const handle_no_remote_stream = () => {
+    if (remoteStream) return;
+    infoLog("other user not in the date. refreshing every five minutes");
+    [1, 2, 3, 4, 5].forEach((number) => {
+      setTimeout(() => {
+        infoLog(number);
+        if (number === 5 && !remoteStreamRef.current)
+          window.location.reload(true);
+      }, 1000 * number);
+    });
+  };
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
@@ -157,9 +170,8 @@ export const VideoDate = () => {
   const handle_remote_video_stopped = async () => {
     try {
       if (window.location.href.includes("video-date")) {
-        await create_snackBar({
-          message: SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name),
-          action: reset_snackBar,
+        await toast(SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name), {
+          type: "info",
         });
         setRemoteStream(null);
       }
@@ -283,6 +295,7 @@ export const VideoDate = () => {
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
+  useEffect(handle_no_remote_stream, [remoteStream]);
 
   return (
     <>

@@ -4,7 +4,6 @@ import {
   answer_after_date,
   end_date,
   delete_room_from_state,
-  clean_room,
 } from "../../store/video/videoFunctions";
 import AppRoutes from "../../app/AppRoutes";
 import Title from "../../components/title/title";
@@ -17,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const AfterVideo = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
@@ -34,17 +34,8 @@ export const AfterVideo = () => {
     await notify_and_go_back_dating();
   };
   const notify_and_go_back_dating = async () => {
-    let done = false;
-    const action = () => {
-      done = true;
-      reset_snackBar();
-      go_back_to_video_date_page();
-    };
-    await create_snackBar({
-      message: SNACK_BAR_TYPES.ANSWER_ACCEPTED,
-      action,
-    });
-    setTimeout(action, 2000);
+    await toast(SNACK_BAR_TYPES.ANSWER_ACCEPTED, { type: "success" });
+    setTimeout(go_back_to_video_date_page, 2000);
   };
   const go_back_to_video_date_page = async () => {
     await delete_room_from_state();

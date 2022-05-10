@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./addImage.css";
 import FilePiker from "../../components/Inputs/FilePicker";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import {
   convertToBase64,
   filterOnlyImages,
@@ -35,7 +36,15 @@ export const AddImage = () => {
   return (
     <CenterLayout direction={"column"}>
       <Title title={"התמונה שלי"} />
-      <Image removeImage={image && removeImage} src={image} alt={"image-url"} />
+      {image ? (
+        <Image
+          removeImage={image && removeImage}
+          src={image}
+          alt={"image-url"}
+        />
+      ) : (
+        <ImageBanner />
+      )}
       <AppStack direction={"column"} spacing={2} margin={2}>
         <FilePiker
           title={"בחר תמונה"}
@@ -55,5 +64,18 @@ export const AddImage = () => {
         </LoadingButton>
       </AppStack>
     </CenterLayout>
+  );
+};
+
+const ImageBanner = () => {
+  const style = {
+    fontSize: 120,
+    padding: 20,
+    border: "1px solid white",
+  };
+  return (
+    <div style={style}>
+      <AccountCircleOutlinedIcon fontSize={"inherit"} />
+    </div>
   );
 };
