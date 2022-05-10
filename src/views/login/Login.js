@@ -18,7 +18,7 @@ import defaultStyles from "../../style/defaultStyles";
 import AppLogo from "../../components/AppLogo";
 import { Typography } from "@mui/material";
 import AppModal from "../../components/AppModal";
-// import { PRIVACY_POLICY } from "../../privacy";
+import { PRIVACY_POLICY } from "../../privacy";
 
 export const Login = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
@@ -90,7 +90,7 @@ const PrivacyPolicy = () => {
         setModalVisible={(val) => setModalVisible(val)}
       >
         <div style={{ position: "relative", top: 2600 }}>
-          {/*<Typography padding={0}>{PRIVACY_POLICY}</Typography>*/}
+          <Typography padding={0}>{PRIVACY_POLICY}</Typography>
         </div>
       </AppModal>
       <div
