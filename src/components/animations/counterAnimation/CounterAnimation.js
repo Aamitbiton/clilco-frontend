@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./counterAnimation.css";
 
-function CounterAnimation() {
+function CounterAnimation({ onEnd }) {
   let counter = 3;
   let element = null;
   useEffect(() => {
@@ -12,7 +12,7 @@ function CounterAnimation() {
   const endEvent = () => {
     element.classList.toggle("stop");
     element.removeEventListener("animationiteration", changeCounter);
-    return;
+    onEnd();
   };
   const changeCounter = () => {
     if (counter === 1) endEvent();

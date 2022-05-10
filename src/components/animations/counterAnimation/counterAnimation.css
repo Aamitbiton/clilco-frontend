@@ -1,6 +1,6 @@
 .text{
     width: 100px;
-    color: blue;
+    color: white;
 
     animation: zoom-in-zoom-out 1.5s ease infinite;
     text-align: center;
