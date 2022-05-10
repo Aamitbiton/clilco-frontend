@@ -70,7 +70,7 @@ function LoginWithEmail({ close }) {
             width={inputs.STATIC_WIDTH}
           />
           <FormFiled
-            data_cy="login-pass-input"
+            data_cy="login-password-input"
             label={"סיסמא"}
             type={"password"}
             trim={true}
@@ -84,6 +84,7 @@ function LoginWithEmail({ close }) {
             שכחתי סיסמא
           </Text>
           <SubmitButton
+            data_cy="login-with-email_login-btn"
             width={inputs.STATIC_WIDTH}
             loadingButton={true}
             loading={isLoading}

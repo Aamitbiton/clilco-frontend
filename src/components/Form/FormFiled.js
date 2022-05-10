@@ -16,7 +16,7 @@ function FormFiled({
   const { handleChange, errors, touched } = useFormikContext();
   return (
     <TextInput
-      data_cy
+      data_cy={data_cy}
       id={id}
       width={width}
       defaultValue={defaultValue}

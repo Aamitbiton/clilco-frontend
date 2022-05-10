@@ -2,6 +2,7 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 
 function TextInput({
+  data_cy,
   onChange,
   placeholder,
   defaultValue,
@@ -23,6 +24,7 @@ function TextInput({
   };
   return (
     <TextField
+      data_cy={data_cy}
       id={id}
       margin={margin}
       multiline={multiline}

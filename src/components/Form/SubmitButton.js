@@ -3,6 +3,7 @@ import AppButton from "../Buttons/AppButton";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useEffect, useMemo } from "react";
 function SubmitButton({
+  data_cy,
   label,
   endIcon,
   loading,
@@ -15,6 +16,7 @@ function SubmitButton({
     <>
       {loadingButton ? (
         <LoadingButton
+          data_cy={data_cy}
           onClick={() => handleSubmit()}
           loading={loading}
           sx={{ width }}
@@ -25,6 +27,7 @@ function SubmitButton({
         </LoadingButton>
       ) : (
         <AppButton
+          data_cy={data_cy}
           endIcon={endIcon}
           {...otherProps}
           onClick={() => handleSubmit()}
