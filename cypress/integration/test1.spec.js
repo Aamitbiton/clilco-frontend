@@ -1,11 +1,12 @@
-// <reference types="cypress" />;
+// const url = "http://localhost:3000/"
+const url = "https://clilco.web.app/";
+
 describe("login", () => {});
 const email = "test1@gmail.com";
 const pass = "123456";
 
 it("should login with username and password", function () {
-  cy.visit("http://localhost:3000/");
-  // cy.visit("https://clilco.web.app/");
+  cy.visit(url);
   cy.get("[data_cy=login-with-email]").click();
   cy.get("[data_cy=login-email-input]").type(email);
   cy.get("[data_cy=login-password-input]").type(pass);
