@@ -10,6 +10,7 @@ import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
 import { toast } from "react-toastify";
+import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
@@ -42,8 +43,8 @@ export const Lobby = () => {
       });
   };
 
-  const handle_room_update = async () => {
-    if (room) navigate(AppRoutes.VIDEO_DATE);
+  const go_to_date = () => {
+    navigate(AppRoutes.VIDEO_DATE);
   };
   const handle_no_permissions = async () => {
     await toast("חסרות הרשאות למצלמה", { type: "error" });
@@ -80,30 +81,32 @@ export const Lobby = () => {
     }
   };
   useEffect(init_page, []);
-  useEffect(handle_room_update, [room]);
 
   return (
     <>
       <div className="full-screen">
+        {room && <CounterAnimation onEnd={go_to_date} />}
         <MyVideoInLobby
           setLocalStream={setLocalStream}
           handle_no_permissions={handle_no_permissions}
         />
 
-        <div className="back-btn-from-lobby-to-home">
-          <AppButton
-            width="100%"
-            borderColor="#db1b87"
-            labelColor="white"
-            onClick={handle_back_btn}
-            label={translate("lobby.back")}
-            children={
-              <ChevronLeftOutlined
-                style={{ marginRight: "10px", color: "#db1b87" }}
-              />
-            }
-          />
-        </div>
+        {!room && (
+          <div className="back-btn-from-lobby-to-home">
+            <AppButton
+              width="100%"
+              borderColor="#db1b87"
+              labelColor="white"
+              onClick={handle_back_btn}
+              label={translate("lobby.back")}
+              children={
+                <ChevronLeftOutlined
+                  style={{ marginRight: "10px", color: "#db1b87" }}
+                />
+              }
+            />
+          </div>
+        )}
       </div>
     </>
   );
