@@ -6,6 +6,7 @@ import { handle_user_availability } from "../../store/user/userFunctions";
 import { useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
 import { toast } from "react-toastify";
@@ -89,14 +90,15 @@ export const Lobby = () => {
           handle_no_permissions={handle_no_permissions}
         />
 
-        <div className="back-btn">
+        <div className="back-btn-from-lobby-to-home">
           <AppButton
+            width="100%"
             borderColor="#db1b87"
             labelColor="white"
             onClick={handle_back_btn}
             label={translate("lobby.back")}
             children={
-              <ChevronRightIcon
+              <ChevronLeftOutlined
                 style={{ marginRight: "10px", color: "#db1b87" }}
               />
             }
