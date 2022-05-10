@@ -1,6 +1,6 @@
 // <reference types="cypress" />;
 describe("login", () => {});
-const email = "test1@gmail.com";
+const email = "test2@gmail.com";
 const pass = "123456";
 
 it("should login with username and password", function () {
