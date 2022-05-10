@@ -38,7 +38,12 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
             {question_texts[questionIndexes[questionIndexes.length - 1]]}
           </span>
         </div>
-        <audio ref={audioRef} src={src} style={{ visibility: "hidden" }} />
+        <audio
+          playsInline={true}
+          ref={audioRef}
+          src={src}
+          style={{ visibility: "hidden" }}
+        />
       </div>
     </>
   );
