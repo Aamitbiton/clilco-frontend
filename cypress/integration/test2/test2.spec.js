@@ -4,7 +4,6 @@
 const email = "test2@gmail.com";
 const pass = "123456";
 const url = "https://clilco-webrtc-tests.web.app/";
-// const url = "http://localhost:3000/";
 
 describe("test webrtc with user test2", () => {
   it("should login with username and password", function () {

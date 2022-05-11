@@ -1,17 +1,15 @@
 // todo: לאפשר שני טסטים במקביל
 //  https://docs.cypress.io/guides/guides/parallelization#Overview
 
-const email = "test1@gmail.com";
+const user = "test1";
 const pass = "123456";
 const url = "https://clilco-webrtc-tests.web.app/";
-// const url = "http://localhost:3000/";
 
-describe("test webrtc with user test1", () => {
+describe(`test webrtc with user ${user}`, () => {
   it("should login with username and password", function () {
-    cy.wait(60000);
     cy.visit(url);
     cy.get("[data_cy=login-with-email]").click();
-    cy.get("[data_cy=login-email-input]").type(email);
+    cy.get("[data_cy=login-email-input]").type(user + "@gmail.com");
     cy.get("[data_cy=login-password-input]").type(pass);
     cy.get("[data_cy=login-with-email_login-btn]").click();
   });
@@ -20,10 +18,18 @@ describe("test webrtc with user test1", () => {
     cy.get("[data_cy=go-to-date-btn]").click();
   });
 
-  it("should be at lobby and then be in video", function () {
+  it("should be at lobby", function () {
     cy.get("[data_cy=lobby-back-btn]").should("exist");
-    cy.wait(60000);
+  });
+
+  it("should be video page", function () {
+    cy.wait(30000);
     cy.get("[data_cy=lobby-back-btn]").should("not.exist");
+    cy.get("[data_cy=video-date-page]").should("exist");
+  });
+
+  it("should have remote video", function () {
+    cy.wait(30000);
     cy.get("[data_cy=remote-video]").should("exist");
   });
 
