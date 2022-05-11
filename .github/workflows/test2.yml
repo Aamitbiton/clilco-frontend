@@ -15,6 +15,4 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/integration/test2/*
-#          ref: test2
-#          build: npm run build
-#          start: npm run start
+        timeout-minutes: 10
