@@ -31,6 +31,7 @@ describe(`test webrtc with user ${user}`, () => {
   // it("should have remote video", function () {
   //   cy.wait(60000);
   //   cy.get("[data_cy=remote-video]").should("exist");
+
   // });
   //
   // it("should end the video", function () {
