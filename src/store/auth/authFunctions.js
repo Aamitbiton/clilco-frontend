@@ -62,5 +62,6 @@ export const resetPassword = async (email) => {
 };
 
 export const remove_account = async () => {
-  return await authService.remove_account();
+  await authService.remove_account();
+  await authService.signOut();
 };
