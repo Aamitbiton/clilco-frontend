@@ -22,7 +22,7 @@ describe(`test webrtc with user ${user}`, () => {
     cy.get("[data_cy=lobby-back-btn]").should("exist");
   });
 
-  it("should be video page", function () {
+  it("should be in video page", function () {
     cy.wait(60000);
     cy.get("[data_cy=lobby-back-btn]").should("not.exist");
     cy.get("[data_cy=video-date-page]").should("exist");
@@ -33,7 +33,6 @@ describe(`test webrtc with user ${user}`, () => {
     cy.get("[data_cy=remote-video]").should("exist");
   });
 
-  // todo one of the users shouldn't end the date,  he should check that the date ended
   it("should end the video", function () {
     Cypress.on("uncaught:exception", (err, runnable) => {
       return false; // returning false here prevents Cypress from failing the test

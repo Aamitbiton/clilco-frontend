@@ -22,22 +22,22 @@ describe(`test webrtc with user ${user}`, () => {
     cy.get("[data_cy=lobby-back-btn]").should("exist");
   });
 
-  it("should be video page", function () {
+  it("should be in video page", function () {
     cy.wait(60000);
     cy.get("[data_cy=lobby-back-btn]").should("not.exist");
     cy.get("[data_cy=video-date-page]").should("exist");
   });
 
-  it("should have remote video", function () {
-    cy.wait(60000);
-    cy.get("[data_cy=remote-video]").should("exist");
-  });
-
-  it("should end the video", function () {
-    Cypress.on("uncaught:exception", (err, runnable) => {
-      return false; // returning false here prevents Cypress from failing the test
-    });
-    cy.get("[data_cy=end-video-btn]").click();
-    cy.get("[data_cy=after-date-page]").should("exist");
-  });
+  // it("should have remote video", function () {
+  //   cy.wait(60000);
+  //   cy.get("[data_cy=remote-video]").should("exist");
+  // });
+  //
+  // it("should end the video", function () {
+  //   Cypress.on("uncaught:exception", (err, runnable) => {
+  //     return false; // returning false here prevents Cypress from failing the test
+  //   });
+  //   cy.get("[data_cy=end-video-btn]").click();
+  //   cy.get("[data_cy=after-date-page]").should("exist");
+  // });
 });
