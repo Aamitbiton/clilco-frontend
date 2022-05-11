@@ -1,6 +1,3 @@
-// todo: לאפשר שני טסטים במקביל
-//  https://docs.cypress.io/guides/guides/parallelization#Overview
-
 const user = "test2";
 const pass = "123456";
 const url = "https://clilco-webrtc-tests.web.app/";

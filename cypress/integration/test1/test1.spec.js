@@ -1,6 +1,3 @@
-// todo: לאפשר שני טסטים במקביל
-//  https://docs.cypress.io/guides/guides/parallelization#Overview
-
 const user = "test1";
 const pass = "123456";
 const url = "https://clilco-webrtc-tests.web.app/";
@@ -23,14 +20,12 @@ describe(`test webrtc with user ${user}`, () => {
   });
 
   it("should be in video page", function () {
-    cy.wait(60000);
-    cy.get("[data_cy=lobby-back-btn]").should("not.exist");
-    cy.get("[data_cy=video-date-page]").should("exist");
+    cy.get("[data_cy=lobby-back-btn]", { timeout: 60000 }).should("not.exist");
+    cy.get("[data_cy=video-date-page]", { timeout: 60000 }).should("exist");
   });
 
   it("should have remote video", function () {
-    cy.wait(60000);
-    cy.get("[data_cy=remote-video]").should("exist");
+    cy.get("[data_cy=remote-video]", { timeout: 60000 }).should("exist");
   });
 
   it("should end the video", function () {
