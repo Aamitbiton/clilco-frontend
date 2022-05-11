@@ -94,7 +94,8 @@ export const Lobby = () => {
         {!room && (
           <div className="back-btn-from-lobby-to-home flex-center">
             <AppButton
-              data_cy="lobby-btn"
+              id="lobby-back-btn"
+              data_cy="lobby-back-btn"
               variant="contained"
               width="250"
               backgroundColor="#db1b87"

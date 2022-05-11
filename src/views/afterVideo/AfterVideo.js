@@ -48,7 +48,7 @@ export const AfterVideo = () => {
   useEffect(created, []);
   return (
     <>
-      <div className="after-date-page">
+      <div className="after-date-page" data_cy="after-date-page">
         <Title title={translate("after_date.title")} />
         <Text onClick={() => {}} sx={{ fontSize: "28px" }}>
           {translate("after_date.sub-title")}
