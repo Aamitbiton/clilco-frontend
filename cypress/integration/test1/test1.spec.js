@@ -33,6 +33,7 @@ describe(`test webrtc with user ${user}`, () => {
     cy.get("[data_cy=remote-video]").should("exist");
   });
 
+  // todo one of the users shouldn't end the date,  he should check that the date ended
   it("should end the video", function () {
     Cypress.on("uncaught:exception", (err, runnable) => {
       return false; // returning false here prevents Cypress from failing the test
