@@ -1,8 +1,8 @@
 // todo: לאפשר שני טסטים במקביל
 //  https://docs.cypress.io/guides/guides/parallelization#Overview
 
-const url = "http://localhost:3000/";
-// const url = "https://clilco.web.app/";
+// const url = "http://localhost:3000/";
+const url = "https://clilco.web.app/";
 
 describe("login", () => {});
 const email = "test2@gmail.com";
