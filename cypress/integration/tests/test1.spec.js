@@ -9,6 +9,7 @@ const email = "test1@gmail.com";
 const pass = "123456";
 
 it("should login with username and password", function () {
+  cy.wait(20000);
   cy.visit(url);
   cy.get("[data_cy=login-with-email]").click();
   cy.get("[data_cy=login-email-input]").type(email);
