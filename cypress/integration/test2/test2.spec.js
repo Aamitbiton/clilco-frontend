@@ -23,7 +23,7 @@ describe(`test webrtc with user ${user}`, () => {
   });
 
   it("should be video page", function () {
-    cy.wait(30000);
+    cy.wait(30001);
     cy.get("[data_cy=lobby-back-btn]").should("not.exist");
     cy.get("[data_cy=video-date-page]").should("exist");
   });
