@@ -21,7 +21,7 @@ describe("test webrtc with user test1", () => {
 
   it("should be at lobby and then be in video", function () {
     cy.get("[data_cy=lobby-back-btn]").should("exist");
-    cy.wait(30000);
+    cy.wait(60000);
     cy.get("[data_cy=lobby-back-btn]").should("not.exist");
     cy.get("[data_cy=remote-video]").should("exist");
   });

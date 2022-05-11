@@ -1,5 +1,5 @@
 #-------------- run multiple tests in parallel: https://glebbahmutov.com/blog/run-two-cypress-runners/ -------
-name: run e2e myltiple times to check webrtc
+name: test webrtc with user test1
 'on': pull_request
 
 jobs:
@@ -15,5 +15,5 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           ref: tests/test1
-          build: npm run build
+#          build: npm run build
           start: npm run start
