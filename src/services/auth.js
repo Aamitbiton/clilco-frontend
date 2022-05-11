@@ -1,7 +1,7 @@
 import * as auth from "../firebase/auth";
 
 export async function login_with_google() {
-  return await auth.logInWithProvider("google");
+  return await auth.login_with_google();
 }
 
 export async function login_with_facebook() {
