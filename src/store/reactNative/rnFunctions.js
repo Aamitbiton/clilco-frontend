@@ -24,7 +24,7 @@ function init_back_btn() {
   async function backBtnAndroidHandler() {
     const navigate = getState().app.global_hooks.navigator;
     if (window.location.pathname !== "/") navigate(-1);
-    else send_message_to_rn({ closeApp: true });
+    else send_message_to_rn({ type: "closeApp", payload: null });
   }
 }
 

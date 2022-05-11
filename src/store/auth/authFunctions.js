@@ -10,12 +10,14 @@ const { getState, dispatch } = store;
 
 export const login_with_google = async () => {
   const firebaseUser = await authService.login_with_google();
-  const user = getState().user.user;
-  if (!user.private.phone) {
-    getState().app.global_hooks.navigator("/verify-phone");
-  } else {
-    getState().app.global_hooks.navigator("/");
-  }
+
+  //todo: check if its work without this code;
+  // const user = getState().user.user;
+  // if (!user.private.phone) {
+  //   getState().app.global_hooks.navigator("/verify-phone");
+  // } else {
+  //   getState().app.global_hooks.navigator("/");
+  // }
 };
 
 export const watch_auth_changes = async (set_app_ready) => {
@@ -62,5 +64,6 @@ export const resetPassword = async (email) => {
 };
 
 export const remove_account = async () => {
-  return await authService.remove_account();
+  await authService.remove_account();
+  await authService.signOut();
 };

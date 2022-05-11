@@ -8,11 +8,13 @@ import {
   getIdToken,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithCredential,
   sendPasswordResetEmail,
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
 import { callAbleFunction } from "./functions";
+import { send_message_to_rn } from "../store/reactNative/rnFunctions";
 
 const Auth = getAuth();
 
@@ -94,16 +96,22 @@ export async function login_with_facebook() {
   }
 }
 
-export async function logInWithProvider(providerName) {
-  try {
-    const provider =
-      providerName === "google" ? google_provider : facebook_provider;
-    let result = await signInWithPopup(Auth, provider);
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
-    return user;
-  } catch (e) {}
+export async function login_with_google() {
+  if (window.rn_app) {
+    send_message_to_rn({ type: "login_with_google", payload: null });
+  } else {
+    await login_with_google_web();
+  }
+
+  async function login_with_google_web() {
+    try {
+      let result = await signInWithPopup(Auth, google_provider);
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      return user;
+    } catch (e) {}
+  }
 }
