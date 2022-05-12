@@ -25,7 +25,10 @@ describe(`test webrtc with user ${user}`, () => {
   });
 
   it("should wait for the other user to end call", function () {
+    Cypress.on("uncaught:exception", (err, runnable) => {
+      return false; // returning false here prevents Cypress from failing the test on errors
+    });
     console.log("***************************** waiting for other user");
-    cy.get("[data_cy=after-date-page]", { timeout: 120_000 }).should("exist");
+    cy.get("[data_cy=after-date-page]", { timeout: 120000 }).should("exist");
   });
 });

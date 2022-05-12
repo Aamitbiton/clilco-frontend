@@ -18,3 +18,7 @@ jobs:
         timeout-minutes: 10
 
 
+
+# on pull request deploy to feature branch
+# after deploy get the url and run tests on it
+# try to run both tests on one yml file
