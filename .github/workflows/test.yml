@@ -12,25 +12,17 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch_data
 
-
-  cypress-run-1:
-    needs: test1
+jobs:
+  cypress-run:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout
-        uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-
-      - name: cypress-run-test3
-        uses: cypress-io/github-action@v2
+        uses: actions/checkout@v1
+      - name: Cypress run
+        uses: cypress-io/github-action@v1
         with:
-          spec: cypress/integration/test3/*
           env: true
         env:
-          CYPRESS_BASE_URL: "https://clilco-webrtc-tests.web.app/"
-          TEST: eng:${{ steps.extract_branch_data.outputs.branch }}
-        timeout-minutes: 10
-
+          CYPRESS_BASE_URL: 'https://clilco-webrtc-tests.web.app/'
+          CYPRESS_RECORD_KEY: eng:${{ steps.extract_branch_data.outputs.branch }}
 
