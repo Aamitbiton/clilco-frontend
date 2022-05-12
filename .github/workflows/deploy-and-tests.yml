@@ -15,9 +15,7 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLILCO }}'
           projectId: clilco
-#          secret.env.url: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLILCO }}'
           target: tests
-
 
 
   cypress-run-1:
@@ -56,5 +54,5 @@ jobs:
         timeout-minutes: 10
 
 
-
-
+# access github data within the workflow: https://stackoverflow.com/questions/58033366/how-to-get-the-current-branch-within-github-actions
+# pass github data to cypress
