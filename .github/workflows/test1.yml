@@ -1,20 +1,24 @@
-#-------------- run multiple tests in parallel: https://glebbahmutov.com/blog/run-two-cypress-runners/ -------
-name: test webrtc with user test1
-'on': pull_request
+##-------------- run multiple tests in parallel: https://glebbahmutov.com/blog/run-two-cypress-runners/ -------
+#name: test webrtc with user test1
+#'on': pull_request
+#
+#jobs:
+#  cypress-run:
+#    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      # Install NPM dependencies, cache them correctly
+#      # and run all Cypress tests
+#      - name: cypress-run-test1
+#        uses: cypress-io/github-action@v2
+#        with:
+#          spec: cypress/integration/test1/*
+#        timeout-minutes: 10
 
-jobs:
-  cypress-run:
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: cypress-run-test1
-        uses: cypress-io/github-action@v2
-        with:
-          spec: cypress/integration/test1/*
-        timeout-minutes: 10
 
 
+# on pull request deploy to feature branch
+# after deploy get the url and run tests on it
+# try to run both tests on one yml file
