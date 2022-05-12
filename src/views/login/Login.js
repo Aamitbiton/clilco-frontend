@@ -62,6 +62,7 @@ export const Login = () => {
                   label={"התחבר עם אפל"}
                 />
                 <AppButton
+                  data_cy="login-with-email"
                   rounded={true}
                   width={inputs.STATIC_WIDTH}
                   height={inputs.STATIC_HEIGHT}

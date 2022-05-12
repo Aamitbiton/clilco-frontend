@@ -15,6 +15,7 @@ export const StartDate = ({ navigate }) => {
           מוכנים?
         </Typography>
         <AppButton
+          data_cy="go-to-date-btn"
           width={defaultStyles.inputs.STATIC_WIDTH}
           height={defaultStyles.inputs.STATIC_HEIGHT}
           backgroundColor={

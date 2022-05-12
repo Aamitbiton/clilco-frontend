@@ -63,12 +63,14 @@ function LoginWithEmail({ close }) {
       >
         <AppStack direction={"column"}>
           <FormFiled
+            data_cy="login-email-input"
             trim={true}
             label={"אימייל"}
             name={"email"}
             width={inputs.STATIC_WIDTH}
           />
           <FormFiled
+            data_cy="login-password-input"
             label={"סיסמא"}
             type={"password"}
             trim={true}
@@ -82,6 +84,7 @@ function LoginWithEmail({ close }) {
             שכחתי סיסמא
           </Text>
           <SubmitButton
+            data_cy="login-with-email_login-btn"
             width={inputs.STATIC_WIDTH}
             loadingButton={true}
             loading={isLoading}

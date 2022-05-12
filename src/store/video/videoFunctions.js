@@ -3,16 +3,14 @@ import * as videoService from "../../services/video";
 import { store } from "../index";
 import VIDEO_CONSTANTS from "./constants";
 import { send_offer_or_answer, update_me_in_room } from "../../services/video";
-import * as faceapi from "face-api.js";
+// import * as faceapi from "face-api.js";
 import * as api from "../../services/api";
 
 const { getState, dispatch } = store;
 
 export const watch_room = async () => {
   const unsubscribes = await videoService.watch_room(async (room) => {
-    if (room) {
-      await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
-    }
+    if (room) await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, room);
   });
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
@@ -42,9 +40,7 @@ export const clean_room = async () => {
 
 export const unsubscribe_room_listener = async () => {
   const unsubscribes = getState().video.room_unsubscribes;
-  Object.keys(unsubscribes).every((key) => {
-    unsubscribes[key]();
-  });
+  Object.keys(unsubscribes).forEach((key) => unsubscribes[key]());
 };
 
 export const set_go_to_decision = async () => {
@@ -125,21 +121,21 @@ export const set_its_dating_time = async (payload) => {
   });
 };
 
-export const emotion_detector = async ({ video, action }) => {
-  await Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-    faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-    faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-  ]);
-  return setInterval(async () => {
-    const detections = await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceExpressions();
-    const { angry, disgusted, fearful, happy, neutral, sad, surprised } =
-      detections[0]?.expressions || {};
-    action({ angry, disgusted, fearful, happy, neutral, sad, surprised });
-  }, 1000);
-};
+// export const emotion_detector = async ({ video, action }) => {
+//   await Promise.all([
+//     faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+//     faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+//     faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+//   ]);
+//   return setInterval(async () => {
+//     const detections = await faceapi
+//       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+//       .withFaceExpressions();
+//     const { angry, disgusted, fearful, happy, neutral, sad, surprised } =
+//       detections[0]?.expressions || {};
+//     action({ angry, disgusted, fearful, happy, neutral, sad, surprised });
+//   }, 1000);
+// };
 
 export const update_question_in_room = async ({ questions, roomId }) => {
   await videoService.update_question_in_room({ questions, roomId });

@@ -9,7 +9,7 @@ function Settings(props) {
     <>
       <Header />
       <CenterLayout>
-        <ConfirmItem label={"מחיקת משתמש"} onOk={() => remove_account()}>
+        <ConfirmItem label={"מחיקת משתמש"} onOk={remove_account}>
           <NoAccountsOutlinedIcon fontSize={"inherit"} />
         </ConfirmItem>
       </CenterLayout>

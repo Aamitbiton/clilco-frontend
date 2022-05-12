@@ -52,7 +52,11 @@ export const VideoButtons = ({
         </div>
 
         <div>
-          <div className="video-btn" onClick={end_video_date}>
+          <div
+            className="video-btn"
+            onClick={end_video_date}
+            data_cy="end-video-btn"
+          >
             <PhoneDisabledSharpIcon fontSize="large" color="turquoise" />
           </div>
           <div className="icon-text">{translate("video_page.end-call")}</div>
