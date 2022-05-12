@@ -19,7 +19,7 @@ jobs:
 
 
 
-  cypress-run:
+  cypress-run-1:
     needs: build_and_preview
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
@@ -34,16 +34,25 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/integration/test1/*
-          parallel: true
         timeout-minutes: 10
 
-      - name: cypress-run-test2
-        uses: cypress-io/github-action@v2
-        with:
-          spec: cypress/integration/test2/*
-          parallel: true
-        timeout-minutes: 10
 
+      cypress-run-2:
+        needs: build_and_preview
+        if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+        runs-on: ubuntu-latest
+        steps:
+
+          - name: Checkout
+            uses: actions/checkout@v2
+          # Install NPM dependencies, cache them correctly
+          # and run all Cypress tests
+
+          - name: cypress-run-test2
+            uses: cypress-io/github-action@v2
+            with:
+              spec: cypress/integration/test2/*
+            timeout-minutes: 10
 
 
 
