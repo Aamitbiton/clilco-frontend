@@ -34,12 +34,14 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/integration/test1/*
+          parallel: true
         timeout-minutes: 10
 
       - name: cypress-run-test2
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/integration/test2/*
+          parallel: true
         timeout-minutes: 10
 
 
