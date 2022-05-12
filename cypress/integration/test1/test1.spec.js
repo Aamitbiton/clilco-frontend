@@ -1,10 +1,9 @@
 const user = "test1";
 const pass = "123456";
-const url = Cypress.env("CYPRESS_BASE_URL");
 
 describe(`test webrtc with user ${user}`, () => {
   it("should login with username and password", function () {
-    cy.visit(url);
+    cy.visit(Cypress.env("CYPRESS_BASE_URL"));
     cy.get("[data_cy=login-with-email]").click();
     cy.get("[data_cy=login-email-input]").type(user + "@gmail.com");
     cy.get("[data_cy=login-password-input]").type(pass);
