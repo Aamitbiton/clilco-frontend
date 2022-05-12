@@ -1,6 +1,8 @@
 const user = "test1";
 const pass = "123456";
 const url = "https://clilco-webrtc-tests.web.app/";
+// const url1 = `https://clilco-webrtc-tests--${prnumber}-${branchName}-${commit}.web.app/`;
+// const url2 = secret.env.url
 
 describe(`test webrtc with user ${user}`, () => {
   it("should login with username and password", function () {
