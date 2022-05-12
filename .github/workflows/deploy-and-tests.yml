@@ -40,7 +40,7 @@ jobs:
           spec: cypress/integration/test1/*
           env: true
         env:
-          CYPRESS_BASE_URL: "https://clilco-webrtc-tests.web.app/"\
+          CYPRESS_BASE_URL: "https://clilco-webrtc-tests.web.app/"
           TEST: eng:${{ steps.extract_branch_data.outputs.branch }}
         timeout-minutes: 10
 
