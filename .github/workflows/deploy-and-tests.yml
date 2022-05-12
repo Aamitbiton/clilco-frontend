@@ -15,9 +15,7 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLILCO }}'
           projectId: clilco
-#          secret.env.url: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLILCO }}'
           target: tests
-
 
 
   cypress-run-1:
@@ -54,7 +52,3 @@ jobs:
         with:
           spec: cypress/integration/test2/*
         timeout-minutes: 10
-
-
-
-
