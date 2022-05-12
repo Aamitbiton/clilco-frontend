@@ -1,6 +1,6 @@
 const user = "test2";
 const pass = "123456";
-const url = "https://clilco-webrtc-tests.web.app/";
+const url = Cypress.env("CYPRESS_BASE_URL");
 
 describe(`test webrtc with user ${user}`, () => {
   it("should login with username and password", function () {
