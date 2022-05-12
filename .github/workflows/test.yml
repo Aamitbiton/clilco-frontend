@@ -13,6 +13,7 @@ jobs:
         id: extract_branch_data
 
   cypress-run:
+    needs: test1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
