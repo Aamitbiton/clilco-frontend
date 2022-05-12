@@ -14,8 +14,7 @@ jobs:
 
 
   cypress-run-1:
-    needs: build_and_preview
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    needs: test1
     runs-on: ubuntu-latest
     steps:
 
@@ -34,31 +33,4 @@ jobs:
           TEST: eng:${{ steps.extract_branch_data.outputs.branch }}
         timeout-minutes: 10
 
-
-
-  cypress-run-2:
-    needs: build_and_preview
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Checkout
-        uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-
-      - name: cypress-run-test2
-        uses: cypress-io/github-action@v2
-        with:
-          spec: cypress/integration/test2/*
-          env: true
-        env:
-          CYPRESS_BASE_URL: "https://clilco-webrtc-tests.web.app/"
-        timeout-minutes: 10
-
-
-
-
-
-# access github data within the workflow: https://stackoverflow.com/questions/58033366/how-to-get-the-current-branch-within-github-actions
 
