@@ -20,6 +20,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
+          spec: cypress/integration/test1/*
           env: true
         env:
           CYPRESS_BASE_URL: 'https://clilco-webrtc-tests.web.app/'
