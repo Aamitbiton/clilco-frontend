@@ -17,6 +17,11 @@ jobs:
           projectId: clilco
           target: tests
 
+      - name: Extract branch data
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch_data
+
 
   cypress-run-1:
     needs: build_and_preview
@@ -35,7 +40,8 @@ jobs:
           spec: cypress/integration/test1/*
           env: true
         env:
-          CYPRESS_BASE_URL: "https://clilco-webrtc-tests.web.app/"
+          CYPRESS_BASE_URL: "https://clilco-webrtc-tests.web.app/"\
+          TEST: eng:${{ steps.extract_branch_data.outputs.branch }}
         timeout-minutes: 10
 
 

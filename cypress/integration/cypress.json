@@ -1,0 +1,6 @@
+{
+  "env": {
+    "CYPRESS_BASE_URL": "TEST1",
+    "TEST": "TEST2"
+  }
+}
