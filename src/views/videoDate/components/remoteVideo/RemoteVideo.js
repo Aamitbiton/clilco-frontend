@@ -33,6 +33,7 @@ export const RemoteVideo = ({ remoteStream }) => {
       {remoteStream && (
         <>
           <video
+            data_cy="remote-video"
             onLoadedData={set_video_size}
             playsInline
             ref={remoteVideoRef}

@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "clilco"
+  },
+  "targets": {
+    "clilco": {
+      "hosting": {
+        "tests": [
+          "clilco-webrtc-tests"
+        ],
+        "prod": [
+          "clilco"
+        ]
+      }
+    }
   }
 }

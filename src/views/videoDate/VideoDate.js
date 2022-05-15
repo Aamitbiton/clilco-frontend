@@ -299,7 +299,7 @@ export const VideoDate = () => {
 
   return (
     <>
-      <div className="full-screen">
+      <div className="full-screen" data_cy="video-date-page">
         <MyVideo
           dateStarted={remoteStream}
           setLocalStream={setLocalStream}

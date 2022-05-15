@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "./OtherUserPlaceHolder.scss";
-import Title from "../../../../components/title/title";
 import { useSelector } from "react-redux";
 import {
   create_snackBar,

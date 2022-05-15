@@ -13,7 +13,11 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
   const handle_question_url = async ({ index }) => {
     const url = await get_question_audio({ index: index.toString() });
     setSrc(url);
-    audioRef.current.play();
+    play_question();
+  };
+  const play_question = () => {
+    audioRef.current?.play();
+    console.log("play quest");
   };
   const handle_volume_change = async () => {
     if (volume && audioRef?.current?.volume) {
