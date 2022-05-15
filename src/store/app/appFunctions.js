@@ -13,7 +13,7 @@ export const init_app = async ({ navigator }) => {
     await actionsCreator("GLOBAL_HOOKS", { navigator, translate });
     await actionsCreator(APP_CONSTANTS.SET_APP_READY, true);
     await actionsCreator(APP_CONSTANTS.LNG, lng);
-    await startReactNativeHandle();
+    if (window.rn_app) await startReactNativeHandle();
   });
   await get_next_speed_date_time();
   const isMobile = window.innerWidth < 450;

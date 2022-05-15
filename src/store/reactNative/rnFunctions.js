@@ -11,10 +11,9 @@ export const send_message_to_rn = (data) => {
 };
 
 export const startReactNativeHandle = () => {
-  window.postMessage = function (data) {
-    window.ReactNativeWebView && window.ReactNativeWebView.postMessage(data);
-  };
-  init_back_btn();
+  window.rn.OS === "android"
+    ? document.addEventListener("message", expo_message_handler)
+    : window.addEventListener("message", expo_message_handler);
   get_expo_token();
 };
 
@@ -44,3 +43,5 @@ function get_expo_token(dispatch) {
 export async function save_expo_token_in_db(expoToken) {
   await update_user_private({ expoToken });
 }
+
+export async function expo_message_handler() {}
