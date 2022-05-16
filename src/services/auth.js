@@ -28,6 +28,10 @@ export async function resetPassword(email) {
   return await auth.resetPassword(email);
 }
 
+export async function get_token_id() {
+  return await auth.getToken();
+}
+
 export async function login_with_email({ email, password }) {
   const res = await auth.create_user_with_email({ email, password });
   if (!res.error) return res;
