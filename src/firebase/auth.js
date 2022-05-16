@@ -10,6 +10,7 @@ import {
   signInWithPopup,
   signInWithCredential,
   sendPasswordResetEmail,
+  signInWithRedirect,
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
@@ -97,15 +98,15 @@ export async function login_with_facebook() {
 }
 
 export async function login_with_google() {
-  if (window.rn_app) {
-    send_message_to_rn({ type: "login_with_google", payload: null });
-  } else {
-    await login_with_google_web();
-  }
+  // if (window.rn_app) {
+  //   send_message_to_rn({ type: "login_with_google", payload: null });
+  // } else {
+  // }
+  await login_with_google_web();
 
   async function login_with_google_web() {
     try {
-      let result = await signInWithPopup(Auth, google_provider);
+      let result = await signInWithRedirect(Auth, google_provider);
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
