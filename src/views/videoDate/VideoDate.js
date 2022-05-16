@@ -58,21 +58,23 @@ export const VideoDate = () => {
     }
   };
   const handle_no_remote_stream = () => {
-    if (remoteStream || window.rn_app?.OS === "ios") return;
-    infoLog("other user not in the date. refreshing every five minutes");
-    [1, 2, 3, 4, 5, 6].forEach((number) => {
-      setTimeout(() => {
-        infoLog(number);
-        if (number === 5 && !remoteStreamRef.current)
-          window.location.reload(true);
-      }, 1000 * number);
-    });
+    console.info("remote change");
+    if (!remoteStream) setRemoteStream(false);
+    // infoLog("other user not in the date. refreshing every five minutes");
+    // [1, 2, 3, 4, 5, 6].forEach((number) => {
+    //   setTimeout(() => {
+    //     infoLog(number);
+    //     if (number === 5 && !remoteStreamRef.current)
+    //     window.location.reload(true);
+    //   }, 1000 * number);
+    // });
   };
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
     if (!wasHereOnce) {
       localStorage.setItem("video-date-once", "true");
+      console.log("refresh from start");
       window.location.reload(true);
     }
   };
