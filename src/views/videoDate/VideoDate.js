@@ -60,13 +60,13 @@ export const VideoDate = () => {
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
     infoLog("other user not in the date. refreshing every five minutes");
-    [1, 2, 3, 4, 5].forEach((number) => {
-      setTimeout(() => {
-        infoLog(number);
-        if (number === 5 && !remoteStreamRef.current)
-          window.location.reload(true);
-      }, 1000 * number);
-    });
+    // [1, 2, 3, 4, 5].forEach((number) => {
+    //   setTimeout(() => {
+    //     infoLog(number);
+    //     if (number === 5 && !remoteStreamRef.current)
+    //       window.location.reload(true);
+    //   }, 1000 * number);
+    // });
   };
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));

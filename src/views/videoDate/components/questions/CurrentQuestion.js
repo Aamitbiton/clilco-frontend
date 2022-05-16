@@ -19,7 +19,6 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
   const play_question = () => {
     audioRef.current?.play();
     console.log("play quest");
-    send_message_to_rn({ type: "play", payload: null });
   };
   const handle_volume_change = async () => {
     if (volume && audioRef?.current?.volume) {
