@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useHistory } from "react-router-dom";
 import AppRoutes from "../app/AppRoutes";
+import { send_message_to_rn } from "../store/reactNative/rnFunctions";
 function useRouterGuard(props) {
   const { LOGIN, REGISTRATION, ROOT, UPLOAD_IMAGE, VERIFY_PHONE } = AppRoutes;
   const user = useSelector((state) => state.user?.user);
@@ -23,6 +24,14 @@ function useRouterGuard(props) {
     else if (isAuthRoute()) navigate(ROOT);
     else return null;
   };
+  const sendLocationToMobile = () => {
+    send_message_to_rn({
+      type: "updateCurrentPath",
+      payload: location.pathname,
+    });
+  };
+
+  useEffect(sendLocationToMobile, [location.pathname]);
   useEffect(handleNavigation, [user, appState.app_ready]);
 }
 

@@ -17,16 +17,6 @@ export const startReactNativeHandle = () => {
   get_expo_token();
 };
 
-function init_back_btn() {
-  window.backBtnAndroid = new Event("backBtnAndroid");
-  window.addEventListener("backBtnAndroid", backBtnAndroidHandler, false);
-  async function backBtnAndroidHandler() {
-    const navigate = getState().app.global_hooks.navigator;
-    if (window.location.pathname !== "/") navigate(-1);
-    else send_message_to_rn({ type: "closeApp", payload: null });
-  }
-}
-
 function get_expo_token(dispatch) {
   window.expoTokenEvent = new Event("expoTokenEvent");
   window.addEventListener("expoTokenEvent", async (e) => {

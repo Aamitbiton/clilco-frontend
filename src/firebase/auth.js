@@ -79,6 +79,10 @@ export async function resetPassword(email) {
 }
 
 export async function login_with_facebook() {
+  if (window.rn_app) {
+    send_message_to_rn({ type: "login_with_facebook", payload: null });
+    return;
+  }
   try {
     const res = await signInWithPopup(Auth, facebook_provider);
     const credential = facebook_provider.credentialFromResult(res);
