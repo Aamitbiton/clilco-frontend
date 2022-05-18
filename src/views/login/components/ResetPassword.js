@@ -6,6 +6,7 @@ import SubmitButton from "../../../components/Form/SubmitButton";
 import AppStack from "../../../components/AppStack";
 import { resetPassword } from "../../../store/auth/authFunctions";
 import Text from "../../../components/Text";
+import Title from "../../../components/title/title";
 function ResetPassword(props) {
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -30,6 +31,7 @@ function ResetPassword(props) {
       initialValues={{ email: "" }}
       onSubmit={({ email }) => handleResetPassword(email)}
     >
+      <Title textAlign={"center"} title={"שיחזור סיסמא"} />
       <AppStack direction={"column"} margin={2}>
         <FormFiled name={"email"} label={"אימייל"} />
         <SubmitButton loading={isLoading} loadingButton={true} label={"שלח"} />
