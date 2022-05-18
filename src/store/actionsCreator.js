@@ -1,6 +1,6 @@
-import {store} from "./index";
-const {getState, dispatch} = store
+import { store } from "./index";
+const { getState, dispatch } = store;
 
-export default async function actionsCreator(type, payload) {
-    await dispatch({type, payload});
+export default function actionsCreator(type, payload) {
+  dispatch({ type, payload });
 }

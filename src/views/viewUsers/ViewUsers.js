@@ -26,9 +26,11 @@ export const ViewUsers = () => {
   const [users, setUsers] = useState(null);
   const [view_animation, set_view_animation] = useState(true);
   const get_more_users = async () => {
-    const newUsers = await f_get_all_users(!!users);
-    const allUsers = users ? users.concat(newUsers) : newUsers;
-    setUsers(allUsers);
+    const newUsers = await f_get_all_users(!!users, true);
+    if (newUsers) {
+      const allUsers = users ? users.concat(newUsers) : newUsers;
+      setUsers(allUsers);
+    }
   };
   const get_age = (birthday) => {
     let birthdate = new Date(birthday);
@@ -56,7 +58,9 @@ export const ViewUsers = () => {
         <Slider
           beforeChange={(oldIndex, newIndex) => {
             if (view_animation) set_view_animation(false);
-            if (users.length - newIndex < 2) get_more_users();
+            if (users.length - newIndex < 2) {
+              get_more_users();
+            }
           }}
           {...settings}
         >

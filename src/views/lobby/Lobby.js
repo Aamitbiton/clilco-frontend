@@ -58,7 +58,6 @@ export const Lobby = () => {
       });
       setLocalStream(null);
     } catch (e) {
-      debugger;
       console.error(e);
     }
   };
@@ -68,7 +67,6 @@ export const Lobby = () => {
       stop_my_video();
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   const handle_back_btn = async () => {
@@ -77,7 +75,6 @@ export const Lobby = () => {
       navigate(AppRoutes.ROOT);
     } catch (e) {
       console.error(e);
-      debugger;
     }
   };
   useEffect(init_page, []);
