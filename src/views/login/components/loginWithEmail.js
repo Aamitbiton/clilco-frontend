@@ -14,6 +14,7 @@ import Title from "../../../components/title/title";
 import CenterLayout from "../../../components/CenterLayout";
 import defaultStyles from "../../../style/defaultStyles";
 import AppLogo from "../../../components/AppLogo";
+import { Checkbox, FormControlLabel } from "@mui/material";
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -42,13 +43,13 @@ function LoginWithEmail({ close }) {
     <CenterLayout direction={"column"}>
       <AppLogo />
 
-      <AppIconButton
-        onClick={close}
-        style={{ position: "relative", left: inputs.STATIC_WIDTH / 2 }}
-      >
-        <ArrowForwardIcon color={"primary"} />
-      </AppIconButton>
-      <Title mt={2} title={"התחברות עם אימייל"} />
+      {/*<AppIconButton*/}
+      {/*  onClick={close}*/}
+      {/*  style={{ position: "relative", left: inputs.STATIC_WIDTH / 2 }}*/}
+      {/*>*/}
+      {/*  <ArrowForwardIcon color={"primary"} />*/}
+      {/*</AppIconButton>*/}
+      <Title mt={2} title={"ברוכים הבאים"} />
       <AppForm
         validationSchema={schema}
         onSubmit={async ({ email, password }) => {
@@ -77,9 +78,16 @@ function LoginWithEmail({ close }) {
             name={"password"}
             width={inputs.STATIC_WIDTH}
           />
+          <div className={"flex-start_align-center"}>
+            <Checkbox defaultChecked />
+            <Text>
+              הריני מאשר את
+              <span className={"privacy pointer"}>תנאי השימוש</span>
+            </Text>
+          </div>
           <Text
             onClick={() => setModalVisible(true)}
-            sx={{ cursor: "pointer", textDecoration: "underline" }}
+            className={"pointer privacy"}
           >
             שכחתי סיסמא
           </Text>

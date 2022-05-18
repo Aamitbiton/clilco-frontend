@@ -9,6 +9,7 @@
     transition: .3s;
     bottom: 0;
     padding: 5px;
+    text-decoration: underline;
 }
 
 .privacy:hover {

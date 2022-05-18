@@ -22,7 +22,7 @@ import { PRIVACY_POLICY } from "../../privacy";
 
 export const Login = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
-  const [enter_with_web, set_enter_with_web] = useState(false);
+  const [enter_with_web, set_enter_with_web] = useState(true);
   const { inputs } = defaultStyles;
   return (
     <>

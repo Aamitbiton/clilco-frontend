@@ -41,6 +41,11 @@
 @include flex-center
 }
 
+.flex-start_align-center {
+    @include flex-justify(start);
+    align-items: center;
+}
+
 .flex-column-center {
 @include flex-center;
     flex-direction: column;
