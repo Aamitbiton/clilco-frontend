@@ -18,7 +18,7 @@ import defaultStyles from "../../style/defaultStyles";
 import AppLogo from "../../components/AppLogo";
 import { Typography } from "@mui/material";
 import AppModal from "../../components/AppModal";
-import { PRIVACY_POLICY } from "../../privacy";
+import { PRIVACY_POLICY } from "../privacy/privacy_content";
 
 export const Login = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
@@ -76,7 +76,7 @@ export const Login = () => {
           )}
         </div>
       </CenterLayout>
-      <PrivacyPolicy />
+      {/*<PrivacyPolicy />*/}
     </>
   );
 };

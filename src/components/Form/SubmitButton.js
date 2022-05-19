@@ -8,6 +8,7 @@ function SubmitButton({
   endIcon,
   loading,
   width,
+  disabled = false,
   loadingButton = false,
   ...otherProps
 }) {
@@ -16,6 +17,7 @@ function SubmitButton({
     <>
       {loadingButton ? (
         <LoadingButton
+          disabled={disabled}
           data_cy={data_cy}
           onClick={() => handleSubmit()}
           loading={loading}

@@ -5,6 +5,22 @@
     flex-direction: column;
 }
 
+.privacy-box-show {
+    position: absolute;
+    background: black;
+    z-index: 100;
+    transition: .4s;
+    overflow: scroll;
+    font-size: 11px;
+    transform: translateX(0%);
+}
+
+.privacy-box-hide {
+    position: absolute;
+    transition: 0.4s;
+    transform: translateX(-100%);
+}
+
 .privacy {
     transition: .3s;
     bottom: 0;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppForm from "../../../components/Form/AppForm";
 import * as Yup from "yup";
 import FormFiled from "../../../components/Form/FormFiled";
@@ -15,6 +15,8 @@ import CenterLayout from "../../../components/CenterLayout";
 import defaultStyles from "../../../style/defaultStyles";
 import AppLogo from "../../../components/AppLogo";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import { Link } from "react-router-dom";
+import AppRoutes from "../../../app/AppRoutes";
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -78,13 +80,7 @@ function LoginWithEmail({ close }) {
             name={"password"}
             width={inputs.STATIC_WIDTH}
           />
-          <div className={"flex-start_align-center"}>
-            <Checkbox defaultChecked />
-            <Text>
-              הריני מאשר את
-              <span className={"privacy pointer"}>תנאי השימוש</span>
-            </Text>
-          </div>
+
           <Text
             onClick={() => setModalVisible(true)}
             className={"pointer privacy"}

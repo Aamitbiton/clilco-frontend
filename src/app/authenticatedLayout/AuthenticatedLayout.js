@@ -15,6 +15,7 @@ import AppRoutes from "../AppRoutes";
 import { useSelector } from "react-redux";
 import Contact from "../../views/Contact/Contact";
 import Settings from "../../views/Settings/Settings";
+import Privacy from "../../views/privacy/Privacy";
 
 export const AuthenticatedLayout = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ export const AuthenticatedLayout = () => {
     SETTINGS,
     CALLS,
     LOBBY,
+    PRIVACY,
   } = AppRoutes;
   return (
     <>

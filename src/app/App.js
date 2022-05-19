@@ -11,6 +11,7 @@ import ConditionalWrapper from "../components/ConditionalWrapper";
 import useRouterGuard from "../hooks/useRouterGuard";
 import SimpleSnackbar from "../components/snackBar/SnackBar";
 import AppToastContainer from "../components/Toast/AppToastContainer";
+import Privacy from "../views/privacy/Privacy";
 
 function App() {
   const appState = useSelector((state) => state.app);

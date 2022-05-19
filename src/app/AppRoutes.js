@@ -12,4 +12,5 @@ export default Object.freeze({
   SETTINGS: "/settings",
   CALLS: "/video-dates-history",
   LOBBY: "/lobby",
+  PRIVACY: "/privacy-policy",
 });
