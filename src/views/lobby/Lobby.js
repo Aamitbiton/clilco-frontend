@@ -25,23 +25,23 @@ export const Lobby = () => {
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
-      handle_page_leaving();
+      // handle_page_leaving();
     } catch (e) {
       console.error(e);
     }
   };
-  const handle_page_leaving = () => {
-    ["beforeunload", "popstate"].forEach((eventType) =>
-      window.addEventListener(eventType, handle_exit)
-    );
-    if (isMobile)
-      window.addEventListener("visibilitychange", (event) => {
-        if (document.visibilityState === "hidden") handle_exit();
-        else if (document.visibilityState === "visible")
-          handle_user_availability(true);
-        console.log(document.visibilityState);
-      });
-  };
+  // const handle_page_leaving = () => {
+  //   ["beforeunload", "popstate"].forEach((eventType) =>
+  //     window.addEventListener(eventType, handle_exit)
+  //   );
+  //   if (isMobile)
+  //     window.addEventListener("visibilitychange", (event) => {
+  //       if (document.visibilityState === "hidden") handle_exit();
+  //       else if (document.visibilityState === "visible")
+  //         handle_user_availability(true);
+  //       console.log(document.visibilityState);
+  //     });
+  // };
 
   const go_to_date = () => {
     navigate(AppRoutes.VIDEO_DATE);

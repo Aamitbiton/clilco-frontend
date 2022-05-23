@@ -4,7 +4,7 @@ import * as authService from "../../services/auth";
 import * as userService from "../../services/user";
 import * as api from "../../services/api";
 import { store } from "../index";
-import { watch_user } from "../user/userFunctions";
+import { set_user_is_online, watch_user } from "../user/userFunctions";
 import USER_CONSTANTS from "../user/constants";
 const { getState, dispatch } = store;
 
@@ -53,6 +53,7 @@ export const check_password = async (code) => {
 };
 
 export const signOut = async () => {
+  await set_user_is_online(false, "signOut");
   await authService.signOut();
 };
 export const login_with_email = async ({ email, password }) => {

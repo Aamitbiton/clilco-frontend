@@ -89,3 +89,14 @@ export const get_user_public_data = async (id) => {
 export const send_contact_form = async (contactDetails) => {
   return await userService.send_contact_form(contactDetails);
 };
+
+export const set_user_is_online = async (isOnline, target) => {
+  // console.log(target + "is online: " + isOnline);
+  const data = {
+    isOnline,
+    lastSeen: new Date().getTime(),
+    available: false,
+  };
+  isOnline && delete data.available;
+  return await userService.update_user_public(data);
+};
