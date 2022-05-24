@@ -24,13 +24,12 @@ function useUserTracking() {
       },
       { once: true }
     );
-  } else {
-    window.addEventListener(
-      "beforeunload",
-      async (event) => await set_user_is_online(false, "beforeunload"),
-      { once: true }
-    );
   }
+  window.addEventListener(
+    "beforeunload",
+    async (event) => await set_user_is_online(false, "beforeunload"),
+    { once: true }
+  );
 
   return {
     visibilityState,
