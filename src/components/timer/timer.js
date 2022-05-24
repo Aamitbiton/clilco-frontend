@@ -4,7 +4,7 @@ import "./timer.scss";
 
 export const Timer = ({ expiredMilliseconds, style, endAction }) => {
   const expiryTimestamp = new Date(expiredMilliseconds);
-  const { seconds, minutes, hours } = useTimer({
+  const { seconds, minutes, hours, days } = useTimer({
     expiryTimestamp,
     onExpire: endAction,
   });
@@ -13,8 +13,9 @@ export const Timer = ({ expiredMilliseconds, style, endAction }) => {
   };
   return (
     <div className="container  flex-center ltr" style={style}>
-      <b className="text">
-        {fix_format(hours)} : {fix_format(minutes)} : {fix_format(seconds)}
+      <b className="timer-text">
+        {fix_format(days)} : {fix_format(hours)} : {fix_format(minutes)} :{" "}
+        {fix_format(seconds)}
       </b>
     </div>
   );
