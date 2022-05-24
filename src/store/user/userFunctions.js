@@ -13,6 +13,8 @@ import {
   set_tip_top_users,
   tip_top_users_getter,
 } from "./utils/tip_top_users";
+import { user_id_getter } from "../../services/user";
+import { inc } from "../../firebase/firestore";
 
 const { getState, dispatch } = store;
 
@@ -98,5 +100,5 @@ export const set_user_is_online = async (isOnline, target) => {
     available: false,
   };
   isOnline && delete data.available;
-  return await userService.update_user_public(data);
+  await userService.update_user_public(data);
 };

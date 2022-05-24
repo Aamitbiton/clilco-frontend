@@ -15,6 +15,7 @@ function useUserTracking() {
     window.addEventListener(
       "visibilitychange",
       async (event) => {
+        if (visibilityState === document.visibilityState) return;
         setVisibilityState(document.visibilityState);
         if (visibilityState === "hidden") {
           await set_user_is_online(false, "visibilitychange");
