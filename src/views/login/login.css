@@ -12,11 +12,13 @@
     transition: .4s;
     overflow: scroll;
     font-size: 11px;
+    display: block;
     transform: translateX(0%);
 }
 
 .privacy-box-hide {
     position: absolute;
+    display: none;
     transition: 0.4s;
     transform: translateX(-100%);
 }
