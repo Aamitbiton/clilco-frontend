@@ -10,7 +10,7 @@ function MainView(props) {
   const navigate = useSelector((state) => state.app.global_hooks.navigator);
   return (
     <CenterLayout direction={"column"}>
-      <Title title={"חווית ספיד דייט חכם"} />
+      <Title textAlign={"center"} title={"חווית ספיד דייט חכם"} />
       {videoState.speed_date_time.its_dating_time ? (
         <StartDate navigate={navigate} />
       ) : (

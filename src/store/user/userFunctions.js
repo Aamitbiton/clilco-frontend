@@ -60,7 +60,7 @@ export const get_tiptop_users = async () => {
     const { profiles } = await globalFetch({
       data: {
         filterForQuery,
-        matches: tip_top_users_getter(),
+        matches: [] /*tip_top_users_getter()*/,
         user: myUser(clilcoUser),
       },
       url,

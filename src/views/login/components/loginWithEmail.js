@@ -17,6 +17,7 @@ import AppLogo from "../../../components/AppLogo";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { Link } from "react-router-dom";
 import AppRoutes from "../../../app/AppRoutes";
+import Privacy from "../../privacy/Privacy";
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -30,6 +31,7 @@ function LoginWithEmail({ close }) {
     function handleErrorMessage(message) {
       const wrongPassword = new RegExp(/wrong-password/g).test(message);
       if (wrongPassword) {
+        set_forgot_pass_visible(true);
         return "סיסמא שגויה";
       }
     }
@@ -37,6 +39,8 @@ function LoginWithEmail({ close }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [privacyVisible, setPrivacyVisible] = useState(false);
+  const [forgot_pass_visible, set_forgot_pass_visible] = useState(false);
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required(),
@@ -81,12 +85,14 @@ function LoginWithEmail({ close }) {
             width={inputs.STATIC_WIDTH}
           />
 
-          <Text
-            onClick={() => setModalVisible(true)}
-            className={"pointer privacy"}
-          >
-            שכחתי סיסמא
-          </Text>
+          {forgot_pass_visible && (
+            <Text
+              onClick={() => setModalVisible(true)}
+              className={"pointer privacy"}
+            >
+              שכחתי סיסמא
+            </Text>
+          )}
           <SubmitButton
             data_cy="login-with-email_login-btn"
             width={inputs.STATIC_WIDTH}
@@ -99,6 +105,16 @@ function LoginWithEmail({ close }) {
           </AppStack>
         </AppStack>
       </AppForm>
+      <Text>
+        בלחיצה על הכפתור את/ה מאשר/ת את
+        <span
+          onClick={() => setPrivacyVisible(true)}
+          className={"privacy pointer"}
+        >
+          תנאי השימוש
+        </span>
+      </Text>
+      <Privacy onClick={() => setPrivacyVisible(false)} show={privacyVisible} />
       {modalVisible && (
         <AppModal
           modalVisible={modalVisible}

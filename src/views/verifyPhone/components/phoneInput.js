@@ -17,8 +17,6 @@ import Privacy from "../../privacy/Privacy";
 export const PhoneInput = ({ smsSent }) => {
   const { inputs } = defaultStyles;
   const [Loading, setLoading] = useState(false);
-  const [confirmPrivacy, setConfirmPrivacy] = useState(false);
-  const [privacyVisible, setPrivacyVisible] = useState(false);
   const handleSubmit = async (values) => {
     setLoading(true);
     await smsSent(values.phoneNumber);
@@ -27,22 +25,6 @@ export const PhoneInput = ({ smsSent }) => {
 
   return (
     <>
-      <div className={"flex-start_align-center"}>
-        <Checkbox
-          checked={confirmPrivacy}
-          onChange={(e) => setConfirmPrivacy(e.target.checked)}
-        />
-        <Text>
-          הריני מאשר את
-          <span
-            onClick={() => setPrivacyVisible(true)}
-            className={"privacy pointer"}
-          >
-            תנאי השימוש
-          </span>
-        </Text>
-      </div>
-      <Privacy onClick={() => setPrivacyVisible(false)} show={privacyVisible} />
       <AppForm
         initialValues={{
           phoneNumber: "",
@@ -57,7 +39,6 @@ export const PhoneInput = ({ smsSent }) => {
             name={"phoneNumber"}
           />
           <SubmitButton
-            disabled={!confirmPrivacy}
             width={inputs.STATIC_WIDTH}
             loadingButton={true}
             loading={Loading}

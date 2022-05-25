@@ -12,6 +12,11 @@ function useUserTracking() {
     await set_user_is_online(isOnline, "useUserTracking");
   };
   useEffect(() => user_tracking({ isOnline: true }), []);
+  useEffect(() => {
+    return () => {
+      user_tracking({ isOnline: false });
+    };
+  }, []);
   if (window.rn_app) {
     window.addEventListener(
       "visibilitychange",
@@ -29,7 +34,12 @@ function useUserTracking() {
   }
   window.addEventListener(
     "beforeunload",
-    async (event) => await set_user_is_online(false, "beforeunload"),
+    async (event) => {
+      event.stopImmediatePropagation();
+      // event.preventDefault();
+      // event.returnValue = "";
+      await set_user_is_online(false, "beforeunload");
+    },
     { once: true }
   );
 
