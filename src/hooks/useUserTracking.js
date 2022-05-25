@@ -6,7 +6,6 @@ import {
 
 function useUserTracking() {
   const [visibilityState, setVisibilityState] = useState(null);
-  const [previewsState, setPreviewsState] = useState(null);
 
   const user_tracking = async ({ isOnline }) => {
     await set_user_is_online(isOnline, "useUserTracking");
@@ -22,7 +21,7 @@ function useUserTracking() {
       "visibilitychange",
       async (event) => {
         event.stopImmediatePropagation();
-        // setVisibilityState(document.visibilityState);
+        setVisibilityState(document.visibilityState);
         if (document.visibilityState === "hidden") {
           await set_user_is_online(false, "visibilitychange");
         } else if (document.visibilityState === "visible") {
