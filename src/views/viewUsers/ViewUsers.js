@@ -5,7 +5,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Header } from "../home/components/header/header";
-import Title from "../../components/title/title";
 import { useSelector } from "react-redux";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AppStack from "../../components/AppStack";
@@ -77,7 +76,7 @@ export const ViewUsers = () => {
                     fontSize={"inherit"}
                     color={"secondary"}
                   />
-                  <p className={"details"}>{user.city.name}</p>
+                  <p className={"details"}>{user.city?.name}</p>
                 </AppStack>
               </div>
             </div>

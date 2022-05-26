@@ -6,34 +6,41 @@ import {
 
 function useUserTracking() {
   const [visibilityState, setVisibilityState] = useState(null);
-  const [previewsState, setPreviewsState] = useState(null);
 
   const user_tracking = async ({ isOnline }) => {
     await set_user_is_online(isOnline, "useUserTracking");
   };
   useEffect(() => user_tracking({ isOnline: true }), []);
+  useEffect(() => {
+    return () => {
+      user_tracking({ isOnline: false });
+    };
+  }, []);
   if (window.rn_app) {
     window.addEventListener(
       "visibilitychange",
       async (event) => {
         event.stopImmediatePropagation();
-        // setVisibilityState(document.visibilityState);
+        setVisibilityState(document.visibilityState);
         if (document.visibilityState === "hidden") {
-          debugger;
           await set_user_is_online(false, "visibilitychange");
         } else if (document.visibilityState === "visible") {
-          debugger;
           await set_user_is_online(true, "visibilitychange");
         }
       },
       { once: true }
     );
   }
-  window.addEventListener("beforeunload", async (event) => {
-    debugger;
-    event.stopImmediatePropagation();
-    await set_user_is_online(false, "beforeunload", { once: true });
-  });
+  window.addEventListener(
+    "beforeunload",
+    async (event) => {
+      event.stopImmediatePropagation();
+      // event.preventDefault();
+      // event.returnValue = "";
+      await set_user_is_online(false, "beforeunload");
+    },
+    { once: true }
+  );
 
   return {
     visibilityState,

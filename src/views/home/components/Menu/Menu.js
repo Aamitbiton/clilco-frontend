@@ -45,7 +45,8 @@ export default function Menu() {
             />
             <img
               className={"menu-logo"}
-              width={200}
+              style={{ zIndex: -1 }}
+              height={"30%"}
               src={require("../../../../assets/clilco_logo.png")}
             />
           </>

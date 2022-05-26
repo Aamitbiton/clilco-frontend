@@ -7,7 +7,15 @@ function Privacy({ show, onClick }) {
       onClick={onClick}
       className={show ? "privacy-box-show" : "privacy-box-hide"}
     >
-      <button>X</button>
+      <button
+        style={{
+          height: 30,
+          padding: 10,
+          margin: 10,
+        }}
+      >
+        X
+      </button>
       <Title title={"תנאי שימוש ופרטיות"} />
       <span>{PRIVACY_POLICY}</span>
     </div>
