@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 function useUserTracking() {
   const is_logged_in = useSelector((s) => s.app.is_logged_in);
-  if (!is_logged_in) return;
   const [visibilityState, setVisibilityState] = useState(null);
 
   const user_tracking = async ({ isOnline }) => {
