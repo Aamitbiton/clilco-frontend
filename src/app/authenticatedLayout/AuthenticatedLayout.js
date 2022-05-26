@@ -16,9 +16,11 @@ import { useSelector } from "react-redux";
 import Contact from "../../views/Contact/Contact";
 import Settings from "../../views/Settings/Settings";
 import Privacy from "../../views/privacy/Privacy";
+import useUserTracking from "../../hooks/useUserTracking";
 
 export const AuthenticatedLayout = () => {
   const location = useLocation();
+  useUserTracking();
   const user = useSelector((state) => state.user.user);
   const appState = useSelector((state) => state.app);
   const {
