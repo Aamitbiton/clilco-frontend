@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  handle_user_availability,
   set_user_is_online,
 } from "../store/user/userFunctions";
 import { useSelector } from "react-redux";
