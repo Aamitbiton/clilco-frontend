@@ -40,16 +40,6 @@ function useUserTracking() {
     { once: true }
   );
 
-  useEffect(() => {
-    return () => {
-      user_tracking({ isOnline: false });
-      ["beforeunload", "visibilitychange"].forEach((event) =>
-        window.removeEventListener(event, () => {
-          console.log(`event ${event} destroyed`);
-        })
-      );
-    };
-  }, []);
   return {
     visibilityState,
   };
