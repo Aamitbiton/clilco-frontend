@@ -3,19 +3,18 @@ import {
   handle_user_availability,
   set_user_is_online,
 } from "../store/user/userFunctions";
+import { useSelector } from "react-redux";
 
 function useUserTracking() {
+  const is_logged_in = useSelector((s) => s.app.is_logged_in);
+  if (!is_logged_in) return;
   const [visibilityState, setVisibilityState] = useState(null);
 
   const user_tracking = async ({ isOnline }) => {
     await set_user_is_online(isOnline, "useUserTracking");
   };
   useEffect(() => user_tracking({ isOnline: true }), []);
-  useEffect(() => {
-    return () => {
-      user_tracking({ isOnline: false });
-    };
-  }, []);
+
   if (window.rn_app) {
     window.addEventListener(
       "visibilitychange",
@@ -42,6 +41,16 @@ function useUserTracking() {
     { once: true }
   );
 
+  useEffect(() => {
+    return () => {
+      user_tracking({ isOnline: false });
+      ["beforeunload", "visibilitychange"].forEach((event) =>
+        window.removeEventListener(event, () => {
+          console.log(`event ${event} destroyed`);
+        })
+      );
+    };
+  }, []);
   return {
     visibilityState,
   };
