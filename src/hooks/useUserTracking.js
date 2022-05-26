@@ -19,19 +19,21 @@ function useUserTracking() {
         event.stopImmediatePropagation();
         // setVisibilityState(document.visibilityState);
         if (document.visibilityState === "hidden") {
+          debugger;
           await set_user_is_online(false, "visibilitychange");
         } else if (document.visibilityState === "visible") {
+          debugger;
           await set_user_is_online(true, "visibilitychange");
         }
       },
       { once: true }
     );
   }
-  window.addEventListener(
-    "beforeunload",
-    async (event) => await set_user_is_online(false, "beforeunload"),
-    { once: true }
-  );
+  window.addEventListener("beforeunload", async (event) => {
+    debugger;
+    event.stopImmediatePropagation();
+    await set_user_is_online(false, "beforeunload", { once: true });
+  });
 
   return {
     visibilityState,

@@ -4,6 +4,7 @@ import "./videoDate.scss";
 import {
   update_question_in_room,
   watch_room,
+  watch_remote_user,
   add_offer_or_answer,
   clean_room,
   get_remote_user_data,
@@ -36,13 +37,20 @@ export const VideoDate = () => {
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [currentStream, setCurrentStream] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
-  const room = useSelector((state) => state.video.room);
+  let room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
+  const remoteUserPublic = useSelector(
+    (state) => state.video.remote_user_public
+  );
   const room_unsubscribes = useSelector(
     (state) => state.video.room_unsubscribes
+  );
+  const remote_user_unsubscribes = useSelector(
+    (state) => state.video.remote_user_unsubscribes
   );
   const navigate = useNavigate();
   const remoteStreamRef = useRef(remoteStream);
@@ -69,6 +77,12 @@ export const VideoDate = () => {
     //   }, 1000 * number);
     // });
   };
+  const get_remote_user_id = () => {
+    return room.answerer.id === user.private.id
+      ? room.caller.id
+      : room.answerer.id;
+  };
+
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
@@ -129,7 +143,7 @@ export const VideoDate = () => {
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
-      set_remote_video_error_handler(stream);
+      setCurrentStream(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -154,23 +168,16 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-
-  const set_remote_video_error_handler = (stream) => {
-    try {
-      stream.getTracks().forEach((track) => {
-        if (track.kind === "video") {
-          track.addEventListener("mute", handle_remote_video_stopped);
-          track.addEventListener("unmute", () =>
-            handle_remote_video_restarted(stream)
-          );
-        }
-      });
-    } catch (e) {
-      console.error(e);
-    }
+  const handle_remote_user_update = async () => {
+    if (!remoteUserPublic || !remoteStream) return;
+    debugger;
+    if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
+    else if (!remoteStream && remoteUserPublic.isOnline)
+      await handle_remote_video_restarted(currentStream);
   };
   const handle_remote_video_stopped = async () => {
     try {
+      console.log("handler_remote_video_stopepd");
       if (window.location.href.includes("video-date")) {
         await toast(SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name), {
           type: "info",
@@ -191,6 +198,8 @@ export const VideoDate = () => {
   const handle_room_update = async () => {
     try {
       if (!room) return;
+      if (!remote_user_unsubscribes)
+        await watch_remote_user(get_remote_user_id());
       const myId = user.private.id;
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
@@ -298,6 +307,7 @@ export const VideoDate = () => {
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStream]);
+  useEffect(handle_remote_user_update, [remoteUserPublic]);
 
   return (
     <>

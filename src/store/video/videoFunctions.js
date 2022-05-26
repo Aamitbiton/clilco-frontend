@@ -15,6 +15,23 @@ export const watch_room = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
 
+export const watch_remote_user = async (remoteUserId) => {
+  const unsubscribes = await videoService.watch_remote_user(
+    remoteUserId,
+    async (remoteUser) => {
+      if (remoteUser)
+        await actionsCreator(
+          VIDEO_CONSTANTS.SET_REMOTE_USER_PUBLIC,
+          remoteUser
+        );
+    }
+  );
+  await actionsCreator(
+    VIDEO_CONSTANTS.SET_REMOTE_USER_UNSUBSCRIBES,
+    unsubscribes
+  );
+};
+
 export const search_for_match = async () => {
   return await api.search_for_match();
 };
