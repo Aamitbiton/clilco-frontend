@@ -56,9 +56,9 @@ export const VideoDate = () => {
   const remoteStreamRef = useRef(remoteStream);
   remoteStreamRef.current = remoteStream;
 
-  const init_page = async () => {
+  const init_page = async (refresh) => {
     try {
-      make_sure_one_reload_before_start();
+      make_sure_one_reload_before_start(refresh);
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
@@ -68,14 +68,13 @@ export const VideoDate = () => {
   const handle_no_remote_stream = () => {
     console.info("remote change");
     if (remoteStream) return;
-    // infoLog("other user not in the date. refreshing every five minutes");
-    // [1, 2, 3, 4, 5, 6].forEach((number) => {
-    //   setTimeout(() => {
-    //     infoLog(number);
-    //     if (number === 5 && !remoteStreamRef.current)
-    //     window.location.reload(true);
-    //   }, 1000 * number);
-    // });
+    infoLog("other user not in the date. refreshing every five minutes");
+    [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach((number) => {
+      setTimeout(() => {
+        infoLog(number);
+        if (number === 5 && !remoteStreamRef.current) init_page(false);
+      }, 1000 * number);
+    });
   };
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
@@ -83,12 +82,12 @@ export const VideoDate = () => {
       : room.answerer.id;
   };
 
-  const make_sure_one_reload_before_start = () => {
+  const make_sure_one_reload_before_start = (refresh) => {
+    if (!refresh) return false;
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
     if (!wasHereOnce) {
       localStorage.setItem("video-date-once", "true");
-      console.log("refresh from start");
       window.location.reload(true);
     }
   };
@@ -170,7 +169,6 @@ export const VideoDate = () => {
   };
   const handle_remote_user_update = async () => {
     if (!remoteUserPublic || !remoteStream) return;
-    debugger;
     if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
     else if (!remoteStream && remoteUserPublic.isOnline)
       await handle_remote_video_restarted(currentStream);
