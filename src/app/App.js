@@ -11,13 +11,14 @@ import ConditionalWrapper from "../components/ConditionalWrapper";
 import useRouterGuard from "../hooks/useRouterGuard";
 import SimpleSnackbar from "../components/snackBar/SnackBar";
 import AppToastContainer from "../components/Toast/AppToastContainer";
-import Privacy from "../views/privacy/Privacy";
+import AppLoader from "../components/AppLoader/AppLoader";
 
 function App() {
   const appState = useSelector((state) => state.app);
   const navigator = useNavigate();
   useEffect(() => init_app({ navigator }), []);
   useRouterGuard();
+  if (!appState.app_ready) return <AppLoader />;
   return (
     <>
       <AppToastContainer />
