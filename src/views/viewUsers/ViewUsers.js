@@ -8,6 +8,7 @@ import { Header } from "../home/components/header/header";
 import { useSelector } from "react-redux";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AppStack from "../../components/AppStack";
+import AppLoader from "../../components/AppLoader/AppLoader";
 
 export const ViewUsers = () => {
   const isMobile = useSelector((state) => state.app.isMobile);
@@ -40,6 +41,7 @@ export const ViewUsers = () => {
   useEffect(() => {
     get_more_users();
   }, []);
+
   return users ? (
     <div className={"flex-center"}>
       <Header />
@@ -85,9 +87,10 @@ export const ViewUsers = () => {
       </div>
     </div>
   ) : (
-    <div className={"flex-center"}>
-      <img src={loadingGiff} className="loading-giff"></img>
-    </div>
+    <>
+      <Header />
+      <AppLoader />
+    </>
   );
 };
 
