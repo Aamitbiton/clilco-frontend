@@ -8,11 +8,9 @@ import {
   IMAGE_FILE_PICKER_ERROR_MESSAGE,
 } from "../../utils/images";
 import Image from "../../components/Image";
-import { Button } from "@mui/material";
 import { upload_profile_image } from "../../store/user/userFunctions";
 import CenterLayout from "../../components/CenterLayout";
 import Title from "../../components/title/title";
-import AppButton from "../../components/Buttons/AppButton";
 import defaultStyles from "../../style/defaultStyles";
 import AppStack from "../../components/AppStack";
 import LoadingButton from "@mui/lab/LoadingButton";

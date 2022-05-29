@@ -39,12 +39,14 @@ export const handle_user_availability = async (available) => {
 export const upload_profile_image = async (image) => {
   const imageUploaded = await userService.upload_image(image);
   if (imageUploaded) {
-    await actionsCreator(USER_CONSTANTS.SET_IMAGE, { url: image });
+    const temp_image = {
+      url: image,
+      primary: false,
+      id: "1",
+      createdAt: new Date(),
+    };
+    await actionsCreator(USER_CONSTANTS.SET_IMAGE, temp_image);
   }
-  //   const user = stateParser(getState().user.user);
-  //   user.public.imgUrl = { url: image };
-  //   await actionsCreator(USER_CONSTANTS.SET_USER_PUBLIC, user);
-  // }
 };
 
 export const set_user_details = async (userDetails) => {
