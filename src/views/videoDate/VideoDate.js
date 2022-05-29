@@ -70,19 +70,20 @@ export const VideoDate = () => {
     [1, 2, 3, 4, 5, 6, 7].forEach((number) => {
       setTimeout(() => {
         infoLog(number);
-        if (number === 6 && !remoteStreamRef.current) {
+        if (
+          (number === 6 && !remoteStreamRef.current) ||
+          !remoteUserPublic.isOnline
+        ) {
           soft_refresh_page();
         }
       }, 1000 * number);
     });
   };
-
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
       ? room.caller.id
       : room.answerer.id;
   };
-
   const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
