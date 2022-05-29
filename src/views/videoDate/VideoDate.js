@@ -56,9 +56,9 @@ export const VideoDate = () => {
   const remoteStreamRef = useRef(remoteStream);
   remoteStreamRef.current = remoteStream;
 
-  const init_page = async (refresh) => {
+  const init_page = async () => {
     try {
-      make_sure_one_reload_before_start(refresh);
+      make_sure_one_reload_before_start();
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
@@ -66,24 +66,24 @@ export const VideoDate = () => {
     }
   };
   const handle_no_remote_stream = () => {
-    console.info("remote change");
     if (remoteStream) return;
-    infoLog("other user not in the date. refreshing every five minutes");
-    [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach((number) => {
+    [1, 2, 3, 4, 5, 6, 7].forEach((number) => {
       setTimeout(() => {
         infoLog(number);
-        if (number === 5 && !remoteStreamRef.current) init_page(false);
+        if (number === 6 && !remoteStreamRef.current) {
+          soft_refresh_page();
+        }
       }, 1000 * number);
     });
   };
+
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
       ? room.caller.id
       : room.answerer.id;
   };
 
-  const make_sure_one_reload_before_start = (refresh) => {
-    if (!refresh) return false;
+  const make_sure_one_reload_before_start = () => {
     const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
     localStorage.setItem("video-date-once", "false");
     if (!wasHereOnce) {
@@ -175,7 +175,6 @@ export const VideoDate = () => {
   };
   const handle_remote_video_stopped = async () => {
     try {
-      console.log("handler_remote_video_stopepd");
       if (window.location.href.includes("video-date")) {
         await toast(SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name), {
           type: "info",
@@ -217,6 +216,11 @@ export const VideoDate = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+  const soft_refresh_page = async () => {
+    console.info("soft_refresh_page");
+    setNewProcess(true);
+    await clean_room();
   };
   const handle_date_time = () => {
     try {
