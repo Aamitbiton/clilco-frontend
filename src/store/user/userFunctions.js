@@ -33,7 +33,8 @@ export const watch_user = async () => {
 };
 
 export const handle_user_availability = async (available) => {
-  await userService.update_user_public({ available });
+  const available_time = available ? new Date().getTime() : null;
+  await userService.update_user_public({ available, available_time });
 };
 
 export const upload_profile_image = async (image) => {
