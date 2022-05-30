@@ -5,7 +5,7 @@ import { question_texts } from "./question_texts";
 import { send_message_to_rn } from "../../../../store/reactNative/rnFunctions";
 
 export const CurrentQuestion = ({ questionIndexes, volume }) => {
-  // const [src, setSrc] = useState(null);
+  const [src, setSrc] = useState(null);
 
   const handle_next_question = async () => {
     const currentIndex = [...questionIndexes].pop();
@@ -13,11 +13,11 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
   };
   const audioRef = useRef();
   const handle_question_url = async ({ index }) => {
-    window.my_audio_src = await get_question_audio({ index: index.toString() });
+    setSrc(await get_question_audio({ index: index.toString() }));
     play_question();
   };
   const play_question = () => {
-    audioRef.current?.play();
+    src.play();
     console.log("play quest");
   };
   const handle_volume_change = async () => {
@@ -46,7 +46,7 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
         <audio
           playsInline={true}
           ref={audioRef}
-          src={window.my_audio_src}
+          src={src}
           style={{ visibility: "hidden" }}
         />
       </div>
