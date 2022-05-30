@@ -37,10 +37,9 @@ export const VideoDate = () => {
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
-  const [currentStream, setCurrentStream] = useState(null);
+  const [toastCounter, setToastCounter] = useState(0);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   let room = useSelector((state) => state.video.room);
-  const translate = useSelector((state) => state.app.global_hooks.translate);
   const user = useSelector((state) => state.user.user);
   const remoteUser = useSelector((state) => state.video.remote_user);
   const remoteUserPublic = useSelector(
@@ -72,7 +71,7 @@ export const VideoDate = () => {
         infoLog(number);
         if (
           (number === 6 && !remoteStreamRef.current) ||
-          !remoteUserPublic.isOnline
+          (number === 6 && !remoteUserPublic.isOnline)
         ) {
           soft_refresh_page();
         }
@@ -143,7 +142,6 @@ export const VideoDate = () => {
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
-      setCurrentStream(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -172,23 +170,17 @@ export const VideoDate = () => {
     if (!remoteUserPublic || !remoteStream) return;
     if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
     else if (!remoteStream && remoteUserPublic.isOnline)
-      await handle_remote_video_restarted(currentStream);
+      await soft_refresh_page();
   };
   const handle_remote_video_stopped = async () => {
     try {
-      if (window.location.href.includes("video-date") && !remoteStream) {
+      setToastCounter(toastCounter + 1);
+      if (window.location.href.includes("video-date") && toastCounter <= 1) {
         await toast(SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name), {
           type: "info",
         });
         setRemoteStream(null);
       }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const handle_remote_video_restarted = async (stream) => {
-    try {
-      await handle_got_stream(stream);
     } catch (e) {
       console.error(e);
     }
