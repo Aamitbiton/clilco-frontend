@@ -1,7 +1,5 @@
-import * as firestore from "../../firebase/firestore";
 import actionsCreator from "../actionsCreator";
 import * as authService from "../../services/auth";
-import * as userService from "../../services/user";
 import * as api from "../../services/api";
 import { store } from "../index";
 import { set_user_is_online, watch_user } from "../user/userFunctions";

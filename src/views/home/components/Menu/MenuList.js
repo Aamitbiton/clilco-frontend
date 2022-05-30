@@ -3,23 +3,18 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import PeopleIcon from "@mui/icons-material/People";
 import HomeIcon from "@mui/icons-material/Home";
-import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import CallIcon from "@mui/icons-material/Call";
-import ContactSupportIcon from "@mui/icons-material/ContactSupport";
-import { signOut as StoreSignOut } from "../../../../store/auth/authFunctions";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AppRoutes from "../../../../app/AppRoutes";
 import CustomLink from "./CustomLink";
-import { useNavigate } from "react-router-dom";
+import ConditionalWrapper from "../../../../components/ConditionalWrapper";
 
 function MenuList({ anchor, onClick, onKeyDown }) {
-  const signOut = async () => await StoreSignOut();
-  const navigator = useNavigate();
   return (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -28,56 +23,47 @@ function MenuList({ anchor, onClick, onKeyDown }) {
       onKeyDown={onKeyDown}
     >
       <List>
-        <CustomLink to={AppRoutes.ROOT}>
-          <MenuListItem itemText={"בית"}>
-            <HomeIcon />
-          </MenuListItem>
-        </CustomLink>
-        <Divider />
-        <CustomLink to={AppRoutes.SETTINGS}>
-          <MenuListItem itemText={"הגדרות"}>
-            <SettingsIcon />
-          </MenuListItem>
-        </CustomLink>
-        <Divider />
-        <CustomLink to={AppRoutes.CALLS}>
-          <MenuListItem itemText={"יומן שיחות"}>
-            <CallIcon />
-          </MenuListItem>
-        </CustomLink>
-        <Divider />
-        <CustomLink to={AppRoutes.PROFILE}>
-          <MenuListItem itemText={"פרופיל אישי"}>
-            <AccountBoxIcon />
-          </MenuListItem>
-        </CustomLink>
-        <Divider />
-        <CustomLink to={AppRoutes.VIEW_USERS}>
-          <MenuListItem itemText={"צפה במשתמשים"}>
-            <PeopleIcon />
-          </MenuListItem>
-        </CustomLink>
-        <Divider />
-        <CustomLink to={AppRoutes.CONTACT}>
-          <MenuListItem itemText={"צור קשר"}>
-            <ContactSupportIcon />
-          </MenuListItem>
-        </CustomLink>
-        <Divider />
-        <MenuListItem onClick={signOut} itemText={"התנתק"}>
-          <LogoutIcon />
-        </MenuListItem>
+        <MenuListItem
+          to={AppRoutes.ROOT}
+          icon={<HomeIcon />}
+          itemText={"בית"}
+        />
+        <MenuListItem
+          to={AppRoutes.VIEW_USERS}
+          icon={<PeopleIcon />}
+          itemText={"צפה במשתמשים"}
+        />
+        <MenuListItem
+          to={AppRoutes.CALLS}
+          icon={<CallIcon />}
+          itemText={"יומן שיחות"}
+        />
+        <MenuListItem
+          to={AppRoutes.PROFILE}
+          icon={<AccountBoxIcon />}
+          itemText={"פרופיל אישי"}
+        />
+        <MenuListItem
+          to={AppRoutes.SETTINGS}
+          icon={<MoreHorizIcon />}
+          itemText={"אפשרויות נוספות"}
+        />
       </List>
-      <Divider />
     </Box>
   );
 }
 
-const MenuListItem = ({ onClick, itemText, children: icon }) => (
-  <ListItem button onClick={onClick}>
-    <ListItemIcon>{icon}</ListItemIcon>
-    <ListItemText primary={itemText} />
-  </ListItem>
+const MenuListItem = ({ onClick, itemText, icon, to, is_route = true }) => (
+  <ConditionalWrapper
+    condition={is_route}
+    wrapper={(children) => <CustomLink to={to}>{children}</CustomLink>}
+  >
+    <ListItem button onClick={onClick}>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemText primary={itemText} />
+    </ListItem>
+    <Divider />
+  </ConditionalWrapper>
 );
 
 export default MenuList;

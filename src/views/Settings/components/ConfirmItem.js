@@ -3,12 +3,12 @@ import ConfirmModal from "../../../components/ConfirmModal/ConfirmModal";
 import { Typography } from "@mui/material";
 import AppStack from "../../../components/AppStack";
 import defaultStyles from "../../../style/defaultStyles";
+import Settings_Item from "./Settings_Item";
 
-function ConfirmItem({ onOk, onReject, label, children }) {
-  const ICON_SIZE = defaultStyles.icons.DEFAULT_LARGE_SIZE;
+function ConfirmItem({ onOk, onReject, label, children, icon }) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
-    <div className={"pointer"}>
+    <>
       <ConfirmModal
         target={label}
         modalVisible={modalVisible}
@@ -22,14 +22,12 @@ function ConfirmItem({ onOk, onReject, label, children }) {
           onReject();
         }}
       />
-      <div
-        className={"flex-column-center"}
-        style={{ fontSize: ICON_SIZE }}
+      <Settings_Item
         onClick={() => setModalVisible(true)}
-      >
-        {children} <Typography align={"center"}>{label}</Typography>
-      </div>
-    </div>
+        icon={icon}
+        label={label}
+      />
+    </>
   );
 }
 
