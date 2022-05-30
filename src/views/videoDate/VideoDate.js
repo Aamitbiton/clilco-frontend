@@ -176,7 +176,7 @@ export const VideoDate = () => {
   };
   const handle_remote_video_stopped = async () => {
     try {
-      if (window.location.href.includes("video-date")) {
+      if (window.location.href.includes("video-date") && !remoteStream) {
         await toast(SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name), {
           type: "info",
         });
