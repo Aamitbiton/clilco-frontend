@@ -64,20 +64,27 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
+  const check_if_refresh = (number) =>
+    (number === 4 && !remoteStreamRef.current && remoteUserPublic?.isOnline) ||
+    (number === 4 && !remoteStreamRef.current && !remoteUserPublic);
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
-    [1, 2, 3, 4, 5, 6, 7].forEach((number) => {
+    [1, 2, 3, 4].forEach((number) => {
       setTimeout(() => {
         infoLog(number);
-        if (
-          (number === 6 && !remoteStreamRef.current) ||
-          (number === 6 && !remoteUserPublic.isOnline)
-        ) {
-          soft_refresh_page();
-        }
+        if (check_if_refresh(number)) soft_refresh_page();
       }, 1000 * number);
     });
   };
+  // const catch_remote_video_stop = (stream) => {
+  //   stream.addEventListener(
+  //     "mute",
+  //     (event) => {
+  //       console.info("mute detected");
+  //     },
+  //     false
+  //   );
+  // };
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
       ? room.caller.id
@@ -142,6 +149,7 @@ export const VideoDate = () => {
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
+      // catch_remote_video_stop(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -167,10 +175,12 @@ export const VideoDate = () => {
     }
   };
   const handle_remote_user_update = async () => {
-    if (!remoteUserPublic || !remoteStream) return;
+    if (!remoteUserPublic) return;
     if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
-    else if (!remoteStream && remoteUserPublic.isOnline)
+    else if (!remoteStream?.active && remoteUserPublic.isOnline) {
+      console.log("refresh from user update");
       await soft_refresh_page();
+    }
   };
   const handle_remote_video_stopped = async () => {
     try {
@@ -302,7 +312,7 @@ export const VideoDate = () => {
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStream]);
-  useEffect(handle_remote_user_update, [remoteUserPublic]);
+  useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
 
   return (
     <>
