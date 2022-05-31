@@ -11,10 +11,7 @@ import {
   generate_clilco_users,
   myUser,
   set_tip_top_users,
-  tip_top_users_getter,
 } from "./utils/tip_top_users";
-import { user_id_getter } from "../../services/user";
-import { inc } from "../../firebase/firestore";
 
 const { getState, dispatch } = store;
 
@@ -96,7 +93,6 @@ export const send_contact_form = async (contactDetails) => {
 };
 
 export const set_user_is_online = async (isOnline, target) => {
-  // console.log(target + "is online: " + isOnline);
   const data = {
     isOnline,
     lastSeen: new Date().getTime(),
