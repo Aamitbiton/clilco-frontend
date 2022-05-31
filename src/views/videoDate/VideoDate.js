@@ -59,8 +59,6 @@ export const VideoDate = () => {
     try {
       make_sure_one_reload_before_start();
       if (!room_unsubscribes) await watch_room();
-      let rooma = room;
-      debugger;
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -71,8 +69,6 @@ export const VideoDate = () => {
     (number === 4 && !remoteStreamRef.current && !remoteUserPublic);
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
-    //todo: change this function to setInterval of 3 second with this terms and turn in of when video restore
-
     [1, 2, 3, 4].forEach((number) => {
       setTimeout(() => {
         infoLog(number);
@@ -179,10 +175,12 @@ export const VideoDate = () => {
     }
   };
   const handle_remote_user_update = async () => {
-    if (!remoteUserPublic || !remoteStreamRef.current) return;
+    if (!remoteUserPublic) return;
     if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
-    else if (!remoteStreamRef.current && remoteUserPublic.isOnline)
+    else if (!remoteStream?.active && remoteUserPublic.isOnline) {
+      console.log("refresh from user update");
       await soft_refresh_page();
+    }
   };
   const handle_remote_video_stopped = async () => {
     try {
@@ -226,7 +224,6 @@ export const VideoDate = () => {
     console.info("soft_refresh_page");
     setNewProcess(true);
     await clean_room();
-    if (!remoteStreamRef.current) handle_no_remote_stream();
   };
   const handle_date_time = () => {
     try {
@@ -315,7 +312,7 @@ export const VideoDate = () => {
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStream]);
-  useEffect(handle_remote_user_update, [remoteUserPublic]);
+  useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
 
   return (
     <>
