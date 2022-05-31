@@ -17,7 +17,7 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
     play_question();
   };
   const play_question = () => {
-    src.play();
+    audioRef.current?.play();
     console.log("play quest");
   };
   const handle_volume_change = async () => {
