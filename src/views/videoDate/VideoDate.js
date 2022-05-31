@@ -59,24 +59,24 @@ export const VideoDate = () => {
     try {
       make_sure_one_reload_before_start();
       if (!room_unsubscribes) await watch_room();
+      let rooma = room;
+      debugger;
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
     }
   };
+  const check_if_refresh = (number) =>
+    (number === 4 && !remoteStreamRef.current && remoteUserPublic?.isOnline) ||
+    (number === 4 && !remoteStreamRef.current && !remoteUserPublic);
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
     //todo: change this function to setInterval of 3 second with this terms and turn in of when video restore
+
     [1, 2, 3, 4].forEach((number) => {
       setTimeout(() => {
         infoLog(number);
-        if (
-          number === 4 &&
-          !remoteStreamRef.current &&
-          remoteUserPublic?.isOnline
-        ) {
-          soft_refresh_page();
-        }
+        if (check_if_refresh(number)) soft_refresh_page();
       }, 1000 * number);
     });
   };
@@ -226,6 +226,7 @@ export const VideoDate = () => {
     console.info("soft_refresh_page");
     setNewProcess(true);
     await clean_room();
+    if (!remoteStreamRef.current) handle_no_remote_stream();
   };
   const handle_date_time = () => {
     try {
