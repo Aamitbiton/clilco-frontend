@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -7,12 +7,19 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import PeopleIcon from "@mui/icons-material/People";
 import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import CallIcon from "@mui/icons-material/Call";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AppRoutes from "../../../../app/AppRoutes";
 import CustomLink from "./CustomLink";
 import ConditionalWrapper from "../../../../components/ConditionalWrapper";
+import AccordionItem from "./AccordionItem";
+import { remove_account, signOut } from "../../../../store/auth/authFunctions";
+import ConfirmItem from "../../../Settings/components/ConfirmItem";
+import NoAccountsOutlinedIcon from "@mui/icons-material/NoAccountsOutlined";
+import ConfirmModal from "../../../../components/ConfirmModal/ConfirmModal";
 
 function MenuList({ anchor, onClick, onKeyDown }) {
   return (
@@ -43,17 +50,36 @@ function MenuList({ anchor, onClick, onKeyDown }) {
           icon={<AccountBoxIcon />}
           itemText={"פרופיל אישי"}
         />
-        <MenuListItem
-          to={AppRoutes.SETTINGS}
-          icon={<MoreHorizIcon />}
-          itemText={"אפשרויות נוספות"}
-        />
+        <AccordionItem icon={<MoreHorizIcon />}>
+          <MenuListItem
+            icon={<ContactSupportIcon />}
+            itemText={"צור קשר"}
+            to={AppRoutes.CONTACT}
+          />
+          <MenuListItem
+            icon={<LogoutIcon />}
+            is_route={false}
+            itemText={"התנתק"}
+            onClick={signOut}
+          />
+          <MenuConfirmItem
+            icon={<NoAccountsOutlinedIcon />}
+            itemText={"מחיקת משתמש"}
+            onOk={remove_account}
+          />
+        </AccordionItem>
       </List>
     </Box>
   );
 }
 
-const MenuListItem = ({ onClick, itemText, icon, to, is_route = true }) => (
+export const MenuListItem = ({
+  onClick,
+  itemText,
+  icon,
+  to,
+  is_route = true,
+}) => (
   <ConditionalWrapper
     condition={is_route}
     wrapper={(children) => <CustomLink to={to}>{children}</CustomLink>}
@@ -65,5 +91,34 @@ const MenuListItem = ({ onClick, itemText, icon, to, is_route = true }) => (
     <Divider />
   </ConditionalWrapper>
 );
+
+const MenuConfirmItem = ({
+  onOk = () => {},
+  onReject = () => {},
+  itemText,
+  icon,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  return (
+    <>
+      <ConfirmModal
+        modalVisible={modalVisible}
+        setModalVisible={() => setModalVisible(false)}
+        onOk={onOk}
+        onReject={() => {
+          setModalVisible(false);
+          onReject();
+        }}
+        target={itemText}
+      />
+      <MenuListItem
+        icon={icon}
+        itemText={itemText}
+        is_route={false}
+        onClick={() => setModalVisible(true)}
+      />
+    </>
+  );
+};
 
 export default MenuList;
