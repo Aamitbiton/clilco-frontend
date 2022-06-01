@@ -40,7 +40,7 @@ export default function Menu() {
         {
           <>
             <MenuList
-              onClick={toggleDrawer(DrawerDirection, false)}
+              // onClick={toggleDrawer(DrawerDirection, false)}
               onKeyDown={toggleDrawer(DrawerDirection, false)}
             />
             <img
