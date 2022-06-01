@@ -76,15 +76,7 @@ export const VideoDate = () => {
       }, 1000 * number);
     });
   };
-  // const catch_remote_video_stop = (stream) => {
-  //   stream.addEventListener(
-  //     "mute",
-  //     (event) => {
-  //       console.info("mute detected");
-  //     },
-  //     false
-  //   );
-  // };
+
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
       ? room.caller.id
@@ -149,7 +141,6 @@ export const VideoDate = () => {
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
-      // catch_remote_video_stop(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -224,6 +215,7 @@ export const VideoDate = () => {
     console.info("soft_refresh_page");
     setNewProcess(true);
     await clean_room();
+    if (!remoteStream) handle_no_remote_stream();
   };
   const handle_date_time = () => {
     try {
@@ -299,6 +291,9 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
+  const handle_width_change = () => {
+    if (document.width > window.screen.width) window.location.reload(true);
+  };
   const handle_exit = () => {
     try {
       stop_my_video();
@@ -311,8 +306,17 @@ export const VideoDate = () => {
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
-  useEffect(handle_no_remote_stream, [remoteStream]);
+  useEffect(handle_no_remote_stream, [remoteStreamRef]);
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
+  useEffect(handle_width_change, [document.body.clientWidth]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.info("screen width: " + window.screen.width);
+  //     console.info("document width: " + document.body.clientWidth);
+  //     console.info("remote stream ref" + remoteStreamRef.current.active);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <>
