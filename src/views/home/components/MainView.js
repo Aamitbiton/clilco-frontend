@@ -8,11 +8,14 @@ import CenterLayout from "../../../components/CenterLayout";
 function MainView(props) {
   const videoState = useSelector((state) => state.video);
   const navigate = useSelector((state) => state.app.global_hooks.navigator);
+  const user = useSelector((state) => state.user.user.public);
+  const start_date_visible = () => {
+    return user.testUser;
+  };
   return (
     <CenterLayout direction={"column"}>
       <Title textAlign={"center"} title={"חווית ספיד דייט חכם"} />
-      {/*todo: fix the if statment*/}
-      {!videoState.speed_date_time.its_dating_time ? (
+      {start_date_visible() ? (
         <StartDate navigate={navigate} />
       ) : (
         <NotDateTime
