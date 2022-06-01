@@ -76,7 +76,22 @@ export const VideoDate = () => {
       }, 1000 * number);
     });
   };
-
+  const handler_mute_event = (stream) => {
+    try {
+      stream.getTracks().forEach((track) => {
+        if (track.kind === "video") {
+          track.addEventListener("mute", () => {
+            setRemoteStream(null);
+          });
+          track.addEventListener("unmute", () => {
+            soft_refresh_page();
+          });
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
       ? room.caller.id
@@ -141,6 +156,7 @@ export const VideoDate = () => {
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
+      handler_mute_event(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -212,10 +228,11 @@ export const VideoDate = () => {
     }
   };
   const soft_refresh_page = async () => {
-    console.info("soft_refresh_page");
-    setNewProcess(true);
-    await clean_room();
-    if (!remoteStream) handle_no_remote_stream();
+    if (window.location.href.includes("video-date")) {
+      console.info("soft_refresh_page");
+      setNewProcess(true);
+      await clean_room();
+    }
   };
   const handle_date_time = () => {
     try {
@@ -291,9 +308,6 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_width_change = () => {
-    if (document.width > window.screen.width) window.location.reload(true);
-  };
   const handle_exit = () => {
     try {
       stop_my_video();
@@ -308,11 +322,8 @@ export const VideoDate = () => {
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStreamRef]);
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
-  useEffect(handle_width_change, [document.body.clientWidth]);
   // useEffect(() => {
   //   const interval = setInterval(() => {
-  //     console.info("screen width: " + window.screen.width);
-  //     console.info("document width: " + document.body.clientWidth);
   //     console.info("remote stream ref" + remoteStreamRef.current.active);
   //   }, 5000);
   //   return () => clearInterval(interval);
@@ -340,7 +351,7 @@ export const VideoDate = () => {
             <CurrentQuestion questionIndexes={room.questions} volume={volume} />
           </>
         ) : (
-          <div className="full-screen flex-center">
+          <div className=" full-screen flex-center">
             {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
           </div>
         )}
