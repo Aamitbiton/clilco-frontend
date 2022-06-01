@@ -39,18 +39,13 @@ export const VideoDate = () => {
   const [remoteStream, setRemoteStream] = useState(null);
   const [toastCounter, setToastCounter] = useState(0);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
-  let room = useSelector((state) => state.video.room);
-  const user = useSelector((state) => state.user.user);
-  const remoteUser = useSelector((state) => state.video.remote_user);
-  const remoteUserPublic = useSelector(
-    (state) => state.video.remote_user_public
-  );
-  const room_unsubscribes = useSelector(
-    (state) => state.video.room_unsubscribes
-  );
-  const remote_user_unsubscribes = useSelector(
-    (state) => state.video.remote_user_unsubscribes
-  );
+  let state = useSelector((state) => state);
+  let room = state.video.room;
+  const user = state.user.user;
+  const remoteUser = state.video.remote_user;
+  const remoteUserPublic = state.video.remote_user_public;
+  const room_unsubscribes = state.video.room_unsubscribes;
+  const remote_user_unsubscribes = state.video.remote_user_unsubscribes;
   const navigate = useNavigate();
   const remoteStreamRef = useRef(remoteStream);
   remoteStreamRef.current = remoteStream;
@@ -64,9 +59,23 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const check_if_refresh = (number) =>
-    (number === 4 && !remoteStreamRef.current && remoteUserPublic?.isOnline) ||
-    (number === 4 && !remoteStreamRef.current && !remoteUserPublic);
+  const init_peer = ({ type, offer }) => {
+    try {
+      let peer = new Peer({
+        initiator: type === "offer",
+        stream: localStream,
+        trickle: false,
+        config: webRTCConfiguration,
+      });
+      peer.on("stream", handle_got_stream);
+      if (offer) peer.signal(offer);
+      peer.on("signal", handle_signal);
+      return peer;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
     [1, 2, 3, 4].forEach((number) => {
@@ -92,49 +101,6 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const get_remote_user_id = () => {
-    return room.answerer.id === user.private.id
-      ? room.caller.id
-      : room.answerer.id;
-  };
-  const make_sure_one_reload_before_start = () => {
-    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
-    localStorage.setItem("video-date-once", "false");
-    if (!wasHereOnce) {
-      localStorage.setItem("video-date-once", "true");
-      window.location.reload(true);
-    }
-  };
-  const create_offer = async () => {
-    try {
-      setPeer(init_peer({ type: "offer" }));
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const init_peer = ({ type, offer }) => {
-    try {
-      let peer = new Peer({
-        initiator: type === "offer",
-        stream: localStream,
-        trickle: false,
-        config: webRTCConfiguration,
-      });
-      peer.on("stream", handle_got_stream);
-      if (offer) peer.signal(offer);
-      peer.on("signal", handle_signal);
-      return peer;
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const create_answer = (offer) => {
-    try {
-      setPeer(init_peer({ type: "answer", offer }));
-    } catch (e) {
-      console.error(e);
-    }
-  };
   const handle_signal = async (offerOrAnswer) => {
     try {
       await add_offer_or_answer({
@@ -142,13 +108,6 @@ export const VideoDate = () => {
         roomId: room.id,
         type: offerOrAnswer.type,
       });
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const signal_answer = (answer) => {
-    try {
-      peer?.signal(answer);
     } catch (e) {
       console.error(e);
     }
@@ -227,12 +186,11 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const soft_refresh_page = async () => {
-    if (window.location.href.includes("video-date")) {
-      console.info("soft_refresh_page");
-      setNewProcess(true);
-      await clean_room();
-    }
+  const handle_no_permissions = async () => {
+    await toast("חסרות הרשאות למצלמה", { type: "error" });
+  };
+  const handle_questions_volume = (val) => {
+    setVolume(val / 100);
   };
   const handle_date_time = () => {
     try {
@@ -251,7 +209,56 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const now = () => new Date().getTime();
+  const handle_exit = () => {
+    try {
+      stop_my_video();
+      peer?.destroy();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const get_remote_user_id = () => {
+    return room.answerer.id === user.private.id
+      ? room.caller.id
+      : room.answerer.id;
+  };
+  const make_sure_one_reload_before_start = () => {
+    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
+    localStorage.setItem("video-date-once", "false");
+    if (!wasHereOnce) {
+      localStorage.setItem("video-date-once", "true");
+      window.location.reload(true);
+    }
+  };
+  const create_offer = async () => {
+    try {
+      setPeer(init_peer({ type: "offer" }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const create_answer = (offer) => {
+    try {
+      setPeer(init_peer({ type: "answer", offer }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const signal_answer = (answer) => {
+    try {
+      peer?.signal(answer);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const soft_refresh_page = async () => {
+    if (window.location.href.includes("video-date") && !newProcess) {
+      console.info("soft_refresh_page");
+      setNewProcess(true);
+      await clean_room();
+    }
+  };
   const go_to_next_question_local = async () => {
     try {
       const index = calculate_next_question();
@@ -279,12 +286,7 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_no_permissions = async () => {
-    await toast("חסרות הרשאות למצלמה", { type: "error" });
-  };
-  const handle_questions_volume = (val) => {
-    setVolume(val / 100);
-  };
+
   const stop_my_video = async () => {
     try {
       let tracks = localStream?.getTracks();
@@ -308,14 +310,14 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_exit = () => {
-    try {
-      stop_my_video();
-      peer?.destroy();
-    } catch (e) {
-      console.error(e);
-    }
+  const check_if_refresh = (number) => {
+    debugger;
+    return (
+      (number === 4 && !remoteStream && remoteUserPublic?.isOnline) ||
+      (number === 4 && !remoteStream && !remoteUserPublic)
+    );
   };
+  const now = () => new Date().getTime();
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
