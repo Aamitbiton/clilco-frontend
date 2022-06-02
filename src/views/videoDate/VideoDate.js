@@ -206,7 +206,7 @@ export const VideoDate = () => {
     setVolume(val / 100);
   };
   const handle_restarting_video = () => {
-    if (streamBlock) setRemoteStream(streamBlock);
+    if (streamBlock?.active) setRemoteStream(streamBlock);
     if (window.location.href.includes("video-date") && toastCounter <= 1) {
       toast(SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name), {
         type: "info",

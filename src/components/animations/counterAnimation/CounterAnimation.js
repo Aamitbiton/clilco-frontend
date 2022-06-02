@@ -4,6 +4,8 @@ import "./counterAnimation.css";
 function CounterAnimation({ onEnd }) {
   let counter = 3;
   let element = null;
+  let path = require("../../../assets/sounds/Countdown - Sound Effect.mp3");
+  let audio = new Audio(path);
   useEffect(() => {
     element = document.getElementById("counter");
     element.addEventListener("animationiteration", changeCounter);
@@ -17,6 +19,7 @@ function CounterAnimation({ onEnd }) {
   const changeCounter = () => {
     if (counter === 1) endEvent();
     else {
+      if (counter === 3) audio.play();
       if ("vibrate" in navigator) {
         // vibration API supported
         navigator.vibrate(1000);
