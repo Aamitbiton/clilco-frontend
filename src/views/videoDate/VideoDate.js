@@ -33,6 +33,7 @@ export const VideoDate = () => {
   const [volume, setVolume] = useState(
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
+  const [streamBlock, setStreamBlock] = useState(null);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
   const [newProcess, setNewProcess] = useState(true);
@@ -54,7 +55,7 @@ export const VideoDate = () => {
 
   const init_page = async () => {
     try {
-      // make_sure_one_reload_before_start();
+      make_sure_one_reload_before_start();
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
@@ -87,22 +88,26 @@ export const VideoDate = () => {
       }, 1000 * number);
     });
   };
-  const handler_mute_event = (stream) => {
-    try {
-      stream.getTracks().forEach((track) => {
-        if (track.kind === "video") {
-          track.addEventListener("mute", () => {
-            setRemoteStream(null);
-          });
-          track.addEventListener("unmute", () => {
-            soft_refresh_page();
-          });
-        }
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  // const handler_mute_event = (stream) => {
+  //   try {
+  //     // stream.getTracks().forEach((track) => {
+  //     //   if (track.kind === "video") {
+  //     //     track.addEventListener("mute", (e) => {
+  //     //       infoLog("mute detected");
+  //     //       e.stopImmediatePropagation();
+  //     //       if (remoteUserPublic?.isOnline) handle_restarting_video(stream);
+  //     //     });
+  //     //     track.addEventListener("unmute", (e) => {
+  //     //       e.stopImmediatePropagation();
+  //     //       infoLog("unmute detected");
+  //     //       if (remoteUserPublic?.isOnline) handle_restarting_video(stream);
+  //     //     });
+  //     //   }
+  //     // });
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
   const handle_signal = async (offerOrAnswer) => {
     try {
       await add_offer_or_answer({
@@ -117,7 +122,7 @@ export const VideoDate = () => {
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
-      handler_mute_event(stream);
+      setStreamBlock(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -150,10 +155,10 @@ export const VideoDate = () => {
   };
   const handle_remote_user_update = async () => {
     if (!remoteUserPublic) return;
-    if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
-    else if (!remoteStream && remoteUserPublic.isOnline) {
-      console.log("refresh from user update");
-      await soft_refresh_page();
+    if (!remoteUserPublic.isOnline && remoteStream) {
+      await handle_remote_video_stopped();
+    } else {
+      handle_restarting_video();
     }
   };
   const handle_remote_video_stopped = async () => {
@@ -200,6 +205,14 @@ export const VideoDate = () => {
   const handle_questions_volume = (val) => {
     setVolume(val / 100);
   };
+  const handle_restarting_video = () => {
+    setRemoteStream(streamBlock);
+    if (window.location.href.includes("video-date") && toastCounter <= 1) {
+      toast(SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name), {
+        type: "info",
+      });
+    }
+  };
   const handle_date_time = () => {
     try {
       if (startedTimer || !dateEndInMilliseconds) return;
@@ -217,7 +230,8 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_exit = () => {
+  const handle_exit = (e) => {
+    if (e) e.stopImmediatePropagation();
     try {
       stop_my_video();
       peer?.destroy();
@@ -264,8 +278,8 @@ export const VideoDate = () => {
     if (check_if_refresh()) {
       handle_soft_refresh_run();
       console.info("soft_refresh_page");
-      setNewProcess(true);
-      if (window.rn?.OS === "ios") {
+      if (window.rn_app?.OS === "ios") {
+        setNewProcess(true);
         await clean_room();
       } else {
         document.location.reload(true);
@@ -299,7 +313,6 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-
   const stop_my_video = async () => {
     try {
       let tracks = localStream?.getTracks();
@@ -328,6 +341,7 @@ export const VideoDate = () => {
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
+      !remoteStreamRef.current &&
       remoteUserPublic?.isOnline &&
       containerRef?.current
     );
@@ -336,7 +350,7 @@ export const VideoDate = () => {
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
-  useEffect(handle_date_time, [dateEndInMilliseconds]);
+  // useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStreamRef]);
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
   // useEffect(() => {

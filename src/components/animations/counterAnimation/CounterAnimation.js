@@ -17,6 +17,10 @@ function CounterAnimation({ onEnd }) {
   const changeCounter = () => {
     if (counter === 1) endEvent();
     else {
+      if ("vibrate" in navigator) {
+        // vibration API supported
+        navigator.vibrate(1000);
+      }
       counter--;
       element.innerHTML = counter;
     }
