@@ -56,6 +56,7 @@ export const VideoDate = () => {
   const init_page = async () => {
     try {
       make_sure_one_reload_before_start();
+      set_entry_time();
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
@@ -154,7 +155,7 @@ export const VideoDate = () => {
     }, 4000);
   };
   const handle_remote_user_update = async () => {
-    if (!remoteUserPublic) return;
+    if (!remoteUserPublic || check_if_just_entry_to_date()) return;
     if (!remoteUserPublic.isOnline && remoteStream) {
       await handle_remote_video_stopped();
     } else {
@@ -240,6 +241,14 @@ export const VideoDate = () => {
     }
   };
 
+  const check_if_just_entry_to_date = () => {
+    let entryTime = JSON.parse(localStorage.getItem("entry_time"));
+    return entryTime + 7000 > new Date().getTime();
+  };
+  const set_entry_time = () => {
+    let date = new Date();
+    localStorage.setItem("entry_time", JSON.stringify(date.getTime()));
+  };
   const get_remote_user_id = () => {
     return room.answerer.id === user.private.id
       ? room.caller.id
@@ -355,8 +364,8 @@ export const VideoDate = () => {
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
   // useEffect(() => {
   //   const interval = setInterval(() => {
-  //     console.info("remote stream ref" + remoteStreamRef.current.active);
-  //   }, 5000);
+  //     console.info(check_if_just_entry_to_date());
+  //   }, 1000);
   //   return () => clearInterval(interval);
   // }, []);
 
