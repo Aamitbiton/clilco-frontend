@@ -359,7 +359,7 @@ export const VideoDate = () => {
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
-  // useEffect(handle_date_time, [dateEndInMilliseconds]);
+  useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStreamRef]);
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
   // useEffect(() => {
