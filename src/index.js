@@ -13,7 +13,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 const suspenseMarkup = <p>loading...</p>;
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -24,7 +24,7 @@ ReactDOM.render(
         </Suspense>
       </ThemeProvider>
     </Provider>
-  </React.StrictMode>,
+  </>,
   document.getElementById("root")
 );
 
