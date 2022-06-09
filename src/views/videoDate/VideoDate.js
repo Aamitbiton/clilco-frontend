@@ -29,9 +29,11 @@ import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
+  const [softRefreshRun, setSoftRefreshRun] = useState(false);
   const [volume, setVolume] = useState(
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
+  const [streamBlock, setStreamBlock] = useState(null);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
   const [newProcess, setNewProcess] = useState(true);
@@ -39,60 +41,24 @@ export const VideoDate = () => {
   const [remoteStream, setRemoteStream] = useState(null);
   const [toastCounter, setToastCounter] = useState(0);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
-  let room = useSelector((state) => state.video.room);
-  const user = useSelector((state) => state.user.user);
-  const remoteUser = useSelector((state) => state.video.remote_user);
-  const remoteUserPublic = useSelector(
-    (state) => state.video.remote_user_public
-  );
-  const room_unsubscribes = useSelector(
-    (state) => state.video.room_unsubscribes
-  );
-  const remote_user_unsubscribes = useSelector(
-    (state) => state.video.remote_user_unsubscribes
-  );
+  let state = useSelector((state) => state);
+  let room = state.video.room;
+  const user = state.user.user;
+  const remoteUser = state.video.remote_user;
+  const remoteUserPublic = state.video.remote_user_public;
+  const room_unsubscribes = state.video.room_unsubscribes;
+  const remote_user_unsubscribes = state.video.remote_user_unsubscribes;
   const navigate = useNavigate();
   const remoteStreamRef = useRef(remoteStream);
+  const containerRef = useRef(null);
   remoteStreamRef.current = remoteStream;
 
   const init_page = async () => {
     try {
       make_sure_one_reload_before_start();
+      set_entry_time();
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const check_if_refresh = (number) =>
-    (number === 4 && !remoteStreamRef.current && remoteUserPublic?.isOnline) ||
-    (number === 4 && !remoteStreamRef.current && !remoteUserPublic);
-  const handle_no_remote_stream = () => {
-    if (remoteStream) return;
-    [1, 2, 3, 4].forEach((number) => {
-      setTimeout(() => {
-        infoLog(number);
-        if (check_if_refresh(number)) soft_refresh_page();
-      }, 1000 * number);
-    });
-  };
-
-  const get_remote_user_id = () => {
-    return room.answerer.id === user.private.id
-      ? room.caller.id
-      : room.answerer.id;
-  };
-  const make_sure_one_reload_before_start = () => {
-    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
-    localStorage.setItem("video-date-once", "false");
-    if (!wasHereOnce) {
-      localStorage.setItem("video-date-once", "true");
-      window.location.reload(true);
-    }
-  };
-  const create_offer = async () => {
-    try {
-      setPeer(init_peer({ type: "offer" }));
     } catch (e) {
       console.error(e);
     }
@@ -113,13 +79,36 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const create_answer = (offer) => {
-    try {
-      setPeer(init_peer({ type: "answer", offer }));
-    } catch (e) {
-      console.error(e);
-    }
+
+  const handle_no_remote_stream = () => {
+    if (remoteStream) return;
+    [1, 2, 3, 4].forEach((number) => {
+      setTimeout(() => {
+        infoLog(number);
+        if (number === 4) soft_refresh_page();
+      }, 1000 * number);
+    });
   };
+  // const handler_mute_event = (stream) => {
+  //   try {
+  //     // stream.getTracks().forEach((track) => {
+  //     //   if (track.kind === "video") {
+  //     //     track.addEventListener("mute", (e) => {
+  //     //       infoLog("mute detected");
+  //     //       e.stopImmediatePropagation();
+  //     //       if (remoteUserPublic?.isOnline) handle_restarting_video(stream);
+  //     //     });
+  //     //     track.addEventListener("unmute", (e) => {
+  //     //       e.stopImmediatePropagation();
+  //     //       infoLog("unmute detected");
+  //     //       if (remoteUserPublic?.isOnline) handle_restarting_video(stream);
+  //     //     });
+  //     //   }
+  //     // });
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
   const handle_signal = async (offerOrAnswer) => {
     try {
       await add_offer_or_answer({
@@ -131,16 +120,10 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const signal_answer = (answer) => {
-    try {
-      peer?.signal(answer);
-    } catch (e) {
-      console.error(e);
-    }
-  };
   const handle_got_stream = async (stream) => {
     try {
       setRemoteStream(new MediaStream(stream));
+      setStreamBlock(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -165,12 +148,18 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
+  const handle_soft_refresh_run = () => {
+    setSoftRefreshRun(true);
+    setTimeout(() => {
+      setSoftRefreshRun(false);
+    }, 4000);
+  };
   const handle_remote_user_update = async () => {
-    if (!remoteUserPublic) return;
-    if (!remoteUserPublic.isOnline) await handle_remote_video_stopped();
-    else if (!remoteStream?.active && remoteUserPublic.isOnline) {
-      console.log("refresh from user update");
-      await soft_refresh_page();
+    if (!remoteUserPublic || check_if_just_entry_to_date()) return;
+    if (!remoteUserPublic.isOnline && remoteStream) {
+      await handle_remote_video_stopped();
+    } else {
+      handle_restarting_video();
     }
   };
   const handle_remote_video_stopped = async () => {
@@ -211,11 +200,19 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const soft_refresh_page = async () => {
-    console.info("soft_refresh_page");
-    setNewProcess(true);
-    await clean_room();
-    if (!remoteStream) handle_no_remote_stream();
+  const handle_no_permissions = async () => {
+    await toast("חסרות הרשאות למצלמה", { type: "error" });
+  };
+  const handle_questions_volume = (val) => {
+    setVolume(val / 100);
+  };
+  const handle_restarting_video = () => {
+    if (streamBlock?.active) setRemoteStream(streamBlock);
+    if (window.location.href.includes("video-date") && toastCounter <= 1) {
+      toast(SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name), {
+        type: "info",
+      });
+    }
   };
   const handle_date_time = () => {
     try {
@@ -234,7 +231,70 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const now = () => new Date().getTime();
+  const handle_exit = (e) => {
+    if (e) e.stopImmediatePropagation();
+    try {
+      stop_my_video();
+      peer?.destroy();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const check_if_just_entry_to_date = () => {
+    let entryTime = JSON.parse(localStorage.getItem("entry_time"));
+    return entryTime + 7000 > new Date().getTime();
+  };
+  const set_entry_time = () => {
+    let date = new Date();
+    localStorage.setItem("entry_time", JSON.stringify(date.getTime()));
+  };
+  const get_remote_user_id = () => {
+    return room.answerer.id === user.private.id
+      ? room.caller.id
+      : room.answerer.id;
+  };
+  const make_sure_one_reload_before_start = () => {
+    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
+    localStorage.setItem("video-date-once", "false");
+    if (!wasHereOnce) {
+      localStorage.setItem("video-date-once", "true");
+      window.location.reload(true);
+    }
+  };
+  const create_offer = async () => {
+    try {
+      setPeer(init_peer({ type: "offer" }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const create_answer = (offer) => {
+    try {
+      setPeer(init_peer({ type: "answer", offer }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const signal_answer = (answer) => {
+    try {
+      peer?.signal(answer);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const soft_refresh_page = async () => {
+    if (check_if_refresh()) {
+      handle_soft_refresh_run();
+      console.info("soft_refresh_page");
+      if (window.rn_app?.OS === "ios") {
+        setNewProcess(true);
+        await clean_room();
+      } else {
+        document.location.reload(true);
+      }
+    }
+  };
   const go_to_next_question_local = async () => {
     try {
       const index = calculate_next_question();
@@ -262,12 +322,6 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_no_permissions = async () => {
-    await toast("חסרות הרשאות למצלמה", { type: "error" });
-  };
-  const handle_questions_volume = (val) => {
-    setVolume(val / 100);
-  };
   const stop_my_video = async () => {
     try {
       let tracks = localStream?.getTracks();
@@ -291,36 +345,33 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_width_change = () => {
-    if (document.width > window.screen.width) window.location.reload(true);
+  const check_if_refresh = () => {
+    return (
+      window.location.href.includes("video-date") &&
+      !softRefreshRun &&
+      !remoteStream &&
+      !remoteStreamRef.current &&
+      remoteUserPublic?.isOnline &&
+      containerRef?.current
+    );
   };
-  const handle_exit = () => {
-    try {
-      stop_my_video();
-      peer?.destroy();
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const now = () => new Date().getTime();
 
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(handle_no_remote_stream, [remoteStreamRef]);
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
-  useEffect(handle_width_change, [document.body.clientWidth]);
   // useEffect(() => {
   //   const interval = setInterval(() => {
-  //     console.info("screen width: " + window.screen.width);
-  //     console.info("document width: " + document.body.clientWidth);
-  //     console.info("remote stream ref" + remoteStreamRef.current.active);
-  //   }, 5000);
+  //     console.info(check_if_just_entry_to_date());
+  //   }, 1000);
   //   return () => clearInterval(interval);
   // }, []);
 
   return (
     <>
-      <div className="full-screen" data_cy="video-date-page">
+      <div ref={containerRef} className="full-screen" data_cy="video-date-page">
         <MyVideo
           dateStarted={remoteStream}
           setLocalStream={setLocalStream}
@@ -340,7 +391,7 @@ export const VideoDate = () => {
             <CurrentQuestion questionIndexes={room.questions} volume={volume} />
           </>
         ) : (
-          <div className="full-screen flex-center">
+          <div className=" full-screen flex-center">
             {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
           </div>
         )}
