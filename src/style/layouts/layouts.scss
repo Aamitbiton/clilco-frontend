@@ -46,6 +46,10 @@
     align-items: center;
 }
 
+.text-center{
+    text-align: center;
+}
+
 .flex-column-center {
 @include flex-center;
     flex-direction: column;
