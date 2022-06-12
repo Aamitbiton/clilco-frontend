@@ -14,6 +14,7 @@ export const send_message_to_rn = (data) => {
 };
 
 export const startReactNativeHandle = async () => {
+  await set_user_token_to_rn();
   window.rn_app.OS === "android"
     ? document.addEventListener("message", expo_message_handler)
     : window.addEventListener("message", expo_message_handler);
