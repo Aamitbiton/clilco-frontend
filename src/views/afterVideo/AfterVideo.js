@@ -17,6 +17,7 @@ import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { send_message_to_rn } from "../../store/reactNative/rnFunctions";
 
 export const AfterVideo = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
@@ -28,6 +29,8 @@ export const AfterVideo = () => {
   const handle_interested_btn = async () => {
     await answer_after_date({ positive: true });
     await notify_and_go_back_dating();
+    if (window.rn_app)
+      send_message_to_rn({ type: "fired_app_review", payload: null });
   };
   const handle_not_interested_btn = async () => {
     await answer_after_date({ negative: true });
