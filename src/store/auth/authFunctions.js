@@ -4,6 +4,7 @@ import * as api from "../../services/api";
 import { store } from "../index";
 import { set_user_is_online, watch_user } from "../user/userFunctions";
 import USER_CONSTANTS from "../user/constants";
+import { set_user_id_to_rn } from "../reactNative/rnFunctions";
 const { getState, dispatch } = store;
 
 export const login_with_google = async () => {
@@ -23,6 +24,9 @@ export const watch_auth_changes = async (set_app_ready) => {
     set_app_ready();
     await actionsCreator("SET_IS_LOGGED_IN", user != null);
     await watch_user();
+    if (window.rn_app && user.uid) {
+      await set_user_id_to_rn(user.uid);
+    }
   });
 };
 
