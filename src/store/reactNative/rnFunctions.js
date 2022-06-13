@@ -14,6 +14,7 @@ export const send_message_to_rn = (data) => {
 };
 
 export const startReactNativeHandle = async () => {
+  await set_user_token_to_rn();
   window.rn_app.OS === "android"
     ? document.addEventListener("message", expo_message_handler)
     : window.addEventListener("message", expo_message_handler);
@@ -41,6 +42,10 @@ export async function set_user_token_to_rn() {
 
 export async function save_expo_token_in_db(expoToken) {
   await update_user_private({ expoToken });
+}
+
+export async function set_user_id_to_rn(uid) {
+  await send_message_to_rn({ type: "save_user_id", payload: uid });
 }
 
 export async function expo_message_handler() {}
