@@ -350,7 +350,6 @@ export const VideoDate = () => {
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
-      !remoteStreamRef.current &&
       remoteUserPublic?.isOnline &&
       containerRef?.current
     );
