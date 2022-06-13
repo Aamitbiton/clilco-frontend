@@ -25,10 +25,12 @@ function useRouterGuard(props) {
     else return null;
   };
   const sendLocationToMobile = () => {
-    send_message_to_rn({
-      type: "updateCurrentPath",
-      payload: location.pathname,
-    });
+    if (window.rn_app) {
+      send_message_to_rn({
+        type: "updateCurrentPath",
+        payload: location.pathname,
+      });
+    }
   };
 
   useEffect(sendLocationToMobile, [location.pathname]);

@@ -8,7 +8,7 @@ import * as authServices from "../../services/auth";
 const { getState, dispatch } = store;
 
 export const send_message_to_rn = (data) => {
-  console.log("message send to Rn");
+  console.log("message send to Rn:" + data.type);
   /** Accept object: {type: string, payload: any} */
   window.ReactNativeWebView && window.postMessage(JSON.stringify(data));
 };
