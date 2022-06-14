@@ -40,6 +40,7 @@ export const VideoDate = () => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const [toastCounter, setToastCounter] = useState(0);
+  // const [remoteStreamRun, setRemoteStreamRun] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   let state = useSelector((state) => state);
   let room = state.video.room;
@@ -51,6 +52,7 @@ export const VideoDate = () => {
   const navigate = useNavigate();
   const remoteStreamRef = useRef(remoteStream);
   const containerRef = useRef(null);
+  const waitingToUserDiv = useRef(null);
   remoteStreamRef.current = remoteStream;
 
   const init_page = async () => {
@@ -82,12 +84,7 @@ export const VideoDate = () => {
 
   const handle_no_remote_stream = () => {
     if (remoteStream) return;
-    [1, 2, 3, 4].forEach((number) => {
-      setTimeout(() => {
-        infoLog(number);
-        if (number === 4) soft_refresh_page();
-      }, 1000 * number);
-    });
+    run_x_times_every_x_seconds(10, 1, soft_refresh_page);
   };
   // const handler_mute_event = (stream) => {
   //   try {
@@ -346,13 +343,24 @@ export const VideoDate = () => {
     }
   };
   const check_if_refresh = () => {
-    return (
+    if (
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
-      remoteUserPublic?.isOnline &&
+      waitingToUserDiv.current &&
+      (remoteUserPublic?.isOnline || !remoteUserPublic) &&
       containerRef?.current
-    );
+    )
+      return true;
+    else return false;
+  };
+  const run_x_times_every_x_seconds = (times, seconds, action) => {
+    [...Array(times).keys()].forEach((number) => {
+      setTimeout(() => {
+        console.info(number);
+        if (number === times - 1) action();
+      }, seconds * 1000 * number);
+    });
   };
   const now = () => new Date().getTime();
 
@@ -391,7 +399,9 @@ export const VideoDate = () => {
           </>
         ) : (
           <div className=" full-screen flex-center">
-            {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
+            {remoteUser && (
+              <OtherUserPlaceHolder ref={waitingToUserDiv} user={remoteUser} />
+            )}
           </div>
         )}
         <VideoButtons
