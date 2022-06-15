@@ -2,8 +2,8 @@ import React from "react";
 import Text from "../../../../components/Text";
 import { useTheme } from "@mui/material";
 import "./Note.scss";
-function Note(props) {
-  const { title, content, icon } = props;
+function Note({ note }) {
+  const { title, content, icon } = note;
   const { palette } = useTheme();
   const style = {
     container: {

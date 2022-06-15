@@ -18,4 +18,6 @@ function getBirthdayTime({ day, month, year }) {
   return new Date(year, month - 1, day).getTime();
 }
 
-export { years, months, days, getBirthdayTime };
+const SECOND = 1000;
+
+export { years, SECOND, months, days, getBirthdayTime };
