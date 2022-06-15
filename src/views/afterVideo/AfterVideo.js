@@ -24,6 +24,8 @@ export const AfterVideo = () => {
   const room = useSelector((s) => s.video.room);
   const navigate = useNavigate();
   const created = async () => {
+    if (window.rn_app)
+      send_message_to_rn({ type: "fired_app_review", payload: null });
     await end_date();
   };
   const handle_interested_btn = async () => {
