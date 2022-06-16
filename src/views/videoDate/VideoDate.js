@@ -36,6 +36,7 @@ export const VideoDate = () => {
   const [streamBlock, setStreamBlock] = useState(null);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
+  const [videoStopped, setVideoStopped] = useState(false);
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
@@ -162,7 +163,7 @@ export const VideoDate = () => {
         await toast(SNACK_BAR_TYPES.REMOTE_USER_LEFT_ROOM(remoteUser?.name), {
           type: "info",
         });
-        setRemoteStream(null);
+        setVideoStopped(true);
       }
     } catch (e) {
       console.error(e);
@@ -200,6 +201,7 @@ export const VideoDate = () => {
     setVolume(val / 100);
   };
   const handle_restarting_video = () => {
+    setVideoStopped(false);
     if (streamBlock?.active) setRemoteStream(streamBlock);
     if (window.location.href.includes("video-date") && toastCounter <= 1) {
       toast(SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name), {
@@ -330,7 +332,6 @@ export const VideoDate = () => {
   const end_video_date = async () => {
     try {
       await handle_exit();
-      debugger;
       setRemoteStream(null);
       await unsubscribe_room_listener();
       await set_go_to_decision();
@@ -373,6 +374,8 @@ export const VideoDate = () => {
         current_remote_video = value;
         return value;
       });
+      console.log(current_remote_video);
+      console.log(remoteStreamRef);
       if (!current_remote_video) soft_refresh_page();
     }, 5000);
     return () => {
@@ -389,7 +392,7 @@ export const VideoDate = () => {
           handle_no_permissions={handle_no_permissions}
         />
 
-        {remoteStream ? (
+        {remoteStream && !videoStopped ? (
           <>
             {showTimer && (
               <Timer
