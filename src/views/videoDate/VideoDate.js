@@ -375,9 +375,8 @@ export const VideoDate = () => {
         return value;
       });
       console.log(current_remote_video);
-      console.log(remoteStreamRef);
       if (!current_remote_video) soft_refresh_page();
-    }, 5000);
+    }, 4000);
     return () => {
       clearInterval(timer);
     };
