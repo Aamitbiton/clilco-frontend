@@ -81,10 +81,7 @@ export const VideoDate = () => {
     }
   };
 
-  const handle_no_remote_stream = () => {
-    if (remoteStream) return;
-    run_x_times_every_x_seconds(10, 1, soft_refresh_page);
-  };
+  const handle_no_remote_stream = () => {};
   // const handler_mute_event = (stream) => {
   //   try {
   //     // stream.getTracks().forEach((track) => {
@@ -333,6 +330,7 @@ export const VideoDate = () => {
   const end_video_date = async () => {
     try {
       await handle_exit();
+      debugger;
       setRemoteStream(null);
       await unsubscribe_room_listener();
       await set_go_to_decision();
@@ -343,10 +341,10 @@ export const VideoDate = () => {
   };
   const check_if_refresh = () => {
     if (
+      !check_if_just_entry_to_date() &&
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
-      document.getElementById("OtherUserPlaceHolder")?.current &&
       (remoteUserPublic?.isOnline || !remoteUserPublic) &&
       containerRef?.current
     )
@@ -366,14 +364,21 @@ export const VideoDate = () => {
   useEffect(init_page, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
-  useEffect(handle_no_remote_stream, [remoteStreamRef]);
+  useEffect(soft_refresh_page, [remoteStream]);
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.info(check_if_just_entry_to_date());
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      let current_remote_video = null;
+      setRemoteStream((value) => {
+        current_remote_video = value;
+        return value;
+      });
+      if (!current_remote_video) soft_refresh_page();
+    }, 10000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <>
@@ -398,12 +403,7 @@ export const VideoDate = () => {
           </>
         ) : (
           <div className=" full-screen flex-center">
-            {remoteUser && (
-              <OtherUserPlaceHolder
-                id={"OtherUserPlaceHolder"}
-                user={remoteUser}
-              />
-            )}
+            {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
           </div>
         )}
         <VideoButtons
