@@ -18,4 +18,7 @@ function getBirthdayTime({ day, month, year }) {
   return new Date(year, month - 1, day).getTime();
 }
 
-export { years, months, days, getBirthdayTime };
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
+
+export { years, SECOND, MINUTE, months, days, getBirthdayTime };

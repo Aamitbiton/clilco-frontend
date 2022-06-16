@@ -7,17 +7,20 @@ import { useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
+import NotesInstances from "./components/notes/NotesInstances";
 import AppButton from "../../components/Buttons/AppButton";
 import AppRoutes from "../../app/AppRoutes";
 import { toast } from "react-toastify";
 import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
+import Note from "./components/notes/Note";
+import { SECOND } from "../../utils/dates";
+import NotesContainer from "./components/notes/NotesContainer";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
   const isMobile = useSelector((state) => state.app.isMobile);
-
   const navigate = useNavigate();
 
   const init_page = async () => {
@@ -82,6 +85,7 @@ export const Lobby = () => {
   return (
     <>
       <div className="full-screen">
+        <NotesContainer />
         {room && <CounterAnimation onEnd={go_to_date} />}
         <MyVideoInLobby
           setLocalStream={setLocalStream}
