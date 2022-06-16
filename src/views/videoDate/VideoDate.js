@@ -52,7 +52,6 @@ export const VideoDate = () => {
   const navigate = useNavigate();
   const remoteStreamRef = useRef(remoteStream);
   const containerRef = useRef(null);
-  const waitingToUserDiv = useRef(null);
   remoteStreamRef.current = remoteStream;
 
   const init_page = async () => {
@@ -347,7 +346,7 @@ export const VideoDate = () => {
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
-      waitingToUserDiv.current &&
+      document.getElementById("OtherUserPlaceHolder")?.current &&
       (remoteUserPublic?.isOnline || !remoteUserPublic) &&
       containerRef?.current
     )
@@ -400,7 +399,10 @@ export const VideoDate = () => {
         ) : (
           <div className=" full-screen flex-center">
             {remoteUser && (
-              <OtherUserPlaceHolder ref={waitingToUserDiv} user={remoteUser} />
+              <OtherUserPlaceHolder
+                id={"OtherUserPlaceHolder"}
+                user={remoteUser}
+              />
             )}
           </div>
         )}
