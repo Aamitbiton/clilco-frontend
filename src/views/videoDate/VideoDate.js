@@ -374,7 +374,7 @@ export const VideoDate = () => {
         return value;
       });
       if (!current_remote_video) soft_refresh_page();
-    }, 10000);
+    }, 5000);
     return () => {
       clearInterval(timer);
     };
