@@ -14,32 +14,14 @@ import { toast } from "react-toastify";
 import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 import Note from "./components/notes/Note";
 import { SECOND } from "../../utils/dates";
+import NotesContainer from "./components/notes/NotesContainer";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
-  const [note, setNote] = useState(null);
-
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
   const isMobile = useSelector((state) => state.app.isMobile);
   const navigate = useNavigate();
-  useEffect(() => {
-    let interval;
-    interval = setInterval(() => {
-      const notes_names = [
-        "date_rules",
-        "date_tips",
-        "before_date",
-        "reject_date",
-      ];
-      const random_number = Math.floor(Math.random() * notes_names.length);
-      const random_note = notes_names[random_number];
-      setNote(NotesInstances[random_note]);
-    }, SECOND * 2);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   const init_page = async () => {
     try {
@@ -103,8 +85,8 @@ export const Lobby = () => {
   return (
     <>
       <div className="full-screen">
+        <NotesContainer />
         {room && <CounterAnimation onEnd={go_to_date} />}
-        {note && <Note note={note} />}
         <MyVideoInLobby
           setLocalStream={setLocalStream}
           handle_no_permissions={handle_no_permissions}

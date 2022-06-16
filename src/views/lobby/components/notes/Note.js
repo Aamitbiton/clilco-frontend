@@ -7,9 +7,12 @@ function Note({ note }) {
   const { palette } = useTheme();
   const style = {
     container: {
+      zIndex: 100,
       border: `1px ${palette.primary.main} solid`,
       borderColor: palette.primary.main,
       borderRadius: 10,
+      top: "10%",
+      right: 20,
     },
   };
   return (

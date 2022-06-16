@@ -34,26 +34,29 @@ const get_random_tip = () => {
   return selected_tip;
 };
 
-const before_date = {
+const before_date = (random_number) => ({
   title: null,
   icon: require("../../../../assets/video_assets/icons/icon_waiting.png"),
   content: [
-    message("כרגע נמצאים בדייט 34 זוגות"),
+    message(`
+    כרגע נמצאים בדייט 
+    3${Math.floor(Math.random() * 8)}
+    זוגות`),
     message("הזמן המוערך שלך לדייט הוא 5 דקות"),
   ],
-};
+});
 
-const reject_date = {
+export const reject_date = () => ({
   title: "בגלל ריבוי משתמשים כרגע הדייט שלך נדחה",
   icon: require("../../../../assets/video_assets/icons/icon_notice.png"),
   content: [
-    message("באפשרותך להמתין או לצאת ואנחנו ניידע אותך בSMS להיכנס."),
+    message("באפשרותך להמתין או לצאת ואנחנו ניידע אותך בהתרעה להיכנס."),
     message("חשוב ביותר:", true),
     message("מרגע ההודעה רצוי להיכנס מיד כדי לא להפסיד את תורך."),
   ],
-};
+});
 
-const date_rules = {
+const date_rules = () => ({
   title: "הדייט שלכם יתחיל בקרוב! רק רצינו להזכיר:",
   icon: require("../../../../assets/video_assets/icons/icon_rules.png"),
   content: [
@@ -65,12 +68,14 @@ const date_rules = {
     message("בסוף כל דייט, הצלבת טלפונים תתאפשר רק אם שני הצדדים חפצו בכך."),
     message("בהצלחה!", true),
   ],
-};
+});
 
-const date_tips = {
-  title: "בינתיים הנה כמה עצות כדי להצליח יותר בעולם ההיכרויות",
-  icon: require("../../../../assets/video_assets/icons/icon_tips.png"),
-  content: [message(get_random_tip())],
+const date_tips = (random) => {
+  return {
+    title: "בינתיים הנה כמה עצות כדי להצליח יותר בעולם ההיכרויות",
+    icon: require("../../../../assets/video_assets/icons/icon_tips.png"),
+    content: [message(get_random_tip())],
+  };
 };
 
 function message(message, highlighted = false) {
@@ -79,7 +84,6 @@ function message(message, highlighted = false) {
 
 const NotesInstances = {
   before_date,
-  reject_date,
   date_rules,
   date_tips,
 };
