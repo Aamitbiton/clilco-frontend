@@ -279,6 +279,7 @@ export const VideoDate = () => {
     }
   };
   const soft_refresh_page = async () => {
+    console.log('checkIfRefresh')
     if (check_if_refresh()) {
       handle_soft_refresh_run();
       console.info("soft_refresh_page");

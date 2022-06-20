@@ -15,6 +15,8 @@ import CounterAnimation from "../../components/animations/counterAnimation/Count
 import Note from "./components/notes/Note";
 import { SECOND } from "../../utils/dates";
 import NotesContainer from "./components/notes/NotesContainer";
+import AppLoader from "../../components/AppLoader/AppLoader";
+import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
@@ -86,6 +88,7 @@ export const Lobby = () => {
     <>
       <div className="full-screen">
         <NotesContainer />
+        <LobbyLoader/>
         {room && <CounterAnimation onEnd={go_to_date} />}
         <MyVideoInLobby
           setLocalStream={setLocalStream}

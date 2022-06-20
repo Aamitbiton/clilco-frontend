@@ -1,0 +1,14 @@
+.loader-container{
+  position: absolute;
+  flex-flow: column;
+  display: flex;
+  bottom: 10%;
+  width: 100%;
+  align-items: center;
+  z-index: 5;
+}
+
+.loader-text{
+  color: black;
+  font-weight: bold;
+}
