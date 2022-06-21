@@ -19,6 +19,7 @@ import AppLogo from "../../components/AppLogo";
 import { Typography } from "@mui/material";
 import AppModal from "../../components/AppModal";
 import { PRIVACY_POLICY } from "../privacy/privacy_content";
+import SimpleBottomNavigation from "./components/bottomNavigation";
 
 export const Login = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
@@ -33,7 +34,8 @@ export const Login = () => {
           ) : (
             <>
               <AppLogo />
-              <Title textAlign={"center"} title={translate("Welcome_title")} />
+
+                <Title textAlign={"center"} title={translate("Welcome_title")} />
               <AppStack direction={"column"}>
                 <AppButton
                   rounded={true}

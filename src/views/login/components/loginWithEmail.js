@@ -8,16 +8,14 @@ import AppModal from "../../../components/AppModal";
 import ResetPassword from "./ResetPassword";
 import { login_with_email } from "../../../store/auth/authFunctions";
 import AppStack from "../../../components/AppStack";
-import AppIconButton from "../../../components/Buttons/AppIconButton";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 import Title from "../../../components/title/title";
 import CenterLayout from "../../../components/CenterLayout";
 import defaultStyles from "../../../style/defaultStyles";
 import AppLogo from "../../../components/AppLogo";
-import { Checkbox, FormControlLabel } from "@mui/material";
-import { Link } from "react-router-dom";
-import AppRoutes from "../../../app/AppRoutes";
+
 import Privacy from "../../privacy/Privacy";
+import SimpleBottomNavigation from './bottomNavigation'
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -31,7 +29,6 @@ function LoginWithEmail({ close }) {
     function handleErrorMessage(message) {
       const wrongPassword = new RegExp(/wrong-password/g).test(message);
       if (wrongPassword) {
-        set_forgot_pass_visible(true);
         return "סיסמא שגויה";
       }
     }
@@ -40,7 +37,7 @@ function LoginWithEmail({ close }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [privacyVisible, setPrivacyVisible] = useState(false);
-  const [forgot_pass_visible, set_forgot_pass_visible] = useState(false);
+  const [navigationState, setNavigationState] = useState(0);
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required(),
@@ -48,6 +45,8 @@ function LoginWithEmail({ close }) {
   return (
     <CenterLayout direction={"column"}>
       <AppLogo />
+        <SimpleBottomNavigation state={(state)=>{setNavigationState(state)}}/>
+
 
       {/*<AppIconButton*/}
       {/*  onClick={close}*/}
@@ -85,7 +84,7 @@ function LoginWithEmail({ close }) {
             width={inputs.STATIC_WIDTH}
           />
 
-          {forgot_pass_visible && (
+          {navigationState === 0 && (
             <Text
               onClick={() => setModalVisible(true)}
               className={"pointer privacy"}
@@ -125,6 +124,7 @@ function LoginWithEmail({ close }) {
       )}
     </CenterLayout>
   );
+
 }
 
 export default LoginWithEmail;
