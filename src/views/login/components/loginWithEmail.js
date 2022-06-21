@@ -77,7 +77,7 @@ function LoginWithEmail({ close }) {
           />
           <FormFiled
             data_cy="login-password-input"
-            label={"סיסמא"}
+            label={navigationState === 0 ? "סיסמא" : "בחר סיסמא"}
             type={"password"}
             trim={true}
             name={"password"}
