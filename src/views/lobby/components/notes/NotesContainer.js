@@ -4,20 +4,8 @@ import NotesInstances, { reject_date } from "./NotesInstances";
 import { MINUTE, SECOND } from "../../../../utils/dates";
 function NotesContainer() {
   const [note, setNote] = useState(null);
-  const instancesNames = Object.keys(NotesInstances);
-  // const handle_set_random = () => {
-  //   const currentRandom = Math.floor(Math.random() * instancesNames.length);
-  //   if (currentRandom === random && random === 0) {
-  //     console.log("1");
-  //     setRandom(currentRandom + 1);
-  //   } else if (currentRandom === random && random === instancesNames.length) {
-  //     console.log("2");
-  //     setRandom(currentRandom - 1);
-  //   } else {
-  //     console.log("3");
-  //     setRandom(currentRandom);
-  //   }
-  // };
+  const instancesNames = NotesInstances;
+
   useEffect(() => {
     let interval;
 
@@ -26,9 +14,10 @@ function NotesContainer() {
       setNote(reject_date());
     }, MINUTE * 5);
     function create_note() {
-      const random = Math.floor(Math.random() * instancesNames.length);
-      const random_note = instancesNames[random];
-      setNote(NotesInstances[random_note](random));
+      let random_tip
+     if (check_if_already_seen_rules()) random_tip = instancesNames.date_tips();
+     else random_tip = instancesNames.date_rules()
+      setNote(random_tip);
     }
     create_note();
     interval = setInterval(() => {
@@ -38,6 +27,17 @@ function NotesContainer() {
       clearInterval(interval);
     };
   }, []);
+  const check_if_already_seen_rules = ()=>{
+    let already_seen_rules = JSON.parse(localStorage.getItem("already_seen_rules"));
+    let last_seen = new Date(already_seen_rules)
+    let todayDate = new Date();
+    let res = last_seen?.setHours(0, 0, 0, 0) === todayDate.setHours(0, 0, 0, 0);
+    if (res) return true
+    else {
+      localStorage.setItem("already_seen_rules", JSON.stringify(new Date()));
+      return false
+    }
+  }
 
   return <>{note && <Note note={note} />}</>;
 }

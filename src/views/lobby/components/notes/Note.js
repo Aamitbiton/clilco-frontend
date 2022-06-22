@@ -30,7 +30,7 @@ function Note({ note }) {
         </Text>
       )}
       {content.map((row, index) => (
-        <Text key={index} align={"center"} color={row.highlighted && "primary"}>
+        <Text key={index} align={"center"} fontSize={'18px'} fontWeight={'bold'} color={row.highlighted && "primary"}>
           {row.message}
         </Text>
       ))}
