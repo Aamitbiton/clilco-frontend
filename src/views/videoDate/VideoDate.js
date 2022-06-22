@@ -231,6 +231,7 @@ export const VideoDate = () => {
     try {
       stop_my_video();
       peer?.destroy();
+
     } catch (e) {
       console.error(e);
     }

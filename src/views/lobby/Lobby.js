@@ -87,8 +87,8 @@ export const Lobby = () => {
   return (
     <>
       <div className="full-screen">
-        <NotesContainer />
-        <LobbyLoader/>
+        {!room && (<NotesContainer />)}
+        {!room && (<LobbyLoader/>)}
         {room && <CounterAnimation onEnd={go_to_date} />}
         <MyVideoInLobby
           setLocalStream={setLocalStream}
