@@ -24,7 +24,7 @@ function LobbyLoader(props) {
     return (
         <div className={'loader-container'}>
             <p className={'loader-dotes'}>{dotesArray[currentDote]} </p>
-            <p className={'loader-text'}>מחפש התאמה </p>
+            <p className={'loader-text'}>מחפש לך דייט </p>
             <p className={'loader-dotes'}>{dotesArray[currentDote]} </p>
         </div>
     );
