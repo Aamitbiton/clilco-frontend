@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  set_user_is_online,
-} from "../store/user/userFunctions";
-import { useSelector } from "react-redux";
+import { set_user_is_online } from "../store/user/userFunctions";
 
 function useUserTracking() {
-  const is_logged_in = useSelector((s) => s.app.is_logged_in);
   const [visibilityState, setVisibilityState] = useState(null);
-
   const user_tracking = async ({ isOnline }) => {
     await set_user_is_online(isOnline, "useUserTracking");
   };
   useEffect(() => user_tracking({ isOnline: true }), []);
-
   if (window.rn_app) {
     window.addEventListener(
       "visibilitychange",

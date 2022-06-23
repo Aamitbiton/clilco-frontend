@@ -185,7 +185,6 @@ export const VideoDate = () => {
           caller.id === myId ? answerer.id : caller.id
         );
       if (goToDecision) {
-        debugger;
         await handle_exit();
         navigate(AppRoutes.AFTER_VIDEO);
       }
