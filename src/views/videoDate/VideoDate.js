@@ -34,6 +34,7 @@ export const VideoDate = () => {
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
   const [streamBlock, setStreamBlock] = useState(null);
+  const [doNotRefresh, setDoNotRefresh] = useState(false);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
   const [videoStopped, setVideoStopped] = useState(false);
@@ -228,8 +229,10 @@ export const VideoDate = () => {
     }
   };
   const handle_exit = async (e) => {
+    setDoNotRefresh(true)
     if (e) e.stopImmediatePropagation();
     try {
+
       await stop_my_video();
       peer?.destroy();
     } catch (e) {
@@ -345,7 +348,7 @@ export const VideoDate = () => {
   const check_if_refresh = () => {
     if (
       !check_if_just_entry_to_date() &&
-        !room.goToDecision &&
+        !doNotRefresh &&
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
