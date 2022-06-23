@@ -75,7 +75,7 @@ export const answer_after_date = async (answer) => {
     const room = getState().video.room;
     let userId = getState().user.user.private.id;
     if (answer?.positive) answer.phone = getState().user.user.private.phone;
-    const type = room.answerer.id === userId ? "answerer" : "caller";
+    const type = room?.answerer.id === userId ? "answerer" : "caller";
     await videoService.answer_after_date({ room, type, answer });
   } catch (e) {
     console.log(e);
