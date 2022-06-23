@@ -34,6 +34,7 @@ export const VideoDate = () => {
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
   const [streamBlock, setStreamBlock] = useState(null);
+  const [mute, setMute] = useState(false);
   const [doNotRefresh, setDoNotRefresh] = useState(false);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
@@ -83,27 +84,27 @@ export const VideoDate = () => {
     }
   };
 
-  const handle_no_remote_stream = () => {};
-  // const handler_mute_event = (stream) => {
-  //   try {
-  //     // stream.getTracks().forEach((track) => {
-  //     //   if (track.kind === "video") {
-  //     //     track.addEventListener("mute", (e) => {
-  //     //       infoLog("mute detected");
-  //     //       e.stopImmediatePropagation();
-  //     //       if (remoteUserPublic?.isOnline) handle_restarting_video(stream);
-  //     //     });
-  //     //     track.addEventListener("unmute", (e) => {
-  //     //       e.stopImmediatePropagation();
-  //     //       infoLog("unmute detected");
-  //     //       if (remoteUserPublic?.isOnline) handle_restarting_video(stream);
-  //     //     });
-  //     //   }
-  //     // });
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
+  const handler_mute_event = (stream) => {
+    try {
+      stream.getTracks().forEach((track) => {
+        if (track.kind === "video") {
+          track.addEventListener("mute", (e) => {
+            infoLog("mute detected");
+            e.stopImmediatePropagation();
+            setMute(true)
+          });
+          track.addEventListener("unmute", (e) => {
+            e.stopImmediatePropagation();
+            infoLog("unmute detected");
+            setMute(false)
+
+          });
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const handle_signal = async (offerOrAnswer) => {
     try {
       await add_offer_or_answer({
@@ -119,6 +120,7 @@ export const VideoDate = () => {
     try {
       setRemoteStream(new MediaStream(stream));
       setStreamBlock(stream);
+      handler_mute_event(stream)
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -381,7 +383,7 @@ export const VideoDate = () => {
         return value;
       });
       console.log(current_remote_video);
-      if (!current_remote_video) soft_refresh_page();
+      if (!current_remote_video || mute) soft_refresh_page();
     }, 4000);
     return () => {
       clearInterval(timer);
