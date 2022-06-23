@@ -10,7 +10,7 @@ function MainView(props) {
   const navigate = useSelector((state) => state.app.global_hooks.navigator);
   const user = useSelector((state) => state.user.user.public);
   const start_date_visible = () => {
-    return user.testUser;
+    return user.testUser | user.pilot_user;
   };
   return (
     <CenterLayout direction={"column"}>
