@@ -185,7 +185,7 @@ export const VideoDate = () => {
           caller.id === myId ? answerer.id : caller.id
         );
       if (goToDecision) {
-        debugger;
+
         await handle_exit();
         navigate(AppRoutes.AFTER_VIDEO);
       }
@@ -230,7 +230,6 @@ export const VideoDate = () => {
   const handle_exit = async (e) => {
     if (e) e.stopImmediatePropagation();
     try {
-      debugger;
       await stop_my_video();
       peer?.destroy();
     } catch (e) {
@@ -346,6 +345,7 @@ export const VideoDate = () => {
   const check_if_refresh = () => {
     if (
       !check_if_just_entry_to_date() &&
+        !room.goToDecision &&
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
