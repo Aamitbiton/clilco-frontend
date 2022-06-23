@@ -185,7 +185,8 @@ export const VideoDate = () => {
           caller.id === myId ? answerer.id : caller.id
         );
       if (goToDecision) {
-        handle_exit();
+        debugger;
+        await handle_exit();
         navigate(AppRoutes.AFTER_VIDEO);
       }
       if (!dateEndInMilliseconds)
@@ -226,12 +227,12 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_exit = (e) => {
+  const handle_exit = async (e) => {
     if (e) e.stopImmediatePropagation();
     try {
-      stop_my_video();
+      debugger;
+      await stop_my_video();
       peer?.destroy();
-
     } catch (e) {
       console.error(e);
     }
@@ -280,7 +281,7 @@ export const VideoDate = () => {
     }
   };
   const soft_refresh_page = async () => {
-    console.log('checkIfRefresh')
+    console.log("checkIfRefresh");
     if (check_if_refresh()) {
       handle_soft_refresh_run();
       console.info("soft_refresh_page");
