@@ -343,6 +343,7 @@ export const VideoDate = () => {
       return (
         (data?.current_mute || !data?.current_remote_video) &&
         !check_if_just_entry_to_date() &&
+        !remoteStream &&
         !doNotRefresh &&
         remoteUserPublic?.isOnline
       );
