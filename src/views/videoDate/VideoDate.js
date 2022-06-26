@@ -23,6 +23,7 @@ import Peer from "simple-peer";
 import AppRoutes from "../../app/AppRoutes";
 import { question_texts } from "./components/questions/question_texts";
 import { Timer } from "../../components/timer/timer";
+import { LinearLoading } from "./components/linerLoading";
 import { OtherUserPlaceHolder } from "./components/connecting/otherUserPlaceHolder";
 import { toast } from "react-toastify";
 import { infoLog } from "../../utils/logs";
@@ -392,11 +393,12 @@ export const VideoDate = () => {
         {remoteStream && !videoStopped ? (
           <>
             {showTimer && (
-              <Timer
-                endAction={end_video_date}
-                style={{ position: "absolute", zIndex: 3, width: "100%" }}
-                expiredMilliseconds={room.startTime + 1000 * 60 * 10}
-              />
+              // <Timer
+              //   endAction={end_video_date}
+              //   style={{ position: "absolute", zIndex: 3, width: "100%" }}
+              //   expiredMilliseconds={room.startTime + 1000 * 60 * 10}
+              // />
+              <LinearLoading />
             )}
             <RemoteVideo remoteStream={remoteStream} />
             <CurrentQuestion questionIndexes={room.questions} volume={volume} />
