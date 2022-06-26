@@ -29,12 +29,11 @@ import { infoLog } from "../../utils/logs";
 
 export const VideoDate = () => {
   const [peer, setPeer] = useState(null);
-  const [softRefreshRun, setSoftRefreshRun] = useState(false);
   const [volume, setVolume] = useState(
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
   const [streamBlock, setStreamBlock] = useState(null);
-  const [mute, setMute] = useState(false);
+  const [mute, setMute] = useState(true);
   const [doNotRefresh, setDoNotRefresh] = useState(false);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
@@ -43,7 +42,6 @@ export const VideoDate = () => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const [toastCounter, setToastCounter] = useState(0);
-  // const [remoteStreamRun, setRemoteStreamRun] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   let state = useSelector((state) => state);
   let room = state.video.room;
@@ -131,8 +129,7 @@ export const VideoDate = () => {
   const handle_caller = async ({ offer, answer, goToDecision }) => {
     try {
       if (!offer) await create_offer();
-      else if (answer && !remoteStream && !goToDecision)
-        await signal_answer(answer);
+      else if (answer && !goToDecision) await signal_answer(answer);
     } catch (e) {
       console.error(e);
     }
@@ -144,12 +141,7 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const handle_soft_refresh_run = () => {
-    setSoftRefreshRun(true);
-    setTimeout(() => {
-      setSoftRefreshRun(false);
-    }, 4000);
-  };
+
   const handle_remote_user_update = async () => {
     if (!remoteUserPublic || check_if_just_entry_to_date()) return;
     if (!remoteUserPublic.isOnline && remoteStream) {
@@ -262,6 +254,7 @@ export const VideoDate = () => {
   };
   const create_offer = async () => {
     try {
+      console.log("im the offering");
       setPeer(init_peer({ type: "offer" }));
     } catch (e) {
       console.error(e);
@@ -269,6 +262,7 @@ export const VideoDate = () => {
   };
   const create_answer = (offer) => {
     try {
+      console.log("im the answerer");
       setPeer(init_peer({ type: "answer", offer }));
     } catch (e) {
       console.error(e);
@@ -281,10 +275,9 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const soft_refresh_page = async () => {
+  const soft_refresh_page = async (data) => {
     console.log("checkIfRefresh");
-    if (check_if_refresh()) {
-      handle_soft_refresh_run();
+    if (check_if_refresh(data)) {
       console.info("soft_refresh_page");
       if (window.rn_app?.OS === "ios") {
         setNewProcess(true);
@@ -344,32 +337,24 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-  const check_if_refresh = () => {
-    if (
-      !check_if_just_entry_to_date() &&
-      !doNotRefresh &&
-      window.location.href.includes("video-date") &&
-      !softRefreshRun &&
-      !remoteStream &&
-      (remoteUserPublic?.isOnline || !remoteUserPublic) &&
-      containerRef?.current
-    )
-      return true;
-    else return false;
-  };
-  const run_x_times_every_x_seconds = (times, seconds, action) => {
-    [...Array(times).keys()].forEach((number) => {
-      setTimeout(() => {
-        console.info(number);
-        if (number === times - 1) action();
-      }, seconds * 1000 * number);
-    });
+  const check_if_refresh = (data) => {
+    let res = () => {
+      return (
+        (data?.current_mute || !data?.current_remote_video) &&
+        !check_if_just_entry_to_date() &&
+        !doNotRefresh &&
+        remoteUserPublic?.isOnline
+      );
+    };
+    return res();
   };
   const now = () => new Date().getTime();
 
   useEffect(() => {
     init_page();
-    return () => {handle_exit();}
+    return () => {
+      handle_exit();
+    };
   }, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
@@ -377,13 +362,18 @@ export const VideoDate = () => {
   useEffect(handle_remote_user_update, [remoteUserPublic?.isOnline]);
   useEffect(() => {
     const timer = setInterval(() => {
-      let current_remote_video = null;
+      let current_remote_video;
+      let current_mute;
       setRemoteStream((value) => {
         current_remote_video = value;
         return value;
       });
-      console.log(current_remote_video);
-      if (!current_remote_video || mute) soft_refresh_page();
+      setMute((value) => {
+        current_mute = value;
+        return value;
+      });
+      let data = { current_remote_video, current_mute };
+      soft_refresh_page(data);
     }, 4000);
     return () => {
       clearInterval(timer);
