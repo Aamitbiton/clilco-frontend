@@ -91,13 +91,12 @@ export const VideoDate = () => {
           track.addEventListener("mute", (e) => {
             infoLog("mute detected");
             e.stopImmediatePropagation();
-            setMute(true)
+            setMute(true);
           });
           track.addEventListener("unmute", (e) => {
             e.stopImmediatePropagation();
             infoLog("unmute detected");
-            setMute(false)
-
+            setMute(false);
           });
         }
       });
@@ -120,7 +119,7 @@ export const VideoDate = () => {
     try {
       setRemoteStream(new MediaStream(stream));
       setStreamBlock(stream);
-      handler_mute_event(stream)
+      handler_mute_event(stream);
       await create_snackBar({
         message: SNACK_BAR_TYPES.REMOTE_USER_JOINED_ROOM(remoteUser?.name),
         action: reset_snackBar,
@@ -188,7 +187,6 @@ export const VideoDate = () => {
           caller.id === myId ? answerer.id : caller.id
         );
       if (goToDecision) {
-
         await handle_exit();
         navigate(AppRoutes.AFTER_VIDEO);
       }
@@ -231,10 +229,9 @@ export const VideoDate = () => {
     }
   };
   const handle_exit = async (e) => {
-    setDoNotRefresh(true)
+    setDoNotRefresh(true);
     if (e) e.stopImmediatePropagation();
     try {
-
       await stop_my_video();
       peer?.destroy();
     } catch (e) {
@@ -350,7 +347,7 @@ export const VideoDate = () => {
   const check_if_refresh = () => {
     if (
       !check_if_just_entry_to_date() &&
-        !doNotRefresh &&
+      !doNotRefresh &&
       window.location.href.includes("video-date") &&
       !softRefreshRun &&
       !remoteStream &&
@@ -370,7 +367,10 @@ export const VideoDate = () => {
   };
   const now = () => new Date().getTime();
 
-  useEffect(init_page, []);
+  useEffect(() => {
+    init_page();
+    return () => {handle_exit();}
+  }, []);
   useEffect(handle_room_update, [room]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(soft_refresh_page, [remoteStream]);
