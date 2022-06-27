@@ -21,7 +21,7 @@ export const NotDateTime = ({ navigate, datesStartedMilliseconds }) => {
           style={{ width: inputs.STATIC_WIDTH, height: inputs.STATIC_HEIGHT }}
           endAction={() => set_its_dating_time(true)}
           // expiredMilliseconds={datesStartedMilliseconds}
-          expiredMilliseconds={1656864000000}
+          expiredMilliseconds={1656871200000}
         />
         <AppButton
           width={inputs.STATIC_WIDTH}
