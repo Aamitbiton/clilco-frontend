@@ -10,6 +10,7 @@ import {
 import Title from "../../components/title/title";
 import CenterLayout from "../../components/CenterLayout";
 import { FORBIDDEN_MESSAGE, WRONG_PASSWORD_MESSAGE } from "./utils";
+import LogoutButton from "../../components/LogoutButton";
 
 export const VerifyPhone = () => {
   const [smsSent, setSmsSent] = useState(false);
@@ -38,6 +39,11 @@ export const VerifyPhone = () => {
 
   return (
     <CenterLayout direction={"column"}>
+      <div>
+        <div style={{ position: "relative", left: 100 }}>
+          <LogoutButton />
+        </div>
+      </div>
       <Title title={"אימות פלאפון"} mb={2} />
       {!smsSent ? (
         <PhoneInput smsSent={send_code_sms} />
