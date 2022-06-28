@@ -7,11 +7,12 @@ export function get_relevant_age_range({ birthday, gender, wanted }) {
   else if (gender !== wanted && gender === "male") years_to_increase = 3;
 
   const minAge = new Date(birthday).setFullYear(
-    new Date(birthday).getFullYear() - years_to_reduce
+    new Date(birthday).getFullYear() - years_to_increase
   );
   const maxAge = new Date(birthday).setFullYear(
-    new Date(birthday).getFullYear() + years_to_increase
+    new Date(birthday).getFullYear() + years_to_reduce
   );
-
+  console.log("min:" + new Date(minAge).getFullYear());
+  console.log("max:" + new Date(maxAge).getFullYear());
   return { minAge, maxAge };
 }
