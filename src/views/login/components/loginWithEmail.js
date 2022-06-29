@@ -15,7 +15,7 @@ import defaultStyles from "../../../style/defaultStyles";
 import AppLogo from "../../../components/AppLogo";
 
 import Privacy from "../../privacy/Privacy";
-import SimpleBottomNavigation from './bottomNavigation'
+import SimpleBottomNavigation from "./bottomNavigation";
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -40,13 +40,16 @@ function LoginWithEmail({ close }) {
   const [navigationState, setNavigationState] = useState(0);
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
-    password: Yup.string().required(),
+    password: Yup.string().min(6).max(20).required(),
   });
   return (
     <CenterLayout direction={"column"}>
       <AppLogo />
-        <SimpleBottomNavigation state={(state)=>{setNavigationState(state)}}/>
-
+      <SimpleBottomNavigation
+        state={(state) => {
+          setNavigationState(state);
+        }}
+      />
 
       {/*<AppIconButton*/}
       {/*  onClick={close}*/}
@@ -124,7 +127,6 @@ function LoginWithEmail({ close }) {
       )}
     </CenterLayout>
   );
-
 }
 
 export default LoginWithEmail;
