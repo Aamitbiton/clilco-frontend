@@ -17,6 +17,7 @@ import Contact from "../../views/Contact/Contact";
 import Settings from "../../views/Settings/Settings";
 import Privacy from "../../views/privacy/Privacy";
 import useUserTracking from "../../hooks/useUserTracking";
+import ReportUser from "../../views/ReportUser/ReportUser";
 
 export const AuthenticatedLayout = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ export const AuthenticatedLayout = () => {
     CALLS,
     LOBBY,
     PRIVACY,
+    REPORT,
   } = AppRoutes;
   return (
     <>

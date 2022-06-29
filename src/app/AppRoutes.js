@@ -9,6 +9,7 @@ export default Object.freeze({
   VERIFY_PHONE: "/verify-phone",
   VIDEO_DATE: "/video-date",
   CONTACT: "/contact",
+  REPORT: "/report",
   SETTINGS: "/settings",
   CALLS: "/video-dates-history",
   LOBBY: "/lobby",

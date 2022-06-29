@@ -12,12 +12,13 @@ import useRouterGuard from "../hooks/useRouterGuard";
 import SimpleSnackbar from "../components/snackBar/SnackBar";
 import AppToastContainer from "../components/Toast/AppToastContainer";
 import AppLoader from "../components/AppLoader/AppLoader";
+import ReportUser from "../views/ReportUser/ReportUser";
 
 function App() {
   const appState = useSelector((state) => state.app);
   const navigator = useNavigate();
   useEffect(() => init_app({ navigator }), []);
-  useRouterGuard();
+  // useRouterGuard();
   if (!appState.app_ready) return <AppLoader />;
   return (
     <>
@@ -29,6 +30,7 @@ function App() {
         >
           <Routes>
             <Route path={AppRoutes.LOGIN} element={<Login />} />
+            <Route path={AppRoutes.REPORT} element={<ReportUser />} />
             <Route path="/*" element={<AuthenticatedLayout />} />
           </Routes>
         </ConditionalWrapper>
