@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const LinearLoading = () => {
+export const LinearLoading = ({ endAction }) => {
   const classes = useStyles();
   const [progress, setProgress] = React.useState(0);
 
@@ -22,6 +22,8 @@ export const LinearLoading = () => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress >= 100) {
+          endAction();
+          clearInterval(timer);
           return 0;
         }
         const diff = oldProgress + 0.1666;
@@ -42,8 +44,6 @@ export const LinearLoading = () => {
         variant="determinate"
         value={progress}
       />
-      <br />
-      {/*<b>{Math.min(progress).toFixed(0)}</b>*/}
     </div>
   );
 };
