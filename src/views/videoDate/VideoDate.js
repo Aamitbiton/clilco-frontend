@@ -35,7 +35,7 @@ export const VideoDate = () => {
   );
   const [streamBlock, setStreamBlock] = useState(null);
   const [mute, setMute] = useState(true);
-  const [doNotRefresh, setDoNotRefresh] = useState(false);
+  const [doNotRefresh, setDoNotRefresh] = useState(true);
   const [showTimer, setShowTimer] = useState(null);
   const [startedTimer, setStartedTimer] = useState(false);
   const [videoStopped, setVideoStopped] = useState(false);
@@ -59,6 +59,7 @@ export const VideoDate = () => {
   const init_page = async () => {
     try {
       make_sure_one_reload_before_start();
+      handle_not_refresh();
       set_entry_time();
       if (!room_unsubscribes) await watch_room();
       window.addEventListener("beforeunload", handle_exit);
@@ -83,6 +84,21 @@ export const VideoDate = () => {
     }
   };
 
+  const handle_not_refresh = async () => {
+    // let resetCounter = localStorage.getItem("resetCounter") || 0;
+    // console.log(resetCounter);
+    // if (resetCounter >= 4) {
+    //   localStorage.setItem("resetCounter", 0);
+    //   await end_video_date();
+    //   return;
+    // }
+    // resetCounter++;
+    // localStorage.setItem("resetCounter", resetCounter);
+    setTimeout(() => {
+      console.log("do not refresh");
+      setDoNotRefresh(false);
+    }, 7000);
+  };
   const handler_mute_event = (stream) => {
     try {
       stream.getTracks().forEach((track) => {
@@ -142,7 +158,6 @@ export const VideoDate = () => {
       console.error(e);
     }
   };
-
   const handle_remote_user_update = async () => {
     if (!remoteUserPublic || check_if_just_entry_to_date()) return;
     if (!remoteUserPublic.isOnline && remoteStream) {
@@ -344,8 +359,7 @@ export const VideoDate = () => {
       return (
         (data?.current_mute || !data?.current_remote_video) &&
         !check_if_just_entry_to_date() &&
-        !remoteStream &&
-        !doNotRefresh &&
+        !data.current_do_Not_Refresh &&
         (remoteUserPublic?.isOnline || !remoteUserPublic)
       );
     };
@@ -367,6 +381,7 @@ export const VideoDate = () => {
     const timer = setInterval(() => {
       let current_remote_video;
       let current_mute;
+      let current_do_Not_Refresh;
       setRemoteStream((value) => {
         current_remote_video = value;
         return value;
@@ -375,8 +390,12 @@ export const VideoDate = () => {
         current_mute = value;
         return value;
       });
+      setDoNotRefresh((value) => {
+        current_do_Not_Refresh = value;
+        return value;
+      });
 
-      let data = { current_remote_video, current_mute };
+      let data = { current_remote_video, current_mute, current_do_Not_Refresh };
       soft_refresh_page(data);
     }, 4000);
     return () => {
