@@ -357,12 +357,11 @@ export const VideoDate = () => {
   };
   const check_if_refresh = (data) => {
     let res = () => {
-      debugger;
       return (
         (data?.current_mute || !data?.current_remote_video) &&
         !check_if_just_entry_to_date() &&
         !data.current_do_Not_Refresh &&
-        !data.current_remote_user_online
+        data.current_remote_user_online
       );
     };
     return res();
