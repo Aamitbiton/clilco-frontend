@@ -13,7 +13,7 @@ import AppRoutes from "../../app/AppRoutes";
 import { toast } from "react-toastify";
 import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 import Note from "./components/notes/Note";
-import { SECOND } from "../../utils/dates";
+import { SECOND, today } from "../../utils/dates";
 import NotesContainer from "./components/notes/NotesContainer";
 import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
@@ -23,9 +23,21 @@ export const Lobby = () => {
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
   const isMobile = useSelector((state) => state.app.isMobile);
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-
+  const reject_suspended_user = () => {
+    const last_suspended_time = user.private.suspended.slice(-1);
+    if (
+      user.private.suspended &&
+      today(new Date()) === today(last_suspended_time)
+    ) {
+      alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
+      navigate(AppRoutes.ROOT);
+      return true;
+    }
+  };
   const init_page = async () => {
+    if (reject_suspended_user()) return;
     try {
       await watch_room();
       const res = await search_for_match();
@@ -87,8 +99,8 @@ export const Lobby = () => {
   return (
     <>
       <div className="full-screen">
-        {!room && (<NotesContainer />)}
-        {!room && (<LobbyLoader/>)}
+        {!room && <NotesContainer />}
+        {!room && <LobbyLoader />}
         {room && <CounterAnimation onEnd={go_to_date} />}
         <MyVideoInLobby
           setLocalStream={setLocalStream}
