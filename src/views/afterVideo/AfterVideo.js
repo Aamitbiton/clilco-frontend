@@ -47,7 +47,7 @@ export const AfterVideo = () => {
     navigate(AppRoutes.LOBBY);
   };
   const handle_report_btn = async () => {
-    navigate(AppRoutes.CONTACT, { state: { report: { room } } });
+    navigate(AppRoutes.REPORT, { state: { report: { room } } });
   };
 
   useEffect(created, []);

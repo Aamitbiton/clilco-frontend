@@ -20,6 +20,10 @@ export function user_id_getter() {
   return authService.get_current_user().uid;
 }
 
+export async function send_report(report_data) {
+  return api.send_report(report_data);
+}
+
 export async function update_user_public(data) {
   const id = authService.get_current_user()?.uid;
   await dbLayer.update_user_public({ id, data });
