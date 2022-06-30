@@ -13,7 +13,7 @@ import AppRoutes from "../../app/AppRoutes";
 import { toast } from "react-toastify";
 import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 import Note from "./components/notes/Note";
-import { SECOND, today } from "../../utils/dates";
+import { SECOND, day_month_year } from "../../utils/dates";
 import NotesContainer from "./components/notes/NotesContainer";
 import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
@@ -26,16 +26,21 @@ export const Lobby = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const reject_suspended_user = () => {
-    const last_suspended_time = user.private.suspended.slice(-1);
-    if (
-      user.private.suspended &&
-      today(new Date()) === today(last_suspended_time)
-    ) {
+    if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
       navigate(AppRoutes.ROOT);
       return true;
     }
   };
+
+  const is_suspended = () => {
+    const suspended = user.private.suspended;
+    if (!suspended) return;
+    return (
+      day_month_year(new Date()) === day_month_year(suspended.slice(-1)[0])
+    );
+  };
+
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
@@ -64,6 +69,7 @@ export const Lobby = () => {
     navigate(AppRoutes.VIDEO_DATE);
   };
   const handle_no_permissions = async () => {
+    if (is_suspended()) return;
     await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const stop_my_video = () => {
@@ -102,10 +108,12 @@ export const Lobby = () => {
         {!room && <NotesContainer />}
         {!room && <LobbyLoader />}
         {room && <CounterAnimation onEnd={go_to_date} />}
-        <MyVideoInLobby
-          setLocalStream={setLocalStream}
-          handle_no_permissions={handle_no_permissions}
-        />
+        {!is_suspended() && (
+          <MyVideoInLobby
+            setLocalStream={setLocalStream}
+            handle_no_permissions={handle_no_permissions}
+          />
+        )}
 
         {!room && (
           <div className="back-btn-from-lobby-to-home flex-center">

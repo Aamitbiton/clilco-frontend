@@ -24,6 +24,18 @@ export async function send_contact_form(contact_form_details) {
     return false;
   }
 }
+
+export async function send_report(report_data) {
+  try {
+    const res = (await callAbleFunction("report_user", report_data)).data;
+    console.log({ res });
+    return res;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
 export async function search_for_match() {
   try {
     return (await callAbleFunction("search_for_match")).data;

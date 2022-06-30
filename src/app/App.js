@@ -18,7 +18,7 @@ function App() {
   const appState = useSelector((state) => state.app);
   const navigator = useNavigate();
   useEffect(() => init_app({ navigator }), []);
-  // useRouterGuard();
+  useRouterGuard();
   if (!appState.app_ready) return <AppLoader />;
   return (
     <>

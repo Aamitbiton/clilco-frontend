@@ -101,3 +101,7 @@ export const set_user_is_online = async (isOnline, target) => {
   isOnline && delete data.available;
   await userService.update_user_public(data);
 };
+
+export const send_report = async (report_data) => {
+  return await userService.send_report(report_data);
+};

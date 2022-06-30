@@ -18,10 +18,10 @@ function getBirthdayTime({ day, month, year }) {
   return new Date(year, month - 1, day).getTime();
 }
 
-const today = (time) =>
+const day_month_year = (time) =>
   JSON.stringify(new Date(time).toString().split(" ").slice(0, 3));
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 
-export { years, SECOND, MINUTE, months, days, getBirthdayTime, today };
+export { years, SECOND, MINUTE, months, days, getBirthdayTime, day_month_year };

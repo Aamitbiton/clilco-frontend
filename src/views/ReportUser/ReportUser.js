@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CenterLayout from "../../components/CenterLayout";
 import AppForm from "../../components/Form/AppForm";
 import FormFiled from "../../components/Form/FormFiled";
@@ -9,12 +9,48 @@ import report_scheme from "./report_scheme";
 import defaultStyles from "../../style/defaultStyles";
 import AppStack from "../../components/AppStack";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { send_report } from "../../store/user/userFunctions";
+import { toast } from "react-toastify";
+import AppRoutes from "../../app/AppRoutes";
 
 function ReportUser() {
   const [loading, setIsLoading] = useState(false);
-  const user_state = useSelector((s) => s.user);
-  const handle_submit = (values) => {
-    console.log(values + user_state.user.public);
+  const reporter_public_data = useSelector((s) => s.user.user.public);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const room = location.state?.report?.room;
+  const caller = room?.caller;
+  const answerer = room?.answerer;
+
+  const [reported_uid, set_reported_uid] = useState(null);
+
+  const handle_reported_uid = () => {
+    const get_reported_uid =
+      reporter_public_data.id === caller?.id ? answerer?.id : caller?.id;
+    set_reported_uid(get_reported_uid);
+  };
+  useEffect(() => {
+    handle_reported_uid();
+    return () => {
+      delete location.state.report;
+    };
+  }, []);
+  const handle_submit = async (report) => {
+    if (!reported_uid) {
+      alert("שגיאה: הדיווח נכשל");
+      navigate(AppRoutes.ROOT);
+    }
+    setIsLoading(true);
+    const report_data = { report, reported_uid, reporter_public_data };
+    const sending_report = await send_report(report_data);
+    if (sending_report) {
+      toast("הדווח נקלט בהצלחה!", { type: "success" });
+    } else {
+      alert("שגיאה: הדיווח נכשל.. פנה לתמיכה.");
+    }
+    setIsLoading(false);
+    navigate(AppRoutes.LOBBY);
   };
   const reasons = ["הופעה שאינה הולמת", "הטרדה", "דיבור אינו מכבד", "אלימות"];
   return (
