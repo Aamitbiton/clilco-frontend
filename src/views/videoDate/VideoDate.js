@@ -184,7 +184,7 @@ export const VideoDate = () => {
         navigate(AppRoutes.AFTER_VIDEO);
       }
       if (!dateEndInMilliseconds)
-        setDateEndInMilliseconds(room.startTime + 1000 * 60 * 10);
+        setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
     } catch (e) {
       console.error(e);
     }
@@ -340,12 +340,13 @@ export const VideoDate = () => {
   };
   const check_if_refresh = (data) => {
     let res = () => {
+      debugger;
       return (
         (data?.current_mute || !data?.current_remote_video) &&
         !check_if_just_entry_to_date() &&
         !remoteStream &&
         !doNotRefresh &&
-        remoteUserPublic?.isOnline
+        (remoteUserPublic?.isOnline || !remoteUserPublic)
       );
     };
     return res();
@@ -374,6 +375,7 @@ export const VideoDate = () => {
         current_mute = value;
         return value;
       });
+
       let data = { current_remote_video, current_mute };
       soft_refresh_page(data);
     }, 4000);
@@ -394,12 +396,11 @@ export const VideoDate = () => {
         {remoteStream && !videoStopped ? (
           <>
             {showTimer && (
-              // <Timer
-              //   endAction={end_video_date}
-              //   style={{ position: "absolute", zIndex: 3, width: "100%" }}
-              //   expiredMilliseconds={room.startTime + 1000 * 60 * 10}
-              // />
-              <LinearLoading />
+              <LinearLoading
+                endAction={() => {
+                  end_video_date();
+                }}
+              />
             )}
             <RemoteVideo remoteStream={remoteStream} />
             <CurrentQuestion questionIndexes={room.questions} volume={volume} />
