@@ -52,7 +52,13 @@ function ReportUser() {
     setIsLoading(false);
     navigate(AppRoutes.LOBBY);
   };
-  const reasons = ["הופעה שאינה הולמת", "הטרדה", "דיבור אינו מכבד", "אלימות"];
+  const reasons = [
+    "הופעה שאינה הולמת",
+    "הטרדה",
+    "דיבור אינו מכבד",
+    "אלימות",
+    "אחר",
+  ];
   return (
     <CenterLayout direction={"column"}>
       <Title title={"דווח על משתמש"} />
