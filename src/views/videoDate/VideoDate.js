@@ -42,6 +42,7 @@ export const VideoDate = () => {
   const [newProcess, setNewProcess] = useState(true);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [remoteUserOnline, setRemoteUserOnline] = useState(false);
   const [toastCounter, setToastCounter] = useState(0);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   let state = useSelector((state) => state);
@@ -159,6 +160,7 @@ export const VideoDate = () => {
     }
   };
   const handle_remote_user_update = async () => {
+    setRemoteUserOnline(remoteUserPublic.isOnline);
     if (!remoteUserPublic || check_if_just_entry_to_date()) return;
     if (!remoteUserPublic.isOnline && remoteStream) {
       await handle_remote_video_stopped();
@@ -360,7 +362,7 @@ export const VideoDate = () => {
         (data?.current_mute || !data?.current_remote_video) &&
         !check_if_just_entry_to_date() &&
         !data.current_do_Not_Refresh &&
-        (remoteUserPublic?.isOnline || !remoteUserPublic)
+        !data.current_remote_user_online
       );
     };
     return res();
@@ -382,6 +384,7 @@ export const VideoDate = () => {
       let current_remote_video;
       let current_mute;
       let current_do_Not_Refresh;
+      let current_remote_user_online;
       setRemoteStream((value) => {
         current_remote_video = value;
         return value;
@@ -394,8 +397,17 @@ export const VideoDate = () => {
         current_do_Not_Refresh = value;
         return value;
       });
+      setRemoteUserOnline((value) => {
+        current_remote_user_online = value;
+        return value;
+      });
 
-      let data = { current_remote_video, current_mute, current_do_Not_Refresh };
+      let data = {
+        current_remote_video,
+        current_mute,
+        current_do_Not_Refresh,
+        current_remote_user_online,
+      };
       soft_refresh_page(data);
     }, 4000);
     return () => {
