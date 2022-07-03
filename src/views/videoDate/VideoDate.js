@@ -425,7 +425,7 @@ export const VideoDate = () => {
 
         {remoteStream && !videoStopped ? (
           <>
-            {!showTimer && (
+            {showTimer && (
               <LinearLoading
                 endAction={() => {
                   end_video_date();
