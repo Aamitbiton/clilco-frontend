@@ -22,7 +22,7 @@ const TIPS = [
   "להתמקד לחלוטין במי שמולך, ולא בעצמך",
   "להתמקד בשאלות רק בדברים טובים ומשמחים",
   "הומור שווה המון ובדייט ראשון שווה פי מיליון",
-  `הזמן המוערך שלך לדייט הוא ${Math.floor(Math.random() * 8)} דקות`
+  `הזמן המוערך שלך לדייט הוא ${Math.floor(Math.random() * 8)} דקות`,
 ];
 
 const get_random_tip = () => {
@@ -32,12 +32,12 @@ const get_random_tip = () => {
 };
 
 export const reject_date = () => ({
-  title: "בגלל ריבוי משתמשים כרגע הדייט שלך נדחה",
+  title: "בגלל עומס גדול של ממתינים לדייט",
   icon: require("../../../../assets/video_assets/icons/icon_notice.png"),
   content: [
-    message("באפשרותך להמתין או לצאת ואנחנו ניידע אותך בהתרעה להיכנס."),
+    message("באפשרותך להמתין או לצאת ואנחנו ניידע אותך בהתראה להיכנס."),
     message("חשוב ביותר:", true),
-    message("מרגע ההודעה רצוי להיכנס מיד כדי לא להפסיד את תורך."),
+    message("מרגע ההתראה רצוי להיכנס מיד כדי לא להפסיד את תורך."),
   ],
 });
 
@@ -62,8 +62,6 @@ const date_tips = (random) => {
     content: [message(get_random_tip())],
   };
 };
-
-
 
 function message(message, highlighted = false) {
   return { message, highlighted };
