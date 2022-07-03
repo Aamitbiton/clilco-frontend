@@ -12,7 +12,6 @@ export const Timer = ({ expiredMilliseconds, style, endAction }) => {
     return digit > 9 ? digit : "0" + digit;
   };
   const timeArray = [
-    { time: fix_format(days), title: "ימים" },
     { time: fix_format(hours), title: "שעות" },
     { time: fix_format(minutes), title: "דקות" },
     { time: fix_format(seconds), title: "שניות" },
@@ -21,8 +20,10 @@ export const Timer = ({ expiredMilliseconds, style, endAction }) => {
     <div className="container  flex-center ltr" style={style}>
       {timeArray.map((stamp, index) => (
         <div className={"column text-center timer-container"}>
-          <b className="timer-text"> {stamp.time}</b>
-          <b className={"timer-title"}> {stamp.title}</b>
+          <b className="timer-text">
+            {" "}
+            {stamp.time} {index === 2 ? "" : ":"}{" "}
+          </b>
         </div>
       ))}
     </div>
