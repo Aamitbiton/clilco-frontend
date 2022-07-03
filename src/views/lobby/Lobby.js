@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./lobby.scss";
 import { watch_room, search_for_match } from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
@@ -17,12 +17,17 @@ import { SECOND, day_month_year } from "../../utils/dates";
 import NotesContainer from "./components/notes/NotesContainer";
 import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
+import AppModal from "../../components/AppModal";
+import Title from "../../components/title/title";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
-  const isMobile = useSelector((state) => state.app.isMobile);
+  const its_date_time = useSelector(
+    (state) => state.video.speed_date_time.its_dating_time
+  );
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const reject_suspended_user = () => {
@@ -64,6 +69,13 @@ export const Lobby = () => {
   //       console.log(document.visibilityState);
   //     });
   // };
+  const handle_not_dating_time = () => {
+    if (its_date_time || user.public.testUser) return;
+    setModalVisible(true);
+    setTimeout(() => {
+      handle_back_btn();
+    }, 5000);
+  };
 
   const go_to_date = () => {
     navigate(AppRoutes.VIDEO_DATE);
@@ -101,6 +113,7 @@ export const Lobby = () => {
     }
   };
   useEffect(init_page, []);
+  useEffect(handle_not_dating_time, [its_date_time]);
 
   return (
     <>
@@ -135,6 +148,14 @@ export const Lobby = () => {
           </div>
         )}
       </div>
+      <AppModal modalVisible={modalVisible} lockBackdrop={true}>
+        <Title
+          fontSize={"20px"}
+          textAlign={"center"}
+          color={"white"}
+          title={"הדייטים הסתיימו! נתראה מחר ב21:00"}
+        />
+      </AppModal>
     </>
   );
 };

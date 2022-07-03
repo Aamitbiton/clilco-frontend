@@ -22,7 +22,7 @@ function Note({ note }) {
       </section>
       {title && (
         <Text
-          color={"primary"}
+          color={"white"}
           sx={{ fontWeight: 600, letterSpacing: 1.4 }}
           align={"center"}
         >
@@ -30,7 +30,13 @@ function Note({ note }) {
         </Text>
       )}
       {content.map((row, index) => (
-        <Text key={index} align={"center"} fontSize={'18px'} fontWeight={'bold'} color={row.highlighted && "primary"}>
+        <Text
+          key={index}
+          align={"center"}
+          fontSize={"22px"}
+          fontWeight={"bold"}
+          color={"primary"}
+        >
           {row.message}
         </Text>
       ))}
