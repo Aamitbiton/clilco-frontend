@@ -5,8 +5,15 @@ import Menu from "../Menu/Menu";
 import defaultStyles from "../../../../style/defaultStyles";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "../../../../app/AppRoutes";
+import Title from "../../../../components/title/title";
 
 export const Header = () => {
+  const styles = {
+    position: "absolute",
+    right: "5px",
+    lineHeight: "0px",
+    margin: "0px",
+  };
   const { header } = defaultStyles;
   const navigator = useNavigate();
   return (
@@ -18,6 +25,9 @@ export const Header = () => {
         alt="header"
         src={logo_header}
       />
+      <div style={styles}>
+        <Title fontSize={"18px"} color={"white"} title={"בהרצה"} />
+      </div>
       <Menu />
     </div>
   );
