@@ -4,13 +4,21 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles({
   root: {
-    width: "100%",
+    width: "80%",
+    position: "absolute",
+    zIndex: "1000",
+    top: "50%",
+    left: "10%",
   },
   barColorPrimary: {
     color: "#0ae5c0",
   },
   colorPrimary: {
     color: "#0ae5c0",
+  },
+  text: {
+    display: "flex",
+    justifyContent: "center",
   },
 });
 
@@ -44,6 +52,7 @@ export const LinearLoading = ({ endAction }) => {
         variant="determinate"
         value={progress}
       />
+      <b className={classes.text}>זמן לסיום והחלטה</b>
     </div>
   );
 };
