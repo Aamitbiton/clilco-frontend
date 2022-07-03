@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Text from "../../../../components/Text";
 import { useTheme } from "@mui/material";
 import "./Note.scss";
+import path from "../../../../assets/sounds/Countdown - Sound Effect.mp3";
 function Note({ note }) {
   const { title, content, icon } = note;
   const { palette } = useTheme();
@@ -15,6 +16,12 @@ function Note({ note }) {
       right: 20,
     },
   };
+  useEffect(() => {
+    if (note.sound) {
+      let audio = new Audio(note.sound);
+      audio.play();
+    }
+  }, []);
   return (
     <article className={"note-container"} style={style.container}>
       <section className={"note-icon-container"}>

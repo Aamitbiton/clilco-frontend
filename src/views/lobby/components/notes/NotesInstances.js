@@ -53,6 +53,7 @@ const date_rules = () => ({
     message("בסוף כל דייט, הצלבת טלפונים תתאפשר רק אם שני הצדדים חפצו בכך."),
     message("בהצלחה!", true),
   ],
+  sound: require("../../../../assets/sounds/beforeDate.mp3"),
 });
 
 const date_tips = (random) => {
