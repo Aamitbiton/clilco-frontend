@@ -69,7 +69,7 @@ export const Lobby = () => {
   // };
   const handle_not_dating_time = () => {
     debugger;
-    if (speed_date_time.its_dating_time || user.testUser) return;
+    if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
     setTimeout(() => {
       handle_back_btn();
