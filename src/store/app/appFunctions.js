@@ -1,6 +1,7 @@
 import actionsCreator from "../actionsCreator";
 import { watch_auth_changes } from "../auth/authFunctions";
 import { get_next_speed_date_time } from "../video/videoFunctions";
+import LogRocket from "logrocket";
 import {
   set_user_token_to_rn,
   startReactNativeHandle,
@@ -11,6 +12,7 @@ import { init_i18next } from "../../i18next";
 const { getState, dispatch } = store;
 
 export const init_app = async ({ navigator }) => {
+  LogRocket.init("ebcmlh/clilco");
   await watch_auth_changes(async () => {
     const { translate, lng } = await init_i18next();
     await actionsCreator("GLOBAL_HOOKS", { navigator, translate });
