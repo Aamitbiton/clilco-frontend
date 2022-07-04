@@ -53,7 +53,7 @@ function ReportUser() {
     navigate(AppRoutes.LOBBY);
   };
   const reasons = [
-    "הופעה שאינה הולמת",
+    "התנהגות שאינה הולמת",
     "הטרדה",
     "דיבור אינו מכבד",
     "אלימות",

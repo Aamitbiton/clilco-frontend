@@ -16,6 +16,12 @@ export async function get_all_users(lastDoc) {
   );
 }
 
+export async function watch_start_date(callback) {
+  await firestore.watchDoc("dates_listeners/start_date", (doc) =>
+    callback(doc)
+  );
+}
+
 export async function get_user_public(id) {
   return await firestore.getDocument(constants.dbPaths.singleUser.public(id));
 }

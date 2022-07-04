@@ -1,6 +1,9 @@
 import actionsCreator from "../actionsCreator";
 import { watch_auth_changes } from "../auth/authFunctions";
-import { get_next_speed_date_time } from "../video/videoFunctions";
+import {
+  get_next_speed_date_time,
+  watch_start_date,
+} from "../video/videoFunctions";
 import {
   set_user_token_to_rn,
   startReactNativeHandle,
@@ -21,6 +24,7 @@ export const init_app = async ({ navigator }) => {
   await get_next_speed_date_time();
   const isMobile = window.innerWidth < 450;
   await actionsCreator(APP_CONSTANTS.SET_IS_MOBILE, isMobile);
+  await watch_start_date();
 };
 
 export const create_snackBar = async ({ message, action }) => {

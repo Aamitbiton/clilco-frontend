@@ -13,6 +13,10 @@ export async function watch_room(handle_room) {
   });
 }
 
+export async function watch_start_date(callback) {
+  return await dbLayer.watch_start_date(callback);
+}
+
 export async function watch_remote_user(remote_user_id, handle_remote_user) {
   return await dbLayer.watch_user({
     id: remote_user_id,

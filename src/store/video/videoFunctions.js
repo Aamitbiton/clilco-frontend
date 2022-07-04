@@ -15,6 +15,19 @@ export const watch_room = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM_UNSUBSCRIBES, unsubscribes);
 };
 
+export const watch_start_date = async () => {
+  const unsubscribe = await videoService.watch_start_date(({ start_date }) => {
+    const video_state = getState().video;
+    const date_started_in_client = video_state.date_started;
+    dispatch({ type: VIDEO_CONSTANTS.SET_DATE_STARTED, payload: true });
+    if (date_started_in_client && !start_date) {
+      console.log({ date_started_in_client, start_date });
+      console.log("do change");
+      dispatch({ type: VIDEO_CONSTANTS.SET_DATE_STARTED, payload: start_date });
+    }
+  });
+};
+
 export const watch_remote_user = async (remoteUserId) => {
   const unsubscribes = await videoService.watch_remote_user(
     remoteUserId,
