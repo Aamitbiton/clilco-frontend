@@ -17,13 +17,11 @@ export const watch_room = async () => {
 
 export const watch_start_date = async () => {
   const unsubscribe = await videoService.watch_start_date(({ start_date }) => {
-    const video_state = getState().video;
-    const date_started_in_client = video_state.date_started;
-    dispatch({ type: VIDEO_CONSTANTS.SET_DATE_STARTED, payload: true });
-    if (date_started_in_client && !start_date) {
-      console.log({ date_started_in_client, start_date });
-      console.log("do change");
-      dispatch({ type: VIDEO_CONSTANTS.SET_DATE_STARTED, payload: start_date });
+    const speed_date_time = { ...getState().video.speed_date_time };
+    console.log({ speed_date_time });
+    const its_dating_time = speed_date_time.its_dating_time;
+    if (its_dating_time && !start_date) {
+      get_next_speed_date_time();
     }
   });
 };
@@ -112,8 +110,8 @@ export const get_next_speed_date_time = async () => {
   if (check_if_after_date_time()) tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow = new Date(tomorrow).setMinutes("00");
   tomorrow = new Date(tomorrow).setSeconds("00");
-  const start = new Date(tomorrow).setHours("21"); // todo: 19
-  const end = new Date(tomorrow).setHours("22");
+  const start = new Date(tomorrow).setHours("13"); // todo: 19
+  const end = new Date(tomorrow).setHours("14");
   const its_dating_time = await check_if_is_date_time(start, end);
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
     start,

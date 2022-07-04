@@ -25,9 +25,7 @@ export const Lobby = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
-  const its_date_time = useSelector(
-    (state) => state.video.speed_date_time.its_dating_time
-  );
+  const speed_date_time = useSelector((state) => state.video.speed_date_time);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const reject_suspended_user = () => {
@@ -70,7 +68,8 @@ export const Lobby = () => {
   //     });
   // };
   const handle_not_dating_time = () => {
-    if (its_date_time || user.public.testUser) return;
+    debugger;
+    if (speed_date_time.its_dating_time) return;
     setModalVisible(true);
     setTimeout(() => {
       handle_back_btn();
@@ -113,7 +112,7 @@ export const Lobby = () => {
     }
   };
   useEffect(init_page, []);
-  useEffect(handle_not_dating_time, [its_date_time]);
+  useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
 
   return (
     <>

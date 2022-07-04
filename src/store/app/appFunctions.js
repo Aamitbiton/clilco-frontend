@@ -22,6 +22,7 @@ export const init_app = async ({ navigator }) => {
     if (window.rn_app) await startReactNativeHandle();
   });
   await get_next_speed_date_time();
+  console.log(getState().video);
   const isMobile = window.innerWidth < 450;
   await actionsCreator(APP_CONSTANTS.SET_IS_MOBILE, isMobile);
   await watch_start_date();
