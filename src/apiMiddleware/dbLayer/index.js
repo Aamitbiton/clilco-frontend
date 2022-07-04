@@ -67,6 +67,8 @@ export async function get_all_calls({ id, lastDocs }) {
   const wheres_caller = [
     { key: "caller.id", operator: "==", value: id },
     { key: "caller.phone", operator: "!=", value: null },
+    { key: "caller.positive", operator: "==", value: true },
+    { key: "answerer.positive", operator: "==", value: true },
   ];
   const caller_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
@@ -78,6 +80,8 @@ export async function get_all_calls({ id, lastDocs }) {
   const wheres_answerer = [
     { key: "answerer.id", operator: "==", value: id },
     { key: "answerer.phone", operator: "!=", value: null },
+    { key: "caller.positive", operator: "==", value: true },
+    { key: "answerer.positive", operator: "==", value: true },
   ];
   const answerer_calls = await firestore.getCollection(
     constants.dbPaths.rooms,
