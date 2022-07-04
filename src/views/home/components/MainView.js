@@ -15,7 +15,15 @@ function MainView(props) {
   return (
     <CenterLayout direction={"column"}>
       <Title textAlign={"center"} title={"חווית ספיד דייט חכם"} />
-      {start_date_visible() ? (
+      <Title
+        mt={0}
+        mb={0}
+        fontSize={"20px"}
+        color={"white"}
+        textAlign={"center"}
+        title={"כל יום בין 21:00 ל 22:00"}
+      />
+      {start_date_visible() || videoState.speed_date_time.its_dating_time ? (
         <StartDate navigate={navigate} />
       ) : (
         <NotDateTime

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Text from "../../../../components/Text";
 import { useTheme } from "@mui/material";
 import "./Note.scss";
+import path from "../../../../assets/sounds/Countdown - Sound Effect.mp3";
 function Note({ note }) {
   const { title, content, icon } = note;
   const { palette } = useTheme();
@@ -15,6 +16,12 @@ function Note({ note }) {
       right: 20,
     },
   };
+  useEffect(() => {
+    if (note.sound) {
+      let audio = new Audio(note.sound);
+      audio.play();
+    }
+  }, []);
   return (
     <article className={"note-container"} style={style.container}>
       <section className={"note-icon-container"}>
@@ -22,7 +29,7 @@ function Note({ note }) {
       </section>
       {title && (
         <Text
-          color={"primary"}
+          color={"white"}
           sx={{ fontWeight: 600, letterSpacing: 1.4 }}
           align={"center"}
         >
@@ -30,7 +37,13 @@ function Note({ note }) {
         </Text>
       )}
       {content.map((row, index) => (
-        <Text key={index} align={"center"} fontSize={'18px'} fontWeight={'bold'} color={row.highlighted && "primary"}>
+        <Text
+          key={index}
+          align={"center"}
+          fontSize={"22px"}
+          fontWeight={"bold"}
+          color={"primary"}
+        >
           {row.message}
         </Text>
       ))}

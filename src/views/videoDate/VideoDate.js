@@ -160,7 +160,7 @@ export const VideoDate = () => {
     }
   };
   const handle_remote_user_update = async () => {
-    setRemoteUserOnline(remoteUserPublic.isOnline);
+    setRemoteUserOnline(remoteUserPublic?.isOnline);
     if (!remoteUserPublic || check_if_just_entry_to_date()) return;
     if (!remoteUserPublic.isOnline && remoteStream) {
       await handle_remote_video_stopped();
