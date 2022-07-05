@@ -43,7 +43,7 @@ export const VideoButtons = ({
         </div>
 
         <div>
-          <div className="video-btn" onClick={handle_next_question_btn}>
+          <div className="video-btn" onClick={next_question}>
             <ArrowBackIcon fontSize="large" color="turquoise" />
           </div>
           <div className="icon-text">
