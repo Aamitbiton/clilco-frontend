@@ -16,15 +16,6 @@ export const VideoButtons = ({
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const isMobile = useSelector((s) => s.app.isMobile);
   const [disable, setDisable] = useState(false);
-  const handle_next_question_btn = () => {
-    if (disable) return;
-    setDisable(true);
-    next_question();
-    setTimeout(() => {
-      setDisable(false);
-    }, 1000);
-  };
-
   return (
     <>
       <div
@@ -64,4 +55,13 @@ export const VideoButtons = ({
       </div>
     </>
   );
+
+  const handle_next_question_btn = () => {
+    if (disable) return;
+    setDisable(true);
+    next_question();
+    setTimeout(() => {
+      setDisable(false);
+    }, 1000);
+  };
 };

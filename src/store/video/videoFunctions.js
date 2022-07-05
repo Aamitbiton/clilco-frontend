@@ -110,8 +110,8 @@ export const get_next_speed_date_time = async () => {
   if (check_if_after_date_time()) tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow = new Date(tomorrow).setMinutes("00");
   tomorrow = new Date(tomorrow).setSeconds("00");
-  const start = new Date(tomorrow).setHours("13"); // todo: 19
-  const end = new Date(tomorrow).setHours("14");
+  const start = new Date(tomorrow).setHours("21"); // todo: 19
+  const end = new Date(tomorrow).setHours("22");
   const its_dating_time = await check_if_is_date_time(start, end);
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
     start,
