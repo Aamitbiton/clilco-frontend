@@ -265,7 +265,13 @@ export const NewVideoDate = () => {
         });
         return;
       }
-      if (localReloadCounter < room.reloadCounter) window.location.reload(true);
+      if (room.reloadCounter === 1) {
+        await update_reload_counter_in_room({
+          roomId: room.id,
+          field: "reloadCounter",
+        });
+        window.location.reload(true);
+      }
 
       const myId = user.private.id;
       const { caller, answerer, offer, goToDecision } = room;
