@@ -211,14 +211,6 @@ export const NewVideoDate = () => {
       console.error(e);
     }
   };
-  const make_sure_one_reload_before_start = () => {
-    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
-    localStorage.setItem("video-date-once", "false");
-    if (!wasHereOnce) {
-      localStorage.setItem("video-date-once", "true");
-      window.location.reload(true);
-    }
-  };
   const now = () => new Date().getTime();
 
   /**handler functions*/
@@ -286,7 +278,7 @@ export const NewVideoDate = () => {
           caller.id === myId ? answerer.id : caller.id
         );
       if (goToDecision) {
-        await handle_exit();
+        await end_video_date();
         navigate(AppRoutes.AFTER_VIDEO);
       }
       if (!dateEndInMilliseconds)
