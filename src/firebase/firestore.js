@@ -17,6 +17,7 @@ import {
   getDoc,
   startAfter,
   arrayUnion,
+  increment,
 } from "firebase/firestore";
 
 const db = getFirestore();
@@ -96,6 +97,16 @@ async function remove(path) {
   }
 }
 
+async function incrementField(path, field) {
+  try {
+    await updateDoc(doc(db, path), { [field]: increment(1) });
+    return { success: true };
+  } catch (e) {
+    console.log(e);
+    return { error: e };
+  }
+}
+
 async function watchDoc(path, callBack) {
   try {
     return onSnapshot(doc(db, path), (userDoc) => {
@@ -148,4 +159,5 @@ export default {
   watchColl,
   create_random_id,
   add_to_array,
+  incrementField,
 };

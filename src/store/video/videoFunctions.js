@@ -168,3 +168,7 @@ export const set_its_dating_time = async (payload) => {
 export const update_question_in_room = async ({ questions, roomId }) => {
   await videoService.update_question_in_room({ questions, roomId });
 };
+
+export const update_reload_counter_in_room = async ({ roomId, field }) => {
+  await videoService.update_reload_counter_in_room({ roomId, field });
+};

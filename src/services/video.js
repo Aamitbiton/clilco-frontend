@@ -89,3 +89,7 @@ export async function get_all_calls({ lastDocs }) {
   const id = authService.get_current_user()?.uid;
   return await dbLayer.get_all_calls({ id, lastDocs });
 }
+
+export const update_reload_counter_in_room = async ({ roomId, field }) => {
+  return await dbLayer.incrementField({ roomId, field });
+};
