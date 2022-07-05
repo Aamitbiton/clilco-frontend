@@ -16,12 +16,12 @@ function Note({ note }) {
       right: 20,
     },
   };
-  useEffect(() => {
-    if (note.sound) {
-      let audio = new Audio(note.sound);
-      audio.play();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (note.sound) {
+  //     let audio = new Audio(note.sound);
+  //     audio.play();
+  //   }
+  // }, []);
   return (
     <article className={"note-container"} style={style.container}>
       <section className={"note-icon-container"}>
