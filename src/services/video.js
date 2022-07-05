@@ -90,6 +90,6 @@ export async function get_all_calls({ lastDocs }) {
   return await dbLayer.get_all_calls({ id, lastDocs });
 }
 
-export const update_reload_counter_in_room = async ({ roomId, field }) => {
-  return await dbLayer.incrementField({ roomId, field });
+export const update_reload_counter_in_room = async ({ roomId, value }) => {
+  return await dbLayer.update_room({ roomId, reload: true });
 };

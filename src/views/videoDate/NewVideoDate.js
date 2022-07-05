@@ -212,6 +212,14 @@ export const NewVideoDate = () => {
     }
   };
   const now = () => new Date().getTime();
+  const check_if_one_reload_before_start = () => {
+    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
+    localStorage.setItem("video-date-once", "false");
+    if (!wasHereOnce) {
+      localStorage.setItem("video-date-once", "true");
+      return true;
+    } else return false;
+  };
 
   /**handler functions*/
   const handle_date_time = () => {
@@ -258,12 +266,24 @@ export const NewVideoDate = () => {
   const handle_room_update = async () => {
     try {
       if (!room) return;
-      if (!room.reloadCounter) {
+      const myId = user.private.id;
+
+      if (
+        !room.reload &&
+        room.answerer.id === myId &&
+        !check_if_one_reload_before_start()
+      ) {
         await update_reload_counter_in_room({
           roomId: room.id,
-          field: "reloadCounter",
+          value: true,
         });
         return;
+      } else if (room.reload) {
+        await update_reload_counter_in_room({
+          roomId: room.id,
+          value: false,
+        });
+        window.location.reload(true);
       }
       if (room.reloadCounter === 1) {
         await update_reload_counter_in_room({
@@ -273,7 +293,6 @@ export const NewVideoDate = () => {
         window.location.reload(true);
       }
 
-      const myId = user.private.id;
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);
