@@ -91,5 +91,5 @@ export async function get_all_calls({ lastDocs }) {
 }
 
 export const update_reload_counter_in_room = async ({ roomId, value }) => {
-  return await dbLayer.update_room({ roomId, reload: value });
+  return await dbLayer.update_room({ roomId, data: { reload: value } });
 };
