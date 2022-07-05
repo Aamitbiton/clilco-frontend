@@ -89,7 +89,7 @@ export const VideoDate = () => {
     setTimeout(() => {
       console.log("do not refresh");
       setDoNotRefresh(false);
-    }, 7000);
+    }, 9000);
   };
   const handler_mute_event = (stream) => {
     try {
@@ -402,7 +402,7 @@ export const VideoDate = () => {
         current_remote_user_online,
       };
       soft_refresh_page(data);
-    }, 4000);
+    }, 10000);
     return () => {
       clearInterval(timer);
     };
