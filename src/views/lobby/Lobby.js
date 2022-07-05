@@ -55,18 +55,7 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-  // const handle_page_leaving = () => {
-  //   ["beforeunload", "popstate"].forEach((eventType) =>
-  //     window.addEventListener(eventType, handle_exit)
-  //   );
-  //   if (isMobile)
-  //     window.addEventListener("visibilitychange", (event) => {
-  //       if (document.visibilityState === "hidden") handle_exit();
-  //       else if (document.visibilityState === "visible")
-  //         handle_user_availability(true);
-  //       console.log(document.visibilityState);
-  //     });
-  // };
+
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);

@@ -24,7 +24,7 @@ function NotesContainer() {
     create_note();
     interval = setInterval(() => {
       create_note();
-    }, SECOND * 40);
+    }, SECOND * 10);
     return () => {
       clearInterval(interval);
     };

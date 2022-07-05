@@ -431,7 +431,7 @@ export const VideoDate = () => {
           </>
         ) : (
           <div className=" full-screen flex-center">
-            {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
+            {remoteUser && <b>{remoteUser.name}ממתין ל</b>}
           </div>
         )}
         <VideoButtons
