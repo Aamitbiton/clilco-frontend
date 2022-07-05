@@ -217,8 +217,8 @@ export const NewVideoDate = () => {
     localStorage.setItem("video-date-once", "false");
     if (!wasHereOnce) {
       localStorage.setItem("video-date-once", "true");
-      return true;
-    } else return false;
+      return false;
+    } else return true;
   };
 
   /**handler functions*/
@@ -285,14 +285,6 @@ export const NewVideoDate = () => {
         });
         window.location.reload(true);
       }
-      if (room.reloadCounter === 1) {
-        await update_reload_counter_in_room({
-          roomId: room.id,
-          field: "reloadCounter",
-        });
-        window.location.reload(true);
-      }
-
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);
