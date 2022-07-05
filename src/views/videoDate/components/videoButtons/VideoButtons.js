@@ -13,6 +13,14 @@ export const VideoButtons = ({
   handle_questions_volume,
   volume,
 }) => {
+  const handle_next_question_btn = () => {
+    if (disable) return;
+    setDisable(true);
+    next_question();
+    setTimeout(() => {
+      setDisable(false);
+    }, 1000);
+  };
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const isMobile = useSelector((s) => s.app.isMobile);
   const [disable, setDisable] = useState(false);
