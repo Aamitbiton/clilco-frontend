@@ -86,15 +86,6 @@ export const VideoDate = () => {
   };
 
   const handle_not_refresh = async () => {
-    // let resetCounter = localStorage.getItem("resetCounter") || 0;
-    // console.log(resetCounter);
-    // if (resetCounter >= 4) {
-    //   localStorage.setItem("resetCounter", 0);
-    //   await end_video_date();
-    //   return;
-    // }
-    // resetCounter++;
-    // localStorage.setItem("resetCounter", resetCounter);
     setTimeout(() => {
       console.log("do not refresh");
       setDoNotRefresh(false);
@@ -347,6 +338,8 @@ export const VideoDate = () => {
   };
   const end_video_date = async () => {
     try {
+      debugger;
+      if (doNotRefresh) return;
       await handle_exit();
       setRemoteStream(null);
       await unsubscribe_room_listener();
