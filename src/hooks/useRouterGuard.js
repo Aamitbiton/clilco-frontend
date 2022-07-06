@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation, useHistory } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AppRoutes from "../app/AppRoutes";
 import { send_message_to_rn } from "../store/reactNative/rnFunctions";
 function useRouterGuard(props) {

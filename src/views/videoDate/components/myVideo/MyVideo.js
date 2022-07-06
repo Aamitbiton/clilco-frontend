@@ -24,6 +24,7 @@ export const MyVideo = ({
         video: true,
         audio: true,
       });
+      console.log({ localStream });
       setLocalStream(localStream);
       videoRef.current.srcObject = localStream;
       // const intervalId = await emotion_detector({
