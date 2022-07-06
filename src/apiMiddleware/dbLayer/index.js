@@ -110,3 +110,15 @@ export async function incrementField({ roomId, field }) {
     field
   );
 }
+
+export async function update_yourself_in_the_room({ roomId, userId }) {
+  let value = {
+    userId: userId,
+    reload: false,
+  };
+  return await firestore.add_to_array({
+    path: constants.dbPaths.singleRoom(roomId),
+    prop: "reloadManagement",
+    val: value,
+  });
+}

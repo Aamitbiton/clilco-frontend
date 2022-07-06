@@ -18,6 +18,7 @@ import {
   watch_remote_user,
   watch_room,
   update_reload_counter_in_room,
+  update_yourself_in_the_room,
 } from "../../store/video/videoFunctions";
 import Peer from "simple-peer";
 import { webRTCConfiguration } from "./videoUtils";
@@ -37,7 +38,6 @@ export const NewVideoDate = () => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const [showTimer, setShowTimer] = useState(null);
-  const [localReloadCounter, setLocalReloadCounter] = useState(0);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [streamBlock, setStreamBlock] = useState(null);
   const [newProcess, setNewProcess] = useState(true);
@@ -54,9 +54,8 @@ export const NewVideoDate = () => {
   /***created*/
   const init_page = async () => {
     try {
-      // make_sure_one_reload_before_start();
-
       if (!room_unsubscribes) await watch_room();
+      await register_yourself_in_the_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -160,6 +159,17 @@ export const NewVideoDate = () => {
   };
 
   /**page managment functions*/
+  const register_yourself_in_the_room = async () => {
+    try {
+      if (room?.reloaded || !room) return;
+      await update_yourself_in_the_room({
+        roomId: room?.id,
+        userId: user?.public.id,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const go_to_next_question_local = async () => {
     try {
       const index = calculate_next_question();
@@ -212,14 +222,6 @@ export const NewVideoDate = () => {
     }
   };
   const now = () => new Date().getTime();
-  const check_if_one_reload_before_start = () => {
-    const wasHereOnce = JSON.parse(localStorage.getItem("video-date-once"));
-    localStorage.setItem("video-date-once", "false");
-    if (!wasHereOnce) {
-      localStorage.setItem("video-date-once", "true");
-      return false;
-    } else return true;
-  };
 
   /**handler functions*/
   const handle_date_time = () => {
@@ -267,24 +269,11 @@ export const NewVideoDate = () => {
     try {
       if (!room) return;
       const myId = user.private.id;
-
-      if (
-        !room.reload &&
-        room.answerer.id === myId &&
-        !check_if_one_reload_before_start()
-      ) {
-        await update_reload_counter_in_room({
-          roomId: room.id,
-          value: true,
-        });
-        return;
-      } else if (room.reload) {
-        await update_reload_counter_in_room({
-          roomId: room.id,
-          value: false,
-        });
+      if (room.reload) {
+        //await change my object reload to false
         window.location.reload(true);
       }
+      if (!room.reloaded) return;
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);
