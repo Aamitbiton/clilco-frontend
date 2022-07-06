@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./myVideoInLobby.scss";
+import { useNavigate } from "react-router-dom";
+import AppRoutes from "../../../../app/AppRoutes";
 // import { emotion_detector } from "../../../../store/video/videoFunctions";
 // import EmotionsChart_pie from "../../../../components/charts/emotionsChart/EmotionsChart_pie";
 // import EmotionsChart_inline from "../../../../components/charts/emotionsChart/EmotionsChart_inline";
-
+const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 export const MyVideoInLobby = ({
   dateStarted,
   setLocalStream,
   handle_no_permissions,
 }) => {
+  const navigate = useNavigate();
   const [emotions, setEmotions] = useState({
     angry: 0,
     happy: 0,
@@ -20,10 +23,21 @@ export const MyVideoInLobby = ({
   const videoRef = useRef();
   const init_my_video = async () => {
     try {
-      const localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
+      const localStream = await navigator.mediaDevices
+        .getUserMedia({
+          video: true,
+          audio: true,
+        })
+        .catch((e) => {
+          if (e.message === WRTC_PERMISSION_DENIED_MESSAGE) {
+            console.log("permission: ", true);
+            alert(
+              "משתמש יקר, אין לך הרשאות למצלמה. אנא אשר את ההרשאות למצלמה."
+            );
+            navigate(AppRoutes.ROOT);
+          }
+        });
+      console.log({ localStream });
       setLocalStream(localStream);
       videoRef.current.srcObject = localStream;
       // const intervalId = await emotion_detector({
