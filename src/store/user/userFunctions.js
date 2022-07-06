@@ -18,12 +18,13 @@ const { getState, dispatch } = store;
 
 export const watch_user = async () => {
   const privateCallBack = async (user) => {
-    if (user) {
+    if (user?.id) {
       LogRocket.identify(user.id, {
         email: user.email,
         phone: user.phone,
       });
     }
+
     await actionsCreator(USER_CONSTANTS.SET_USER_PRIVATE, user);
     await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
   };
