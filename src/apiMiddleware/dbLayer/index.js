@@ -111,14 +111,25 @@ export async function incrementField({ roomId, field }) {
   );
 }
 
-export async function update_yourself_in_the_room({ roomId, userId }) {
+export async function update_yourself_in_the_room({
+  roomId,
+  userId,
+  reloaded,
+}) {
   let value = {
     userId: userId,
     reload: false,
   };
-  return await firestore.add_to_array({
+  let res = [];
+  res[0] = await firestore.add_to_array({
     path: constants.dbPaths.singleRoom(roomId),
     prop: "reloadManagement",
     val: value,
   });
+  res[1] = reloaded
+    ? await firestore.update(constants.dbPaths.singleRoom(roomId), {
+        reloaded: true,
+      })
+    : true;
+  return res[0] && res[1];
 }

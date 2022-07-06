@@ -43,6 +43,7 @@ export const NewVideoDate = () => {
   const [newProcess, setNewProcess] = useState(true);
   const [startedTimer, setStartedTimer] = useState(false);
   const [mute, setMute] = useState(true);
+  const [waitingForRefresh, setWaitingForRefresh] = useState(false);
 
   let state = useSelector((state) => state);
   let room = state.video.room;
@@ -55,7 +56,7 @@ export const NewVideoDate = () => {
   const init_page = async () => {
     try {
       if (!room_unsubscribes) await watch_room();
-      await register_yourself_in_the_room();
+      await register_yourself_in_the_room(false);
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -159,12 +160,13 @@ export const NewVideoDate = () => {
   };
 
   /**page managment functions*/
-  const register_yourself_in_the_room = async () => {
+  const register_yourself_in_the_room = async (reloaded) => {
     try {
       if (room?.reloaded || !room) return;
       await update_yourself_in_the_room({
         roomId: room?.id,
         userId: user?.public.id,
+        reloaded: reloaded,
       });
     } catch (e) {
       console.error(e);
@@ -267,13 +269,9 @@ export const NewVideoDate = () => {
   };
   const handle_room_update = async () => {
     try {
-      if (!room) return;
+      if (!room || !room?.reloaded || waitingForRefresh) return;
       const myId = user.private.id;
-      if (room.reload) {
-        await register_yourself_in_the_room();
-        window.location.reload(true);
-      }
-      if (!room.reloaded) return;
+
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);
@@ -293,6 +291,18 @@ export const NewVideoDate = () => {
       console.error(e);
     }
   };
+  const handle_refresh_room_update = async () => {
+    if (!room) return;
+    const myId = user.private.id;
+    if (room.reloadManagement && !room.reloaded) {
+      let myUser = room.reloadManagement.filter((user) => user.userId === myId);
+      if (myUser[0]?.reload) {
+        setWaitingForRefresh(true);
+        await register_yourself_in_the_room(true);
+        window.location.reload(true);
+      }
+    }
+  };
 
   useEffect(() => {
     init_page();
@@ -301,6 +311,7 @@ export const NewVideoDate = () => {
     };
   }, []);
   useEffect(handle_room_update, [room]);
+  useEffect(handle_refresh_room_update, [room?.reloadManagement]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
 
   return (

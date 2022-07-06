@@ -93,6 +93,14 @@ export async function get_all_calls({ lastDocs }) {
 export const update_reload_counter_in_room = async ({ roomId, value }) => {
   return await dbLayer.update_room({ roomId, data: { reload: value } });
 };
-export const update_yourself_in_the_room = async ({ roomId, userId }) => {
-  return await dbLayer.update_yourself_in_the_room({ roomId, userId });
+export const update_yourself_in_the_room = async ({
+  roomId,
+  userId,
+  reloaded,
+}) => {
+  return await dbLayer.update_yourself_in_the_room({
+    roomId,
+    userId,
+    reloaded,
+  });
 };
