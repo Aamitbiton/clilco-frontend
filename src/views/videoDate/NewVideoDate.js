@@ -270,7 +270,7 @@ export const NewVideoDate = () => {
       if (!room) return;
       const myId = user.private.id;
       if (room.reload) {
-        //await change my object reload to false
+        await register_yourself_in_the_room();
         window.location.reload(true);
       }
       if (!room.reloaded) return;
