@@ -76,6 +76,7 @@ export const Lobby = () => {
   };
 
   const go_to_date = () => {
+    if (!room) return;
     navigate(AppRoutes.VIDEO_DATE);
   };
   const handle_no_permissions = async () => {
@@ -112,13 +113,13 @@ export const Lobby = () => {
   };
   useEffect(init_page, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
+  useEffect(go_to_date, [room]);
 
   return (
     <>
       <div className="full-screen">
         {!room && <NotesContainer />}
         {!room && <LobbyLoader />}
-        {room && <CounterAnimation onEnd={go_to_date} />}
         {!is_suspended() && (
           <MyVideoInLobby
             setLocalStream={setLocalStream}

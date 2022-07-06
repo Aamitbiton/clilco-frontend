@@ -29,6 +29,8 @@ import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { question_texts } from "./components/questions/question_texts";
 import { useNavigate } from "react-router-dom";
 import { infoLog } from "../../utils/logs";
+import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
+import AppLoader from "../../components/AppLoader/AppLoader";
 
 export const NewVideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -44,6 +46,7 @@ export const NewVideoDate = () => {
   const [startedTimer, setStartedTimer] = useState(false);
   const [mute, setMute] = useState(true);
   const [waitingForRefresh, setWaitingForRefresh] = useState(false);
+  const [counterAnimation, setCounterAnimation] = useState(false);
 
   let state = useSelector((state) => state);
   let room = state.video.room;
@@ -270,6 +273,7 @@ export const NewVideoDate = () => {
   const handle_room_update = async () => {
     try {
       if (!room || !room?.reloaded || waitingForRefresh) return;
+      if (!room.answer && !room.offer) setCounterAnimation(true);
       const myId = user.private.id;
 
       const { caller, answerer, offer, goToDecision } = room;
@@ -316,38 +320,48 @@ export const NewVideoDate = () => {
 
   return (
     <>
-      <div className="full-screen" data_cy="video-date-page">
-        <MyVideo
-          dateStarted={remoteStream}
-          setLocalStream={setLocalStream}
-          handle_no_permissions={handle_no_permissions}
-        />
+      {!room?.reloaded ? (
+        <AppLoader />
+      ) : (
+        <div className="full-screen" data_cy="video-date-page">
+          {counterAnimation && (
+            <CounterAnimation onEnd={() => setCounterAnimation(false)} />
+          )}
+          <MyVideo
+            dateStarted={remoteStream}
+            setLocalStream={setLocalStream}
+            handle_no_permissions={handle_no_permissions}
+          />
 
-        {remoteStream ? (
-          <>
-            {showTimer && (
-              <LinearLoading
-                endAction={() => {
-                  end_video_date();
-                }}
+          {remoteStream ? (
+            <>
+              {showTimer && (
+                <LinearLoading
+                  endAction={() => {
+                    end_video_date();
+                  }}
+                />
+              )}
+              <RemoteVideo remoteStream={remoteStream} />
+              <CurrentQuestion
+                questionIndexes={room.questions}
+                volume={volume}
               />
-            )}
-            <RemoteVideo remoteStream={remoteStream} />
-            <CurrentQuestion questionIndexes={room.questions} volume={volume} />
-          </>
-        ) : (
-          <div className=" full-screen flex-center">
-            {/*{remoteUser && <OtherUserPlaceHolder user={remoteUser} />}*/}
-            no remote video
-          </div>
-        )}
-        <VideoButtons
-          end_video_date={end_video_date}
-          next_question={go_to_next_question_local}
-          handle_questions_volume={handle_questions_volume}
-          volume={volume * 100}
-        />
-      </div>
+            </>
+          ) : (
+            <div className=" full-screen flex-center">
+              {/*{remoteUser && <OtherUserPlaceHolder user={remoteUser} />}*/}
+              no remote video
+            </div>
+          )}
+          <VideoButtons
+            end_video_date={end_video_date}
+            next_question={go_to_next_question_local}
+            handle_questions_volume={handle_questions_volume}
+            volume={volume * 100}
+          />
+        </div>
+      )}
     </>
   );
 };
