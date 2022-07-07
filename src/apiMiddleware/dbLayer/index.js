@@ -120,16 +120,17 @@ export async function update_yourself_in_the_room({
     userId: userId,
     reload: false,
   };
-  let res = [];
-  res[0] = await firestore.add_to_array({
+  await firestore.add_to_array({
     path: constants.dbPaths.singleRoom(roomId),
     prop: "reloadManagement",
     val: value,
   });
-  res[1] = reloaded
-    ? await firestore.update(constants.dbPaths.singleRoom(roomId), {
-        reloaded: true,
-      })
-    : true;
-  return res[0] && res[1];
+  if (reloaded.update)
+    await update_reloaded_in_the_room({ roomId, value: reloaded.value });
+}
+
+export async function update_reloaded_in_the_room({ roomId, value }) {
+  await firestore.update(constants.dbPaths.singleRoom(roomId), {
+    reloaded: value,
+  });
 }

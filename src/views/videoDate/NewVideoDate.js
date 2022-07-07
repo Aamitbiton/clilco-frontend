@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { infoLog } from "../../utils/logs";
 import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 import AppLoader from "../../components/AppLoader/AppLoader";
+import * as videoService from "../../services/video";
 
 export const NewVideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -59,7 +60,7 @@ export const NewVideoDate = () => {
   const init_page = async () => {
     try {
       if (!room_unsubscribes) await watch_room();
-      await register_yourself_in_the_room(false);
+      await register_yourself_in_the_room({ update: false, value: null });
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -146,14 +147,14 @@ export const NewVideoDate = () => {
 
         if (track.kind === "video") {
           track.addEventListener("mute", (e) => {
-            infoLog("mute detected");
-            e.stopImmediatePropagation();
             setMute(true);
+            e.stopImmediatePropagation();
+            infoLog("mute detected");
           });
           track.addEventListener("unmute", (e) => {
+            setMute(false);
             e.stopImmediatePropagation();
             infoLog("unmute detected");
-            setMute(false);
           });
         }
       });
@@ -161,8 +162,26 @@ export const NewVideoDate = () => {
       console.error(e);
     }
   };
+  const handle_counter_animation_end = () => {
+    setCounterAnimation(false);
+    let currentMute = get_current_value_from_state("Mute");
+    if (currentMute && !remoteStream) {
+      console.log("want to refresh");
+      // register_yourself_in_the_room({ update: true, value: false });
+    }
+  };
 
   /**page managment functions*/
+  const get_current_value_from_state = (stateName) => {
+    let current_value;
+    let string = `set${stateName}`;
+    console.log(string);
+    eval(string)((value) => {
+      current_value = value;
+      return value;
+    });
+    return current_value;
+  };
   const register_yourself_in_the_room = async (reloaded) => {
     try {
       if (room?.reloaded || !room) return;
@@ -216,7 +235,6 @@ export const NewVideoDate = () => {
   };
   const end_video_date = async () => {
     try {
-      // if (doNotRefresh) return;
       await handle_exit();
       setRemoteStream(null);
       await unsubscribe_room_listener();
@@ -225,6 +243,10 @@ export const NewVideoDate = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+  const returnToLobby = async () => {
+    if (room) await videoService.end_date({ roomId: room.id });
+    navigate(AppRoutes.LOBBY);
   };
   const now = () => new Date().getTime();
 
@@ -259,7 +281,7 @@ export const NewVideoDate = () => {
     setVolume(val / 100);
   };
   const handle_no_permissions = async () => {
-    await toast("חסרות הרשאות למצלמה", { type: "error" });
+    // await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const handle_exit = async (e) => {
     if (e) e.stopImmediatePropagation();
@@ -302,7 +324,7 @@ export const NewVideoDate = () => {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
       if (myUser[0]?.reload) {
         setWaitingForRefresh(true);
-        await register_yourself_in_the_room(true);
+        await register_yourself_in_the_room({ update: true, value: true });
         window.location.reload(true);
       }
     }
@@ -320,13 +342,19 @@ export const NewVideoDate = () => {
 
   return (
     <>
-      {!room?.reloaded ? (
-        <AppLoader />
+      {counterAnimation && (
+        <CounterAnimation onEnd={() => handle_counter_animation_end()} />
+      )}
+      {!room?.reloaded || !room || waitingForRefresh ? (
+        <AppLoader
+          props={{
+            text: "אתה מועבר לדייט, אנא המתן...",
+            timeOut: 8000,
+            goBack: returnToLobby,
+          }}
+        />
       ) : (
         <div className="full-screen" data_cy="video-date-page">
-          {counterAnimation && (
-            <CounterAnimation onEnd={() => setCounterAnimation(false)} />
-          )}
           <MyVideo
             dateStarted={remoteStream}
             setLocalStream={setLocalStream}

@@ -81,7 +81,7 @@ export const Lobby = () => {
   };
   const handle_no_permissions = async () => {
     if (is_suspended()) return;
-    await toast("חסרות הרשאות למצלמה", { type: "error" });
+    // await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const stop_my_video = () => {
     try {
