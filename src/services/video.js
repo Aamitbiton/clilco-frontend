@@ -103,3 +103,9 @@ export const update_yourself_in_the_room = async ({ roomId, userId }) => {
 export const update_reloaded_in_room = async ({ roomId, value }) => {
   return await dbLayer.update_reloaded_in_the_room({ roomId, value });
 };
+export const update_call_answer = async ({ roomId, value }) => {
+  return await dbLayer.update_room({
+    roomId: roomId,
+    data: { callAnswer: value },
+  });
+};

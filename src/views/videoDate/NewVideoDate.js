@@ -20,6 +20,7 @@ import {
   update_reload_counter_in_room,
   update_yourself_in_the_room,
   update_reloaded_in_room,
+  update_call_answer,
 } from "../../store/video/videoFunctions";
 import Peer from "simple-peer";
 import { webRTCConfiguration } from "./videoUtils";
@@ -165,24 +166,37 @@ export const NewVideoDate = () => {
       console.error(e);
     }
   };
-  const handle_counter_animation_end = () => {
+  const handle_counter_animation_end = async () => {
     setCounterAnimation(false);
     const myId = user.private.id;
-    setTimeout(() => {
+    setTimeout(async () => {
       let currentMute = get_current_value_from_state("Mute");
       if (currentMute && !remoteStream && room.caller.id === myId) {
         console.log("want to refresh");
+        await set_call_answer(false);
+
         run_update_reloaded_in_room(false);
+      } else {
+        await set_call_answer(true);
       }
     }, 10000);
   };
 
   /**page managment functions*/
+  const set_call_answer = async (value) => {
+    if (!room) return;
+    await update_call_answer({ roomId: room.id, value: value });
+  };
   const increment_refresh_time = async () => {
     let current = JSON.parse(localStorage.getItem("refreshCounter"));
     console.log(current);
-    if (!current) {
-      localStorage.setItem("refreshCounter", JSON.stringify(1));
+    if (current === 4) {
+      await end_video_date();
+    } else {
+      let value = current ? current + 1 : 1;
+      localStorage.setItem("refreshCounter", JSON.stringify(value));
+    }
+    if (!current || current === 0) {
     } else if (current === 4) {
       await end_video_date();
     } else {
@@ -349,7 +363,6 @@ export const NewVideoDate = () => {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
       if (myUser[0]?.reload) {
         setWaitingForRefresh(true);
-        //need to be reloaded true
         await run_update_reloaded_in_room(true);
         window.location.reload(true);
       }

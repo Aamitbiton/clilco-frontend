@@ -176,7 +176,9 @@ export const update_reload_counter_in_room = async ({ roomId, value }) => {
 export const update_yourself_in_the_room = async ({ roomId, userId }) => {
   await videoService.update_yourself_in_the_room({ roomId, userId });
 };
-
+export const update_call_answer = async ({ roomId, value }) => {
+  await videoService.update_call_answer({ roomId, value });
+};
 export const update_reloaded_in_room = async ({ roomId, value }) => {
   await videoService.update_reloaded_in_room({ roomId, value });
 };
