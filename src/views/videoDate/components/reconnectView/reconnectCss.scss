@@ -1,0 +1,23 @@
+.reconnect-container{
+  z-index: 1000;
+  animation: flicker 1.5s ease infinite;
+
+
+}
+.reconnect-text{
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -33,6 +33,7 @@ import { infoLog } from "../../utils/logs";
 import CounterAnimation from "../../components/animations/counterAnimation/CounterAnimation";
 import AppLoader from "../../components/AppLoader/AppLoader";
 import * as videoService from "../../services/video";
+import { ReconnectView } from "./components/reconnectView/ReconnectView";
 
 export const NewVideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -62,6 +63,7 @@ export const NewVideoDate = () => {
     try {
       if (!room_unsubscribes) await watch_room();
       await register_yourself_in_the_room();
+      await increment_refresh_time();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -172,10 +174,16 @@ export const NewVideoDate = () => {
         console.log("want to refresh");
         run_update_reloaded_in_room(false);
       }
-    }, 3000);
+    }, 10000);
   };
 
   /**page managment functions*/
+  const increment_refresh_time = async () => {
+    let current = JSON.parse(localStorage.getItem("refreshCounter"));
+    if (!current) {
+      localStorage.setItem("refreshCounter", JSON.stringify(1));
+    } else if (current === 3) await end_video_date();
+  };
   const get_current_value_from_state = (stateName) => {
     let current_value;
     let string = `set${stateName}`;
@@ -391,8 +399,7 @@ export const NewVideoDate = () => {
             </>
           ) : (
             <div className=" full-screen flex-center">
-              {/*{remoteUser && <OtherUserPlaceHolder user={remoteUser} />}*/}
-              no remote video
+              <ReconnectView />
             </div>
           )}
           <VideoButtons
