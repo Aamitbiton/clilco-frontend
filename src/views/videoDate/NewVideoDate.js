@@ -173,8 +173,6 @@ export const NewVideoDate = () => {
       let currentMute = get_current_value_from_state("Mute");
       if (currentMute && !remoteStream && room.caller.id === myId) {
         console.log("want to refresh");
-        await set_call_answer(false);
-
         run_update_reloaded_in_room(false);
       } else {
         await set_call_answer(true);
