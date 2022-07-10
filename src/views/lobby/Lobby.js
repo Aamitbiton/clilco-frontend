@@ -28,6 +28,7 @@ export const Lobby = () => {
   const speed_date_time = useSelector((state) => state.video.speed_date_time);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
+
   const reject_suspended_user = () => {
     if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
@@ -35,7 +36,6 @@ export const Lobby = () => {
       return true;
     }
   };
-
   const is_suspended = () => {
     const suspended = user.private.suspended;
     if (!suspended) return;
@@ -43,7 +43,6 @@ export const Lobby = () => {
       day_month_year(new Date()) === day_month_year(suspended.slice(-1)[0])
     );
   };
-
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
@@ -55,18 +54,6 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-  // const handle_page_leaving = () => {
-  //   ["beforeunload", "popstate"].forEach((eventType) =>
-  //     window.addEventListener(eventType, handle_exit)
-  //   );
-  //   if (isMobile)
-  //     window.addEventListener("visibilitychange", (event) => {
-  //       if (document.visibilityState === "hidden") handle_exit();
-  //       else if (document.visibilityState === "visible")
-  //         handle_user_availability(true);
-  //       console.log(document.visibilityState);
-  //     });
-  // };
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
@@ -74,7 +61,6 @@ export const Lobby = () => {
       handle_back_btn();
     }, 5000);
   };
-
   const go_to_date = () => {
     if (!room) return;
     navigate(AppRoutes.VIDEO_DATE);

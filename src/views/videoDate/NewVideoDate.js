@@ -19,6 +19,7 @@ import {
   watch_room,
   update_reload_counter_in_room,
   update_yourself_in_the_room,
+  update_reloaded_in_room,
 } from "../../store/video/videoFunctions";
 import Peer from "simple-peer";
 import { webRTCConfiguration } from "./videoUtils";
@@ -60,7 +61,7 @@ export const NewVideoDate = () => {
   const init_page = async () => {
     try {
       if (!room_unsubscribes) await watch_room();
-      await register_yourself_in_the_room({ update: false, value: null });
+      await register_yourself_in_the_room();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -182,17 +183,23 @@ export const NewVideoDate = () => {
     });
     return current_value;
   };
-  const register_yourself_in_the_room = async (reloaded) => {
+  const register_yourself_in_the_room = async () => {
     try {
       if (room?.reloaded || !room) return;
       await update_yourself_in_the_room({
         roomId: room?.id,
         userId: user?.public.id,
-        reloaded: reloaded,
       });
     } catch (e) {
       console.error(e);
     }
+  };
+  const run_update_reloaded_in_room = async (value) => {
+    try {
+      if (!room) return;
+      let roomId = room.id;
+      update_reloaded_in_room({ roomId, value });
+    } catch (e) {}
   };
   const go_to_next_question_local = async () => {
     try {
@@ -324,7 +331,9 @@ export const NewVideoDate = () => {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
       if (myUser[0]?.reload) {
         setWaitingForRefresh(true);
-        await register_yourself_in_the_room({ update: true, value: true });
+        //need to be reloaded true
+        await run_update_reloaded_in_room(true);
+
         window.location.reload(true);
       }
     }

@@ -111,11 +111,7 @@ export async function incrementField({ roomId, field }) {
   );
 }
 
-export async function update_yourself_in_the_room({
-  roomId,
-  userId,
-  reloaded,
-}) {
+export async function update_yourself_in_the_room({ roomId, userId }) {
   let value = {
     userId: userId,
     reload: false,
@@ -125,8 +121,8 @@ export async function update_yourself_in_the_room({
     prop: "reloadManagement",
     val: value,
   });
-  if (reloaded.update)
-    await update_reloaded_in_the_room({ roomId, value: reloaded.value });
+  // if (reloaded.update)
+  //   await update_reloaded_in_the_room({ roomId, value: reloaded.value });
 }
 
 export async function update_reloaded_in_the_room({ roomId, value }) {
