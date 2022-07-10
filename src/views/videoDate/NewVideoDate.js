@@ -165,11 +165,14 @@ export const NewVideoDate = () => {
   };
   const handle_counter_animation_end = () => {
     setCounterAnimation(false);
-    let currentMute = get_current_value_from_state("Mute");
-    if (currentMute && !remoteStream) {
-      console.log("want to refresh");
-      run_update_reloaded_in_room(true);
-    }
+    const myId = user.private.id;
+    setTimeout(() => {
+      let currentMute = get_current_value_from_state("Mute");
+      if (currentMute && !remoteStream && room.caller.id === myId) {
+        console.log("want to refresh");
+        run_update_reloaded_in_room(false);
+      }
+    }, 3000);
   };
 
   /**page managment functions*/
