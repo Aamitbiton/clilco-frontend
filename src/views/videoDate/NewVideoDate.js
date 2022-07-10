@@ -180,9 +180,14 @@ export const NewVideoDate = () => {
   /**page managment functions*/
   const increment_refresh_time = async () => {
     let current = JSON.parse(localStorage.getItem("refreshCounter"));
+    console.log(current);
     if (!current) {
       localStorage.setItem("refreshCounter", JSON.stringify(1));
-    } else if (current === 3) await end_video_date();
+    } else if (current === 4) {
+      await end_video_date();
+    } else {
+      localStorage.setItem("refreshCounter", JSON.stringify(current + 1));
+    }
   };
   const get_current_value_from_state = (stateName) => {
     let current_value;

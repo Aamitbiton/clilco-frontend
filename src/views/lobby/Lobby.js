@@ -81,7 +81,7 @@ export const Lobby = () => {
     if (e.message === WRTC_PERMISSION_DENIED_MESSAGE) {
       console.log("permission: ", true);
       navigate(AppRoutes.ROOT);
-      // await toast("חסרות הרשאות למצלמה. אנא אפשר גישה למצלמה.", {
+      await toast("חסרות הרשאות למצלמה. אנא אפשר גישה למצלמה.", {
         type: "error",
       });
     }
