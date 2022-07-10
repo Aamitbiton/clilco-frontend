@@ -168,7 +168,7 @@ export const NewVideoDate = () => {
     let currentMute = get_current_value_from_state("Mute");
     if (currentMute && !remoteStream) {
       console.log("want to refresh");
-      // register_yourself_in_the_room({ update: true, value: false });
+      run_update_reloaded_in_room(true);
     }
   };
 
