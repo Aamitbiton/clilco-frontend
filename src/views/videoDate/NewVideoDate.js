@@ -253,7 +253,9 @@ export const NewVideoDate = () => {
   };
   const returnToLobby = async () => {
     if (room) await videoService.end_date({ roomId: room.id });
+    console.log("try to close the room and navigate to lobby");
     navigate(AppRoutes.LOBBY);
+    window.location.reload(true);
   };
   const now = () => new Date().getTime();
 
@@ -333,7 +335,6 @@ export const NewVideoDate = () => {
         setWaitingForRefresh(true);
         //need to be reloaded true
         await run_update_reloaded_in_room(true);
-
         window.location.reload(true);
       }
     }
@@ -358,7 +359,7 @@ export const NewVideoDate = () => {
         <AppLoader
           props={{
             text: "אתה מועבר לדייט, אנא המתן...",
-            timeOut: 8000,
+            timeOut: 10000,
             goBack: returnToLobby,
           }}
         />

@@ -8,19 +8,17 @@ function AppLoader({ props }) {
     props = { text: "הדייט מיד ייטען, אנא המתן..." };
   }
 
-  {
-    /*useEffect(() => {*/
-  }
-  //   if (props?.timeOut) {
-  //     const timer = setInterval(() => {
-  //       console.log("want to refresh from loader");
-  //       props.goBack();
-  //     }, props.timeOut);
-  //     return () => {
-  //       clearInterval(timer);
-  //     };
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (props?.timeOut) {
+      const timer = setInterval(() => {
+        console.log("want to refresh from loader");
+        props.goBack();
+      }, props.timeOut);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, []);
 
   return (
     <div className={"full-screen flex-center column"}>

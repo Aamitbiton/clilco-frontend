@@ -49,7 +49,6 @@ export const Lobby = () => {
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
-      // handle_page_leaving();
     } catch (e) {
       console.error(e);
     }
