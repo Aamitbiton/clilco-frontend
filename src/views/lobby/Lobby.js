@@ -19,6 +19,7 @@ import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
+const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 
 export const Lobby = () => {
   const [localStream, setLocalStream] = useState(null);
@@ -53,6 +54,18 @@ export const Lobby = () => {
       console.error(e);
     }
   };
+  // const handle_page_leaving = () => {
+  //   ["beforeunload", "popstate"].forEach((eventType) =>
+  //     window.addEventListener(eventType, handle_exit)
+  //   );
+  //   if (isMobile)
+  //     window.addEventListener("visibilitychange", (event) => {
+  //       if (document.visibilityState === "hidden") handle_exit();
+  //       else if (document.visibilityState === "visible")
+  //         handle_user_availability(true);
+  //       console.log(document.visibilityState);
+  //     });
+  // };
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
@@ -64,9 +77,14 @@ export const Lobby = () => {
     if (!room) return;
     navigate(AppRoutes.VIDEO_DATE);
   };
-  const handle_no_permissions = async () => {
-    if (is_suspended()) return;
-    // await toast("חסרות הרשאות למצלמה", { type: "error" });
+  const handle_no_permissions = async (e) => {
+    if (e.message === WRTC_PERMISSION_DENIED_MESSAGE) {
+      console.log("permission: ", true);
+      navigate(AppRoutes.ROOT);
+      // await toast("חסרות הרשאות למצלמה. אנא אפשר גישה למצלמה.", {
+        type: "error",
+      });
+    }
   };
   const stop_my_video = () => {
     try {

@@ -89,7 +89,7 @@ export const VideoDate = () => {
     setTimeout(() => {
       console.log("do not refresh");
       setDoNotRefresh(false);
-    }, 7000);
+    }, 9000);
   };
   const handler_mute_event = (stream) => {
     try {
@@ -178,6 +178,7 @@ export const VideoDate = () => {
       if (!remote_user_unsubscribes)
         await watch_remote_user(get_remote_user_id());
       const myId = user.private.id;
+      debugger;
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);
@@ -188,7 +189,7 @@ export const VideoDate = () => {
           caller.id === myId ? answerer.id : caller.id
         );
       if (goToDecision) {
-        await handle_exit();
+        await end_video_date();
         navigate(AppRoutes.AFTER_VIDEO);
       }
       if (!dateEndInMilliseconds)
@@ -400,7 +401,7 @@ export const VideoDate = () => {
         current_remote_user_online,
       };
       soft_refresh_page(data);
-    }, 4000);
+    }, 10000);
     return () => {
       clearInterval(timer);
     };
@@ -429,7 +430,7 @@ export const VideoDate = () => {
           </>
         ) : (
           <div className=" full-screen flex-center">
-            {remoteUser && <OtherUserPlaceHolder user={remoteUser} />}
+            {remoteUser && <b>{remoteUser.name}ממתין ל</b>}
           </div>
         )}
         <VideoButtons

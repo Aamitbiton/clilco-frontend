@@ -3,7 +3,6 @@ import "./myVideoInLobby.scss";
 // import { emotion_detector } from "../../../../store/video/videoFunctions";
 // import EmotionsChart_pie from "../../../../components/charts/emotionsChart/EmotionsChart_pie";
 // import EmotionsChart_inline from "../../../../components/charts/emotionsChart/EmotionsChart_inline";
-
 export const MyVideoInLobby = ({
   dateStarted,
   setLocalStream,
@@ -32,7 +31,7 @@ export const MyVideoInLobby = ({
       // });
       // setIntervalId(intervalId);
     } catch (e) {
-      handle_no_permissions();
+      handle_no_permissions(e);
     }
   };
   const handle_emotion_results = ({
