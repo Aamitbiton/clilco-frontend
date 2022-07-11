@@ -47,7 +47,6 @@ export const Lobby = () => {
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
-      await reset_refresh_time();
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
@@ -114,9 +113,6 @@ export const Lobby = () => {
     } catch (e) {
       console.error(e);
     }
-  };
-  const reset_refresh_time = async () => {
-    localStorage.setItem("refreshCounter", JSON.stringify(0));
   };
 
   useEffect(init_page, []);

@@ -52,6 +52,7 @@ export const NewVideoDate = () => {
   const [mute, setMute] = useState(true);
   const [waitingForRefresh, setWaitingForRefresh] = useState(false);
   const [counterAnimation, setCounterAnimation] = useState(false);
+  const [notRunCounterAnimation, setNotRunCounterAnimation] = useState(false);
 
   let state = useSelector((state) => state);
   let room = state.video.room;
@@ -65,7 +66,6 @@ export const NewVideoDate = () => {
     try {
       if (!room_unsubscribes) await watch_room();
       await register_yourself_in_the_room();
-      await increment_refresh_time();
       window.addEventListener("beforeunload", handle_exit);
     } catch (e) {
       console.error(e);
@@ -169,15 +169,14 @@ export const NewVideoDate = () => {
   const handle_counter_animation_end = async () => {
     setCounterAnimation(false);
     const myId = user.private.id;
-    setTimeout(async () => {
-      let currentMute = get_current_value_from_state("Mute");
-      if (currentMute && !remoteStream && room.caller.id === myId) {
-        console.log("want to refresh");
-        run_update_reloaded_in_room(false);
-      } else {
-        await set_call_answer(true);
-      }
-    }, 10000);
+    let currentMute = get_current_value_from_state("Mute");
+    if (currentMute && !remoteStream && room.caller.id === myId) {
+      console.log("want to refresh");
+      setNotRunCounterAnimation(true);
+      await clean_room();
+    } else {
+      await set_call_answer(true);
+    }
   };
 
   /**page managment functions*/
@@ -185,22 +184,7 @@ export const NewVideoDate = () => {
     if (!room) return;
     await update_call_answer({ roomId: room.id, value: value });
   };
-  const increment_refresh_time = async () => {
-    let current = JSON.parse(localStorage.getItem("refreshCounter"));
-    console.log(current);
-    if (current === 4) {
-      await end_video_date();
-    } else {
-      let value = current ? current + 1 : 1;
-      localStorage.setItem("refreshCounter", JSON.stringify(value));
-    }
-    if (!current || current === 0) {
-    } else if (current === 4) {
-      await end_video_date();
-    } else {
-      localStorage.setItem("refreshCounter", JSON.stringify(current + 1));
-    }
-  };
+
   const get_current_value_from_state = (stateName) => {
     let current_value;
     let string = `set${stateName}`;
@@ -332,7 +316,8 @@ export const NewVideoDate = () => {
   const handle_room_update = async () => {
     try {
       if (!room || !room?.reloaded || waitingForRefresh) return;
-      if (!room.answer && !room.offer) setCounterAnimation(true);
+      if (!room.answer && !room.offer && !notRunCounterAnimation)
+        setCounterAnimation(true);
       const myId = user.private.id;
 
       const { caller, answerer, offer, goToDecision } = room;

@@ -52,7 +52,8 @@ export const delete_room_from_state = async () => {
 };
 
 export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
-  debugger;
+  console.log("init", offerOrAnswer?.transceiverRequest?.init);
+
   const { success, error } = await send_offer_or_answer({
     data: { [type]: offerOrAnswer },
     roomId,
@@ -60,7 +61,6 @@ export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
   });
 
   if (error) {
-    debugger;
     console.log(error);
     await clean_room();
   }
