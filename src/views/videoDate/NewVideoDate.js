@@ -177,7 +177,11 @@ export const NewVideoDate = () => {
     }
     setTimeout(() => {
       currentMute = get_current_value_from_state("Mute");
-      if (!currentMute) set_call_answer(true);
+      if (!currentMute) {
+        set_call_answer(true);
+      } else {
+        clean_room();
+      }
     }, 3000);
   };
 
