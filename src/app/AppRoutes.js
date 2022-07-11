@@ -8,6 +8,7 @@ export default Object.freeze({
   AFTER_VIDEO: "/after-video",
   VERIFY_PHONE: "/verify-phone",
   VIDEO_DATE: "/video-date",
+  NEW_VIDEO_DATE: "/new-video-date",
   CONTACT: "/contact",
   REPORT: "/report",
   SETTINGS: "/settings",

@@ -1,3 +1,6 @@
+.counter-animation-container{
+ z-index: 1000;
+}
 .text{
     width: 100px;
     color: white;

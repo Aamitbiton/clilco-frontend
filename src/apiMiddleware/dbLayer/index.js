@@ -103,3 +103,30 @@ export async function update_user_private({ id, data }) {
 export async function update_room({ roomId, data }) {
   return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
 }
+
+export async function incrementField({ roomId, field }) {
+  return await firestore.incrementField(
+    constants.dbPaths.singleRoom(roomId),
+    field
+  );
+}
+
+export async function update_yourself_in_the_room({ roomId, userId }) {
+  let value = {
+    userId: userId,
+    reload: false,
+  };
+  await firestore.add_to_array({
+    path: constants.dbPaths.singleRoom(roomId),
+    prop: "reloadManagement",
+    val: value,
+  });
+  // if (reloaded.update)
+  //   await update_reloaded_in_the_room({ roomId, value: reloaded.value });
+}
+
+export async function update_reloaded_in_the_room({ roomId, value }) {
+  await firestore.update(constants.dbPaths.singleRoom(roomId), {
+    reloaded: value,
+  });
+}

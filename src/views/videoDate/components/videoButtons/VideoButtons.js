@@ -13,9 +13,6 @@ export const VideoButtons = ({
   handle_questions_volume,
   volume,
 }) => {
-  const translate = useSelector((s) => s.app.global_hooks.translate);
-  const isMobile = useSelector((s) => s.app.isMobile);
-  const [disable, setDisable] = useState(false);
   const handle_next_question_btn = () => {
     if (disable) return;
     setDisable(true);
@@ -24,6 +21,10 @@ export const VideoButtons = ({
       setDisable(false);
     }, 1000);
   };
+  const translate = useSelector((s) => s.app.global_hooks.translate);
+  const isMobile = useSelector((s) => s.app.isMobile);
+  const [disable, setDisable] = useState(false);
+
   return (
     <>
       <div
@@ -42,7 +43,7 @@ export const VideoButtons = ({
         </div>
 
         <div>
-          <div className="video-btn" onClick={handle_next_question_btn}>
+          <div className="video-btn" onClick={next_question}>
             <ArrowBackIcon fontSize="large" color="turquoise" />
           </div>
           <div className="icon-text">
@@ -57,6 +58,7 @@ export const VideoButtons = ({
             data_cy="end-video-btn"
           >
             <PhoneDisabledSharpIcon fontSize="large" color="turquoise" />
+            {/*<b>1</b>*/}
           </div>
           <div className="icon-text">{translate("video_page.end-call")}</div>
         </div>

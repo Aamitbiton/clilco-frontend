@@ -199,7 +199,7 @@ export const VideoDate = () => {
     }
   };
   const handle_no_permissions = async () => {
-    await toast("חסרות הרשאות למצלמה", { type: "error" });
+    // await toast("חסרות הרשאות למצלמה", { type: "error" });
   };
   const handle_questions_volume = (val) => {
     setVolume(val / 100);
@@ -338,7 +338,6 @@ export const VideoDate = () => {
   };
   const end_video_date = async () => {
     try {
-      debugger;
       if (doNotRefresh) return;
       await handle_exit();
       setRemoteStream(null);

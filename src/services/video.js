@@ -89,3 +89,23 @@ export async function get_all_calls({ lastDocs }) {
   const id = authService.get_current_user()?.uid;
   return await dbLayer.get_all_calls({ id, lastDocs });
 }
+
+export const update_reload_counter_in_room = async ({ roomId, value }) => {
+  return await dbLayer.update_room({ roomId, data: { reload: value } });
+};
+export const update_yourself_in_the_room = async ({ roomId, userId }) => {
+  return await dbLayer.update_yourself_in_the_room({
+    roomId,
+    userId,
+  });
+};
+
+export const update_reloaded_in_room = async ({ roomId, value }) => {
+  return await dbLayer.update_reloaded_in_the_room({ roomId, value });
+};
+export const update_call_answer = async ({ roomId, value }) => {
+  return await dbLayer.update_room({
+    roomId: roomId,
+    data: { callAnswer: value },
+  });
+};

@@ -29,7 +29,7 @@ function CounterAnimation({ onEnd }) {
     }
   };
   return (
-    <div className={"flex-center full-screen"}>
+    <div className={"counter-animation-container flex-center full-screen"}>
       <h1 id="counter" className="text" />
     </div>
   );
