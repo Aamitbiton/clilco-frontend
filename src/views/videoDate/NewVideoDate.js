@@ -170,13 +170,15 @@ export const NewVideoDate = () => {
     setCounterAnimation(false);
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
-    if (currentMute && !remoteStream && room.caller.id === myId) {
+    if (currentMute && !remoteStream) {
       console.log("want to refresh");
       setNotRunCounterAnimation(true);
-      await clean_room();
-    } else {
-      await set_call_answer(true);
+      if (room.caller.id === myId) await clean_room();
     }
+    setTimeout(() => {
+      currentMute = get_current_value_from_state("Mute");
+      if (!currentMute) set_call_answer(true);
+    }, 3000);
   };
 
   /**page managment functions*/
