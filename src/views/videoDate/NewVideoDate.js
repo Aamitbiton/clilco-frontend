@@ -93,7 +93,6 @@ export const NewVideoDate = () => {
     try {
       console.log("create offer");
       setPeer(init_peer({ type: "offer" }));
-      setConnectionInProgress(true);
     } catch (e) {
       console.error(e);
     }
@@ -102,7 +101,6 @@ export const NewVideoDate = () => {
     try {
       console.log("create answerer");
       setPeer(init_peer({ type: "answer", offer }));
-      setConnectionInProgress(true);
     } catch (e) {
       console.error(e);
     }
@@ -119,7 +117,6 @@ export const NewVideoDate = () => {
   const handle_signal = async (offerOrAnswer) => {
     try {
       console.log("handle signal ");
-
       await add_offer_or_answer({
         offerOrAnswer,
         roomId: room.id,
@@ -131,7 +128,6 @@ export const NewVideoDate = () => {
   };
   const handle_caller = async ({ offer, answer, goToDecision }) => {
     try {
-      if (connectionInProgress) return;
       console.log("handle caller");
 
       if (!offer) await create_offer();
@@ -142,7 +138,6 @@ export const NewVideoDate = () => {
   };
   const handle_answerer = async ({ offer, answer }) => {
     try {
-      if (connectionInProgress) return;
       console.log("handle answerer");
       if (offer && !answer) await create_answer(offer);
     } catch (e) {
