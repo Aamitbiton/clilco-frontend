@@ -51,13 +51,23 @@ export const delete_room_from_state = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, null);
 };
 
-export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
+export const add_offer_or_answer = async (data) => {
+  const { offerOrAnswer, roomId, type } = data;
+  // const res = Object.values(data).filter((val) => !val);
+  // if (res.length) return;
+  console.log(offerOrAnswer.type);
+
   const { success, error } = await send_offer_or_answer({
     data: { [type]: offerOrAnswer },
     roomId,
     type,
   });
-  if (error) await clean_room();
+
+  if (error) {
+    debugger;
+    console.log(error);
+    await clean_room();
+  }
 };
 
 export const clean_room = async () => {

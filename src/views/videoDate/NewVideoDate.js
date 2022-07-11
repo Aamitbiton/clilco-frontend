@@ -43,6 +43,7 @@ export const NewVideoDate = () => {
   );
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [connectionInProgress, setConnectionInProgress] = useState(false);
   const [showTimer, setShowTimer] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [streamBlock, setStreamBlock] = useState(null);
@@ -92,6 +93,7 @@ export const NewVideoDate = () => {
     try {
       console.log("create offer");
       setPeer(init_peer({ type: "offer" }));
+      setConnectionInProgress(true);
     } catch (e) {
       console.error(e);
     }
@@ -100,6 +102,7 @@ export const NewVideoDate = () => {
     try {
       console.log("create answerer");
       setPeer(init_peer({ type: "answer", offer }));
+      setConnectionInProgress(true);
     } catch (e) {
       console.error(e);
     }
@@ -128,6 +131,7 @@ export const NewVideoDate = () => {
   };
   const handle_caller = async ({ offer, answer, goToDecision }) => {
     try {
+      if (connectionInProgress) return;
       console.log("handle caller");
 
       if (!offer) await create_offer();
@@ -138,6 +142,7 @@ export const NewVideoDate = () => {
   };
   const handle_answerer = async ({ offer, answer }) => {
     try {
+      if (connectionInProgress) return;
       console.log("handle answerer");
       if (offer && !answer) await create_answer(offer);
     } catch (e) {
