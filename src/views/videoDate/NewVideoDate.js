@@ -321,7 +321,7 @@ export const NewVideoDate = () => {
   };
   const handle_room_update = async () => {
     try {
-      if (!room || !room?.reloaded || waitingForRefresh) return;
+      if (!room || !room?.reloaded) return;
       if (!room.answer && !room.offer && !notRunCounterAnimation)
         setCounterAnimation(true);
       const myId = user.private.id;
@@ -351,9 +351,8 @@ export const NewVideoDate = () => {
     if (room.reloadManagement && !room.reloaded) {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
       if (myUser[0]?.reload) {
-        setWaitingForRefresh(true);
         await run_update_reloaded_in_room(true);
-        window.location.reload(true);
+        await clean_room();
       }
     }
   };
@@ -373,7 +372,7 @@ export const NewVideoDate = () => {
       {counterAnimation && (
         <CounterAnimation onEnd={() => handle_counter_animation_end()} />
       )}
-      {!room?.reloaded || !room || waitingForRefresh ? (
+      {!room?.reloaded || !room ? (
         <AppLoader
           props={{
             text: "אתה מועבר לדייט, אנא המתן...",
