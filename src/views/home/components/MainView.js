@@ -21,7 +21,7 @@ function MainView(props) {
         fontSize={"20px"}
         color={"white"}
         textAlign={"center"}
-        title={"כל יום בין 21:00 ל 22:00"}
+        title={"כל יום בין 19:00 ל 21:00"}
       />
       {start_date_visible() || videoState.speed_date_time.its_dating_time ? (
         <StartDate navigate={navigate} />
