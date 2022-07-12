@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { LinearLoading } from "./components/linerLoading";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
@@ -43,7 +43,7 @@ export const NewVideoDate = () => {
   );
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
-  const [connectionInProgress, setConnectionInProgress] = useState(false);
+  const [cleanRoomCounter, setCleanRoomCounter] = useState(false);
   const [showTimer, setShowTimer] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [streamBlock, setStreamBlock] = useState(null);
@@ -91,7 +91,6 @@ export const NewVideoDate = () => {
   };
   const create_offer = async () => {
     try {
-      console.log("create offer");
       setPeer(init_peer({ type: "offer" }));
     } catch (e) {
       console.error(e);
@@ -99,7 +98,6 @@ export const NewVideoDate = () => {
   };
   const create_answer = (offer) => {
     try {
-      console.log("create answerer");
       setPeer(init_peer({ type: "answer", offer }));
     } catch (e) {
       console.error(e);
@@ -107,8 +105,6 @@ export const NewVideoDate = () => {
   };
   const signal_answer = (answer) => {
     try {
-      console.log("signal answer");
-      console.log("peer destroyed", peer.destroyed);
       peer?.signal(answer);
     } catch (e) {
       console.error(e);
@@ -116,7 +112,6 @@ export const NewVideoDate = () => {
   };
   const handle_signal = async (offerOrAnswer) => {
     try {
-      console.log("handle signal ");
       await add_offer_or_answer({
         offerOrAnswer,
         roomId: room.id,
@@ -128,8 +123,6 @@ export const NewVideoDate = () => {
   };
   const handle_caller = async ({ offer, answer, goToDecision }) => {
     try {
-      console.log("handle caller");
-
       if (!offer) await create_offer();
       else if (answer && !goToDecision) await signal_answer(answer);
     } catch (e) {
@@ -138,7 +131,6 @@ export const NewVideoDate = () => {
   };
   const handle_answerer = async ({ offer, answer }) => {
     try {
-      console.log("handle answerer");
       if (offer && !answer) await create_answer(offer);
     } catch (e) {
       console.error(e);
@@ -153,12 +145,10 @@ export const NewVideoDate = () => {
           track.addEventListener("mute", (e) => {
             setMute(true);
             e.stopImmediatePropagation();
-            infoLog("mute detected");
           });
           track.addEventListener("unmute", (e) => {
             setMute(false);
             e.stopImmediatePropagation();
-            infoLog("unmute detected");
           });
         }
       });
@@ -171,18 +161,9 @@ export const NewVideoDate = () => {
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
     if (currentMute && !remoteStream) {
-      console.log("want to refresh");
       setNotRunCounterAnimation(true);
       if (room.caller.id === myId) await clean_room();
-    }
-    setTimeout(() => {
-      currentMute = get_current_value_from_state("Mute");
-      if (!currentMute) {
-        set_call_answer(true);
-      } else {
-        clean_room();
-      }
-    }, 3000);
+    } else await set_call_answer(true);
   };
 
   /**page managment functions*/
@@ -194,7 +175,6 @@ export const NewVideoDate = () => {
   const get_current_value_from_state = (stateName) => {
     let current_value;
     let string = `set${stateName}`;
-    console.log(string);
     eval(string)((value) => {
       current_value = value;
       return value;
@@ -356,6 +336,32 @@ export const NewVideoDate = () => {
       }
     }
   };
+  const handle_check_video_state = async () => {
+    if (!room || !room?.reloaded) return;
+    debugger;
+    let res = document.getElementById("remote-stream-id");
+    debugger;
+    console.log("check video state");
+    const myId = user.private.id;
+    let currentMute = get_current_value_from_state("Mute");
+    let currentCleanRoomCounter =
+      get_current_value_from_state("CleanRoomCounter");
+    if (currentMute && !remoteStream) {
+      infoLog("the video not work");
+      setNotRunCounterAnimation(true);
+      if (room.caller.id === myId) {
+        if (currentCleanRoomCounter === 3) {
+          await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
+            type: "warning",
+          });
+          await end_video_date();
+          return;
+        }
+        setCleanRoomCounter(currentCleanRoomCounter + 1);
+        await clean_room();
+      }
+    } else if (!room?.callAnswer) await set_call_answer(true);
+  };
 
   useEffect(() => {
     init_page();
@@ -366,6 +372,15 @@ export const NewVideoDate = () => {
   useEffect(handle_room_update, [room]);
   useEffect(handle_refresh_room_update, [room?.reloadManagement]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
+  useEffect(() => {
+    const timer = setInterval(async () => {
+      console.log("what the fuck is going onnnnn");
+      handle_check_video_state();
+    }, 5000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <>

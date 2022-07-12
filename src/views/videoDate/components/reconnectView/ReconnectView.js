@@ -5,7 +5,7 @@ export const ReconnectView = () => {
   return (
     <div className={"reconnect-container flex-center column"}>
       <img src={img} />
-      <b className={"reconnect-text"}>מחדשים את החיבור...</b>
+      <b className={"reconnect-text"}>זוהה חיבור אינטרנט איטי, אנא המתן...</b>
     </div>
   );
 };

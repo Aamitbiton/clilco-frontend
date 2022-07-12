@@ -52,8 +52,6 @@ export const delete_room_from_state = async () => {
 };
 
 export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
-  console.log("init", offerOrAnswer?.transceiverRequest?.init);
-
   const { success, error } = await send_offer_or_answer({
     data: { [type]: offerOrAnswer },
     roomId,
@@ -69,6 +67,7 @@ export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
 export const clean_room = async () => {
   const room = getState().video.room;
   if (!room) return;
+  console.log("clean room ");
   await videoService.clean_room({ room });
 };
 
