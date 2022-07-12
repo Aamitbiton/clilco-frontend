@@ -307,8 +307,8 @@ export const NewVideoDate = () => {
       const myId = user.private.id;
 
       const { caller, answerer, offer, goToDecision } = room;
-      if (newProcess && offer) await clean_room();
-      setNewProcess(false);
+      // if (newProcess && offer) await clean_room();
+      // setNewProcess(false);
       if (caller.id === myId) await handle_caller(room);
       else if (answerer.id === myId) await handle_answerer(room);
       if (!remoteUser)
@@ -338,9 +338,7 @@ export const NewVideoDate = () => {
   };
   const handle_check_video_state = async () => {
     if (!room || !room?.reloaded) return;
-    debugger;
     let res = document.getElementById("remote-stream-id");
-    debugger;
     console.log("check video state");
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
@@ -374,7 +372,6 @@ export const NewVideoDate = () => {
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(() => {
     const timer = setInterval(async () => {
-      console.log("what the fuck is going onnnnn");
       handle_check_video_state();
     }, 5000);
     return () => {
