@@ -350,8 +350,10 @@ export const NewVideoDate = () => {
     let currentMute = get_current_value_from_state("Mute");
     let currentCleanRoomCounter =
       get_current_value_from_state("CleanRoomCounter");
-    let currentPeer = get_current_value_from_state("Peer");
-    if (currentMute && !remoteStream) {
+    let currentRemoteStream = get_current_value_from_state("RemoteStream");
+    let currentStreamBlock = get_current_value_from_state("StreamBlock");
+
+    if (currentMute && !currentRemoteStream && !currentStreamBlock) {
       infoLog("the video not work");
       setNotRunCounterAnimation(true);
       if (currentCleanRoomCounter === 3) {
