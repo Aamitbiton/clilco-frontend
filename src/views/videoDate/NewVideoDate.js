@@ -81,7 +81,7 @@ export const NewVideoDate = () => {
         trickle: false,
         config: webRTCConfiguration,
       });
-      peer.on("stream", handle_got_stream);
+      peer.on("str eam", handle_got_stream);
       if (offer) peer.signal(offer);
       peer.on("signal", handle_signal);
       return peer;
@@ -112,6 +112,9 @@ export const NewVideoDate = () => {
   };
   const handle_signal = async (offerOrAnswer) => {
     try {
+      if (offerOrAnswer.transceiverRequest) {
+        infoLog(offerOrAnswer?.transceiverRequest.init);
+      }
       await add_offer_or_answer({
         offerOrAnswer,
         roomId: room.id,
@@ -307,8 +310,8 @@ export const NewVideoDate = () => {
       const myId = user.private.id;
 
       const { caller, answerer, offer, goToDecision } = room;
-      // if (newProcess && offer) await clean_room();
-      // setNewProcess(false);
+      if (newProcess && offer) await clean_room();
+      setNewProcess(false);
       if (caller.id === myId) await handle_caller(room);
       else if (answerer.id === myId) await handle_answerer(room);
       if (!remoteUser)
@@ -332,7 +335,7 @@ export const NewVideoDate = () => {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
       if (myUser[0]?.reload) {
         await run_update_reloaded_in_room(true);
-        await clean_room();
+        // if (room.caller.id === myId) await clean_room();
       }
     }
   };
@@ -344,6 +347,7 @@ export const NewVideoDate = () => {
     let currentMute = get_current_value_from_state("Mute");
     let currentCleanRoomCounter =
       get_current_value_from_state("CleanRoomCounter");
+    let currentPeer = get_current_value_from_state("Peer");
     if (currentMute && !remoteStream) {
       infoLog("the video not work");
       setNotRunCounterAnimation(true);
@@ -355,8 +359,10 @@ export const NewVideoDate = () => {
           await end_video_date();
           return;
         }
+        debugger;
         setCleanRoomCounter(currentCleanRoomCounter + 1);
-        await clean_room();
+        if (currentPeer.destroying) document.location.reload(true);
+        else await clean_room();
       }
     } else if (!room?.callAnswer) await set_call_answer(true);
   };
