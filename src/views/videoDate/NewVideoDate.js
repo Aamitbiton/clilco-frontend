@@ -81,7 +81,7 @@ export const NewVideoDate = () => {
         trickle: false,
         config: webRTCConfiguration,
       });
-      peer.on("str eam", handle_got_stream);
+      peer.on("stream", handle_got_stream);
       if (offer) peer.signal(offer);
       peer.on("signal", handle_signal);
       return peer;
@@ -91,6 +91,7 @@ export const NewVideoDate = () => {
   };
   const create_offer = async () => {
     try {
+      console.log("create offer");
       setPeer(init_peer({ type: "offer" }));
     } catch (e) {
       console.error(e);
@@ -98,6 +99,8 @@ export const NewVideoDate = () => {
   };
   const create_answer = (offer) => {
     try {
+      console.log("create answer");
+
       setPeer(init_peer({ type: "answer", offer }));
     } catch (e) {
       console.error(e);
@@ -340,8 +343,8 @@ export const NewVideoDate = () => {
     }
   };
   const handle_check_video_state = async () => {
-    if (!room || !room?.reloaded) return;
-    let res = document.getElementById("remote-stream-id");
+    // if (!room || !room?.reloaded) return;
+    // let res = document.getElementById("remote-stream-id");
     console.log("check video state");
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
@@ -351,19 +354,15 @@ export const NewVideoDate = () => {
     if (currentMute && !remoteStream) {
       infoLog("the video not work");
       setNotRunCounterAnimation(true);
-      if (room.caller.id === myId) {
-        if (currentCleanRoomCounter === 3) {
-          await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
-            type: "warning",
-          });
-          await end_video_date();
-          return;
-        }
-        debugger;
-        setCleanRoomCounter(currentCleanRoomCounter + 1);
-        if (currentPeer.destroying) document.location.reload(true);
-        else await clean_room();
+      if (currentCleanRoomCounter === 3) {
+        await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
+          type: "warning",
+        });
+        await end_video_date();
+        return;
       }
+      setCleanRoomCounter(currentCleanRoomCounter + 1);
+      await clean_room();
     } else if (!room?.callAnswer) await set_call_answer(true);
   };
 
@@ -377,9 +376,7 @@ export const NewVideoDate = () => {
   useEffect(handle_refresh_room_update, [room?.reloadManagement]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(() => {
-    const timer = setInterval(async () => {
-      handle_check_video_state();
-    }, 5000);
+    const timer = setInterval(() => handle_check_video_state(), 5000);
     return () => {
       clearInterval(timer);
     };
