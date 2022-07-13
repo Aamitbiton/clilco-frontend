@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MyVideo } from "./components/myVideo/MyVideo";
 import { LinearLoading } from "./components/linerLoading";
 import { RemoteVideo } from "./components/remoteVideo/RemoteVideo";
@@ -35,6 +35,7 @@ import CounterAnimation from "../../components/animations/counterAnimation/Count
 import AppLoader from "../../components/AppLoader/AppLoader";
 import * as videoService from "../../services/video";
 import { ReconnectView } from "./components/reconnectView/ReconnectView";
+import warning from "react-redux/lib/utils/warning";
 
 export const NewVideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -43,21 +44,20 @@ export const NewVideoDate = () => {
   );
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
-  const [connectionInProgress, setConnectionInProgress] = useState(false);
+  const [cleanRoomCounter, setCleanRoomCounter] = useState(false);
   const [showTimer, setShowTimer] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [streamBlock, setStreamBlock] = useState(null);
-  const [newProcess, setNewProcess] = useState(true);
   const [startedTimer, setStartedTimer] = useState(false);
   const [mute, setMute] = useState(true);
-  const [waitingForRefresh, setWaitingForRefresh] = useState(false);
   const [counterAnimation, setCounterAnimation] = useState(false);
   const [notRunCounterAnimation, setNotRunCounterAnimation] = useState(false);
 
   let state = useSelector((state) => state);
   let room = state.video.room;
+  const roomRef = useRef(room);
+  roomRef.current = room;
   const room_unsubscribes = state.video.room_unsubscribes;
-  const remoteUser = state.video.remote_user;
   const navigate = useNavigate();
   const user = state.user.user;
 
@@ -84,6 +84,13 @@ export const NewVideoDate = () => {
       peer.on("stream", handle_got_stream);
       if (offer) peer.signal(offer);
       peer.on("signal", handle_signal);
+      // peer.on("close", () => {
+      //   infoLog("videoIsClosed");
+      // });
+      // peer.on("signalingStateChange", (state) => {
+      //   // if (state === 'have-local-offer')
+      //   infoLog(state);
+      // });
       return peer;
     } catch (e) {
       console.error(e);
@@ -99,7 +106,8 @@ export const NewVideoDate = () => {
   };
   const create_answer = (offer) => {
     try {
-      console.log("create answerer");
+      console.log("create answer");
+
       setPeer(init_peer({ type: "answer", offer }));
     } catch (e) {
       console.error(e);
@@ -107,16 +115,17 @@ export const NewVideoDate = () => {
   };
   const signal_answer = (answer) => {
     try {
-      console.log("signal answer");
-      console.log("peer destroyed", peer.destroyed);
       peer?.signal(answer);
     } catch (e) {
       console.error(e);
+      debugger;
     }
   };
   const handle_signal = async (offerOrAnswer) => {
     try {
-      console.log("handle signal ");
+      if (offerOrAnswer.transceiverRequest) {
+        infoLog(offerOrAnswer?.transceiverRequest.init);
+      }
       await add_offer_or_answer({
         offerOrAnswer,
         roomId: room.id,
@@ -128,18 +137,19 @@ export const NewVideoDate = () => {
   };
   const handle_caller = async ({ offer, answer, goToDecision }) => {
     try {
-      console.log("handle caller");
-
       if (!offer) await create_offer();
-      else if (answer && !goToDecision) await signal_answer(answer);
+      else if (answer && !goToDecision) {
+        await signal_answer(answer);
+      }
     } catch (e) {
       console.error(e);
     }
   };
   const handle_answerer = async ({ offer, answer }) => {
     try {
-      console.log("handle answerer");
-      if (offer && !answer) await create_answer(offer);
+      if (offer && !answer) {
+        await create_answer(offer);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -153,12 +163,10 @@ export const NewVideoDate = () => {
           track.addEventListener("mute", (e) => {
             setMute(true);
             e.stopImmediatePropagation();
-            infoLog("mute detected");
           });
           track.addEventListener("unmute", (e) => {
             setMute(false);
             e.stopImmediatePropagation();
-            infoLog("unmute detected");
           });
         }
       });
@@ -171,19 +179,17 @@ export const NewVideoDate = () => {
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
     if (currentMute && !remoteStream) {
-      console.log("want to refresh");
-
       setNotRunCounterAnimation(true);
       if (room.caller.id === myId) await clean_room();
-    }
-    setTimeout(() => {
-      currentMute = get_current_value_from_state("Mute");
-      if (!currentMute) {
-        set_call_answer(true);
-      } else {
-        clean_room();
-      }
-    }, 3000);
+    } else await set_call_answer(true);
+  };
+  const handle_questions_and_answer = async () => {
+    try {
+      if (!room || !room?.reloaded) return;
+      const myId = user.private.id;
+      if (room.caller.id === myId) await handle_caller(room);
+      else if (room.answerer.id === myId) await handle_answerer(room);
+    } catch (e) {}
   };
 
   /**page managment functions*/
@@ -191,10 +197,10 @@ export const NewVideoDate = () => {
     if (!room) return;
     await update_call_answer({ roomId: room.id, value: value });
   };
+
   const get_current_value_from_state = (stateName) => {
     let current_value;
     let string = `set${stateName}`;
-    console.log(string);
     eval(string)((value) => {
       current_value = value;
       return value;
@@ -216,7 +222,7 @@ export const NewVideoDate = () => {
     try {
       if (!room) return;
       let roomId = room.id;
-      update_reloaded_in_room({ roomId, value });
+      await update_reloaded_in_room({ roomId, value });
     } catch (e) {}
   };
   const go_to_next_question_local = async () => {
@@ -270,6 +276,7 @@ export const NewVideoDate = () => {
     }
   };
   const returnToLobby = async () => {
+    debugger;
     if (room) await videoService.end_date({ roomId: room.id });
     console.log("try to close the room and navigate to lobby");
     navigate(AppRoutes.LOBBY);
@@ -321,21 +328,11 @@ export const NewVideoDate = () => {
   };
   const handle_room_update = async () => {
     try {
-      if (!room || !room?.reloaded || waitingForRefresh) return;
+      if (!room || !room?.reloaded) return;
       if (!room.answer && !room.offer && !notRunCounterAnimation)
         setCounterAnimation(true);
-      const myId = user.private.id;
 
-      const { caller, answerer, offer, goToDecision } = room;
-      if (newProcess && offer) await clean_room();
-      setNewProcess(false);
-      if (caller.id === myId) await handle_caller(room);
-      else if (answerer.id === myId) await handle_answerer(room);
-      if (!remoteUser)
-        await get_remote_user_data(
-          caller.id === myId ? answerer.id : caller.id
-        );
-      if (goToDecision) {
+      if (room.goToDecision) {
         await end_video_date();
         navigate(AppRoutes.AFTER_VIDEO);
       }
@@ -350,11 +347,37 @@ export const NewVideoDate = () => {
     const myId = user.private.id;
     if (room.reloadManagement && !room.reloaded) {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
-      if (myUser[0]?.reload) {
-        setWaitingForRefresh(true);
+      console.log("my user need to reload", myUser[0]?.reload);
+      if (myUser[0]?.reload && room.caller.id === myId) {
         await run_update_reloaded_in_room(true);
-        window.location.reload(true);
+        await clean_room();
       }
+    }
+  };
+  const handle_check_video_state = async () => {
+    try {
+      if (!roomRef.current?.reloaded && !counterAnimation) return;
+      // let res = document.getElementById("remote-stream-id");
+      console.log("check video state");
+      const myId = user.private.id;
+      let currentMute = get_current_value_from_state("Mute");
+      let currentCleanRoomCounter =
+        get_current_value_from_state("CleanRoomCounter");
+      if (currentMute && !remoteStream) {
+        infoLog("the video not work");
+        setNotRunCounterAnimation(true);
+        if (currentCleanRoomCounter === 3) {
+          await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
+            type: "warning",
+          });
+          await end_video_date();
+          return;
+        }
+        setCleanRoomCounter(currentCleanRoomCounter + 1);
+        if (roomRef.current.caller.id === myId) await clean_room();
+      } else if (!room?.callAnswer) await set_call_answer(true);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -367,13 +390,21 @@ export const NewVideoDate = () => {
   useEffect(handle_room_update, [room]);
   useEffect(handle_refresh_room_update, [room?.reloadManagement]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
+  useEffect(handle_questions_and_answer, [room?.answer || room.offer]);
+
+  useEffect(() => {
+    const timer = setInterval(() => handle_check_video_state(), 5000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <>
       {counterAnimation && (
         <CounterAnimation onEnd={() => handle_counter_animation_end()} />
       )}
-      {!room?.reloaded || !room || waitingForRefresh ? (
+      {!room?.reloaded || !room ? (
         <AppLoader
           props={{
             text: "אתה מועבר לדייט, אנא המתן...",
