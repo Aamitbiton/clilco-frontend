@@ -178,7 +178,6 @@ export const VideoDate = () => {
       if (!remote_user_unsubscribes)
         await watch_remote_user(get_remote_user_id());
       const myId = user.private.id;
-      debugger;
       const { caller, answerer, offer, goToDecision } = room;
       if (newProcess && offer) await clean_room();
       setNewProcess(false);

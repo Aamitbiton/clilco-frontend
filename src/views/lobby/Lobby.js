@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./lobby.scss";
 import { watch_room, search_for_match } from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
@@ -30,7 +30,7 @@ export const Lobby = () => {
   const speed_date_time = useSelector((state) => state.video.speed_date_time);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-  useUserTracking();
+  const location = useLocation();
   const reject_suspended_user = () => {
     if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
@@ -60,13 +60,7 @@ export const Lobby = () => {
   //     window.addEventListener(eventType, handle_exit)
   //   );
   //   if (isMobile)
-  //     window.addEventListener("visibilitychange", (event) => {
-  //       if (document.visibilityState === "hidden") handle_exit();
-  //       else if (document.visibilityState === "visible")
-  //         handle_user_availability(true);
-  //       console.log(document.visibilityState);
-  //     });
-  // };
+
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);

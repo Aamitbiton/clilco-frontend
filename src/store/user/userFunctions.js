@@ -100,11 +100,11 @@ export const send_contact_form = async (contactDetails) => {
   return await userService.send_contact_form(contactDetails);
 };
 
-export const set_user_is_online = async (isOnline, target) => {
+export const set_user_is_online = async (isOnline, available = false) => {
   const data = {
     isOnline,
     lastSeen: new Date().getTime(),
-    available: false,
+    available,
   };
   isOnline && delete data.available;
   await userService.update_user_public(data);
