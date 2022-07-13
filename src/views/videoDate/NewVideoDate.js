@@ -118,7 +118,7 @@ export const NewVideoDate = () => {
       peer?.signal(answer);
     } catch (e) {
       console.error(e);
-      debugger;
+      window.location.reload(true);
     }
   };
   const handle_signal = async (offerOrAnswer) => {
@@ -175,21 +175,28 @@ export const NewVideoDate = () => {
     }
   };
   const handle_counter_animation_end = async () => {
+    infoLog("animation end");
     setCounterAnimation(false);
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
     if (currentMute && !remoteStream) {
-      setNotRunCounterAnimation(true);
       if (room.caller.id === myId) await clean_room();
     } else await set_call_answer(true);
   };
   const handle_questions_and_answer = async () => {
     try {
       if (!room || !room?.reloaded) return;
+      if (!room.answer && !room.offer && !notRunCounterAnimation)
+        setCounterAnimation(true);
+      else {
+        setNotRunCounterAnimation(true);
+      }
       const myId = user.private.id;
       if (room.caller.id === myId) await handle_caller(room);
       else if (room.answerer.id === myId) await handle_answerer(room);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   /**page managment functions*/
@@ -326,18 +333,11 @@ export const NewVideoDate = () => {
       console.error(e);
     }
   };
-  const handle_room_update = async () => {
+  const handle_room_decision_update = async () => {
     try {
-      if (!room || !room?.reloaded) return;
-      if (!room.answer && !room.offer && !notRunCounterAnimation)
-        setCounterAnimation(true);
-
-      if (room.goToDecision) {
-        await end_video_date();
-        navigate(AppRoutes.AFTER_VIDEO);
-      }
-      if (!dateEndInMilliseconds)
-        setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
+      if (!room || !room?.reloaded || !room.goToDecision) return;
+      await end_video_date();
+      navigate(AppRoutes.AFTER_VIDEO);
     } catch (e) {
       console.error(e);
     }
@@ -348,9 +348,9 @@ export const NewVideoDate = () => {
     if (room.reloadManagement && !room.reloaded) {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
       console.log("my user need to reload", myUser[0]?.reload);
-      if (myUser[0]?.reload && room.caller.id === myId) {
+      if (myUser[0]?.reload) {
         await run_update_reloaded_in_room(true);
-        await clean_room();
+        if (room.caller.id === myId) await clean_room();
       }
     }
   };
@@ -365,7 +365,6 @@ export const NewVideoDate = () => {
         get_current_value_from_state("CleanRoomCounter");
       if (currentMute && !remoteStream) {
         infoLog("the video not work");
-        setNotRunCounterAnimation(true);
         if (currentCleanRoomCounter === 3) {
           await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
             type: "warning",
@@ -380,6 +379,10 @@ export const NewVideoDate = () => {
       console.log(e);
     }
   };
+  const handle_room_time_update = async () => {
+    if (dateEndInMilliseconds || !room?.reloaded || !room) return;
+    setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
+  };
 
   useEffect(() => {
     init_page();
@@ -387,11 +390,11 @@ export const NewVideoDate = () => {
       handle_exit();
     };
   }, []);
-  useEffect(handle_room_update, [room]);
+  useEffect(handle_room_decision_update, [room?.goToDecision]);
+  useEffect(handle_room_time_update, [room?.startTime]);
   useEffect(handle_refresh_room_update, [room?.reloadManagement]);
+  useEffect(handle_questions_and_answer, [room?.answer, room?.offer]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
-  useEffect(handle_questions_and_answer, [room?.answer || room.offer]);
-
   useEffect(() => {
     const timer = setInterval(() => handle_check_video_state(), 5000);
     return () => {

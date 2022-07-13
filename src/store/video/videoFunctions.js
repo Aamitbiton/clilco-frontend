@@ -60,7 +60,7 @@ export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
 
   if (error) {
     console.log(error);
-    await clean_room();
+    // await clean_room();
   }
 };
 
