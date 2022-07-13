@@ -19,6 +19,7 @@ import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
+import useUserTracking from "../../hooks/useUserTracking";
 const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 
 export const Lobby = () => {
@@ -29,7 +30,7 @@ export const Lobby = () => {
   const speed_date_time = useSelector((state) => state.video.speed_date_time);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-
+  useUserTracking();
   const reject_suspended_user = () => {
     if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
@@ -115,7 +116,12 @@ export const Lobby = () => {
     }
   };
 
-  useEffect(init_page, []);
+  useEffect(() => {
+    init_page();
+    return () => {
+      handle_exit();
+    };
+  }, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
 
