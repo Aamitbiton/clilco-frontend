@@ -368,11 +368,11 @@ export const NewVideoDate = () => {
           await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
             type: "warning",
           });
+          await set_call_answer(false);
           await end_video_date();
           return;
         }
         setCleanRoomCounter(currentCleanRoomCounter + 1);
-        // if (roomRef.current.caller.id === myId) await clean_room();
       } else if (!room?.callAnswer) await set_call_answer(true);
     } catch (e) {
       console.log(e);
@@ -410,7 +410,7 @@ export const NewVideoDate = () => {
         <AppLoader
           props={{
             text: "אתה מועבר לדייט, אנא המתן...",
-            timeOut: 10000,
+            timeOut: 15000,
             goBack: returnToLobby,
           }}
         />
