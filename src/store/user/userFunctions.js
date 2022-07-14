@@ -2,6 +2,7 @@ import * as firestore from "../../firebase/firestore";
 import USER_CONSTANTS from "./constants";
 import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
+import _ from "lodash";
 import { store } from "../index";
 import APP_CONSTANTS from "../app/constants";
 import { get_all_users } from "../../apiMiddleware/dbLayer";
@@ -86,10 +87,15 @@ export const f_get_all_users = async (already_have_users, tip_top_users) => {
     return await get_tiptop_users();
   }
   let current_last_doc = already_have_users ? getState().user.lastDoc : null;
-  const { docs, lastDoc } = await get_all_users(current_last_doc);
+  const { docs, lastDoc } = await get_all_users(
+    current_last_doc,
+    store.getState().user.user.public
+  );
+  const filter_test_users = docs.filter((user) => !user.testUser);
+  const shuffle_users = _.shuffle(filter_test_users);
   //dispatch lastDoc in the state
   await actionsCreator(USER_CONSTANTS.SET_LAST_DOC, lastDoc);
-  return docs;
+  return shuffle_users;
 };
 
 export const get_user_public_data = async (id) => {
