@@ -19,9 +19,12 @@ import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
+import InternetSpeed from "./components/internetSpeed/InternetSpeed";
 const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 
 export const Lobby = () => {
+  const [run, setRun] = useState(true);
+
   const [localStream, setLocalStream] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
@@ -115,12 +118,19 @@ export const Lobby = () => {
     }
   };
 
-  useEffect(init_page, []);
+  useEffect(() => {
+    init_page();
+    return async () => {
+      await setRun(false);
+      console.log(run);
+    };
+  }, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
 
   return (
     <>
+      {run && <InternetSpeed />}
       <div className="full-screen">
         {!room && <NotesContainer />}
         {!room && <LobbyLoader />}
