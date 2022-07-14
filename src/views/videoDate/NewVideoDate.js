@@ -118,7 +118,7 @@ export const NewVideoDate = () => {
       peer?.signal(answer);
     } catch (e) {
       console.error(e);
-      window.location.reload(true);
+      // window.location.reload(true);
     }
   };
   const handle_signal = async (offerOrAnswer) => {
@@ -204,7 +204,6 @@ export const NewVideoDate = () => {
     if (!room) return;
     await update_call_answer({ roomId: room.id, value: value });
   };
-
   const get_current_value_from_state = (stateName) => {
     let current_value;
     let string = `set${stateName}`;
@@ -373,7 +372,7 @@ export const NewVideoDate = () => {
           return;
         }
         setCleanRoomCounter(currentCleanRoomCounter + 1);
-        if (roomRef.current.caller.id === myId) await clean_room();
+        // if (roomRef.current.caller.id === myId) await clean_room();
       } else if (!room?.callAnswer) await set_call_answer(true);
     } catch (e) {
       console.log(e);
