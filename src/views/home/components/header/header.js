@@ -11,22 +11,26 @@ export const Header = () => {
   const styles = {
     position: "absolute",
     right: "5px",
-    lineHeight: "0px",
-    margin: "0px",
+    top: 0,
   };
   const { header } = defaultStyles;
   const navigator = useNavigate();
   return (
     <div style={{ height: header.HEIGHT }} className={"header-container"}>
-      <img
+      <div
         style={{ cursor: "pointer" }}
+        className="relative"
         onClick={() => navigator(AppRoutes.ROOT)}
-        className={"img"}
-        alt="header"
-        src={logo_header}
-      />
-      <div style={styles}>
-        <Title fontSize={"18px"} color={"white"} title={"בהרצה"} />
+      >
+        <img className={"img"} alt="header" src={logo_header} />
+        <div style={styles}>
+          <Title
+            mt={"40px"}
+            fontSize={"18px"}
+            color={"white"}
+            title={"בהרצה"}
+          />
+        </div>
       </div>
       <Menu />
     </div>
