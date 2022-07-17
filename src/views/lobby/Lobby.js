@@ -19,11 +19,11 @@ import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
-import InternetSpeed from "./components/internetSpeed/InternetSpeed";
+import Test from "./components/internetSpeed/test";
 const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 
 export const Lobby = () => {
-  const [run, setRun] = useState(true);
+  const [internetSpeed, setInternetSpeed] = useState(false);
 
   const [localStream, setLocalStream] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -117,20 +117,23 @@ export const Lobby = () => {
       console.error(e);
     }
   };
+  const handle_internet_speed = () => {
+    if (!internetSpeed) return;
+    console.log("speed change", internetSpeed);
+  };
 
-  useEffect(() => {
-    init_page();
-    return async () => {
-      await setRun(false);
-      console.log(run);
-    };
-  }, []);
+  useEffect(init_page, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
+  useEffect(handle_internet_speed, [internetSpeed]);
 
   return (
     <>
-      {run && <InternetSpeed />}
+      <Test
+        setInternetSpeed={(val) => {
+          setInternetSpeed(val);
+        }}
+      />
       <div className="full-screen">
         {!room && <NotesContainer />}
         {!room && <LobbyLoader />}
