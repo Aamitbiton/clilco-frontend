@@ -1,4 +1,4 @@
-.videos .local {
+.local {
   position: absolute;
   bottom: 40px;
   right: 40px;
@@ -8,10 +8,11 @@
   z-index: 10;
 }
 
-.videos .remote {
+.remote {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  z-index: 1000;
 }

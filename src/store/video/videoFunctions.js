@@ -65,6 +65,8 @@ export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
 };
 
 export const clean_room = async () => {
+  console.log("try clean room ");
+
   const room = getState().video.room;
   if (!room) return;
   console.log("clean room ");
