@@ -21,7 +21,9 @@ import { send_message_to_rn } from "../../store/reactNative/rnFunctions";
 
 export const AfterVideo = () => {
   const translate = useSelector((s) => s.app.global_hooks.translate);
-  const room = useSelector((s) => s.video.room);
+  const state = useSelector((s) => s);
+  const room = state.video.room;
+  const user = state.user.user;
   const navigate = useNavigate();
   const created = async () => {
     if (window.rn_app)
@@ -75,9 +77,11 @@ export const AfterVideo = () => {
             }
           />
         </AppStack>
-        <p onClick={handle_report_btn} className="report">
-          <span>{translate("after_date.report")}</span>
-        </p>
+        {user.public.gender === "female" && (
+          <p onClick={handle_report_btn} className="report">
+            <span>{translate("after_date.report")}</span>
+          </p>
+        )}
       </div>
     </>
   );

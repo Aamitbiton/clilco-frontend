@@ -22,7 +22,7 @@ function useRouterGuard(props) {
     else if (didntFillRegistrationForm()) navigate(REGISTRATION);
     else if (didntUploadImage()) navigate(UPLOAD_IMAGE);
     else if (isAuthRoute()) navigate(ROOT);
-    else return null;
+    else return navigate(UPLOAD_IMAGE);
   };
   const sendLocationToMobile = () => {
     if (window.rn_app) {

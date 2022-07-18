@@ -46,6 +46,7 @@ function LoginWithEmail({ close }) {
     <CenterLayout direction={"column"}>
       <AppLogo />
       <SimpleBottomNavigation
+        navigationState={navigationState}
         state={(state) => {
           setNavigationState(state);
         }}
@@ -57,7 +58,7 @@ function LoginWithEmail({ close }) {
       {/*>*/}
       {/*  <ArrowForwardIcon color={"primary"} />*/}
       {/*</AppIconButton>*/}
-      <Title mt={2} title={"ברוכים הבאים"} />
+      <Title mt={2} title={navigationState === 0 ? "התחברות" : "יצירת חשבון"} />
       <AppForm
         validationSchema={schema}
         onSubmit={async ({ email, password }) => {
@@ -80,7 +81,7 @@ function LoginWithEmail({ close }) {
           />
           <FormFiled
             data_cy="login-password-input"
-            label={navigationState === 0 ? "סיסמא" : "בחר סיסמא"}
+            label={navigationState === 0 ? "סיסמא" : "בחר סיסמא (לפחות 6 תוים)"}
             type={"password"}
             trim={true}
             name={"password"}
