@@ -1,0 +1,17 @@
+.videos .local {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 280px;
+  height: 210px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.videos .remote {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}

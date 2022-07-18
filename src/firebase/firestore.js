@@ -1,23 +1,22 @@
-import { App } from "./app";
 import {
+  addDoc,
+  arrayUnion,
+  collection,
   collectionGroup,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  increment,
+  limit,
   onSnapshot,
   orderBy,
-  deleteDoc,
-  limit,
-  updateDoc,
   query,
-  where,
-  getDocs,
-  collection,
-  doc,
   setDoc,
-  getFirestore,
-  addDoc,
-  getDoc,
   startAfter,
-  arrayUnion,
-  increment,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 
 const db = getFirestore();
@@ -132,6 +131,10 @@ async function watchColl({ path, callBack, wheres = [] }) {
   }
 }
 
+async function getQuery(path) {
+  return await query(collection(db, path));
+}
+
 async function create_random_id(path) {
   try {
     return (await doc(collection(db, path ? path : null))).id;
@@ -160,4 +163,6 @@ export default {
   create_random_id,
   add_to_array,
   incrementField,
+  getQuery,
+  onSnapshot,
 };

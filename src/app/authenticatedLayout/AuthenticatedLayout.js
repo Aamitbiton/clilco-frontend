@@ -8,6 +8,7 @@ import { RegistrationForm } from "../../views/registrationForm/RegistrationForm"
 import { VerifyPhone } from "../../views/verifyPhone/VerifyPhone";
 import { VideoDate } from "../../views/videoDate/VideoDate";
 import { NewVideoDate } from "../../views/videoDate/NewVideoDate";
+import { VideoDate_v3 } from "../../views/videoDate/VideoDate_v3";
 import { Lobby } from "../../views/lobby/Lobby";
 import { Missed } from "../../views/missed/Missed";
 import { CallsHistory } from "../../views/callsHistory/CallsHistory";
@@ -53,7 +54,7 @@ export const AuthenticatedLayout = () => {
           <Route path={PROFILE} element={<Profile />} />
           <Route path={AFTER_VIDEO} element={<AfterVideo />} />
           <Route path={VERIFY_PHONE} element={<VerifyPhone />} />
-          <Route path={VIDEO_DATE} element={<NewVideoDate />} />
+          <Route path={VIDEO_DATE} element={<VideoDate_v3 />} />
           <Route path={CONTACT} element={<Contact />} />
           <Route path={SETTINGS} element={<Settings />} />
           <Route path={CALLS} element={<CallsHistory />} />
