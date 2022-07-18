@@ -1,49 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import AppRoutes from "../../../../app/AppRoutes";
+import React, { useEffect } from "react";
 
-import { ReactInternetSpeedMeter } from "react-internet-meter";
-// import "react-internet-meter/dist/index.css";
-function InternetSpeed() {
-  const [wifiSpeed, setwifiSpeed] = useState();
-  // const [run, setRun] = useState(true);
+const InternetSpeed = ({ setInternetSpeed }) => {
+  const created = () => {
+    let startTime = Date.now();
+    let download = new Image();
+    let imgUrl =
+      "https://upload.wikimedia.org/wikipedia/commons/9/90/Teruel_overview_size_8MB_%2825441803782%29.jpg";
 
-  const navigate = useNavigate();
+    let cacheBuster = "?nnn=" + startTime;
 
-  const notify_internet_and_go_back_to_home_page = (speed) => {
-    // debugger;
-    // setRun(false);
-    toast("אינטרנט חלש לא ניתן להתחבר לשיחה", { type: "error" });
+    download.src = imgUrl + cacheBuster;
 
-    navigate(AppRoutes.ROOT);
+    download.onload = function () {
+      showResults(Date.now(), startTime);
+    };
   };
-  // useEffect(() => {
-  //   return () => setRun(false);
-  // }, []);
-  return (
-    <>
-      {/* {run && ( */}
-      <ReactInternetSpeedMeter
-        txtSubHeading={"Internet is too slow " + wifiSpeed + " MB/s"}
-        outputType="modal"
-        customClassName={null}
-        txtMainHeading="Opps..."
-        pingInterval={3000} // milliseconds
-        thresholdUnit="megabyte" // "byte" , "kilobyte", "megabyte"
-        threshold={8}
-        imageUrl="https://www.sammobile.com/wp-content/uploads/2019/03/keyguard_default_wallpaper_silver.png"
-        downloadSize="2550420" //bytes
-        callbackFunctionOnNetworkDown={(speed) => {
-          console.log(`Internet speed is down ${speed}`);
-          if (speed < 5) notify_internet_and_go_back_to_home_page(speed);
-        }}
-        callbackFunctionOnNetworkTest={(speed) => {
-          setwifiSpeed(speed);
-        }}
-      />
-      {/*  )} */}
-    </>
-  );
-}
+  const showResults = (endTime, startTime) => {
+    const downloadSize = 8000000; //bytes
+    var duration = (endTime - startTime) / 1000;
+    var bitsLoaded = downloadSize * 8;
+    var speedBps = (bitsLoaded / duration).toFixed(2);
+    var speedKbps = (speedBps / 1024).toFixed(2);
+    var finalSpeed = (speedKbps / 1024).toFixed(2);
+    setInternetSpeed(finalSpeed);
+  };
+  useEffect(() => {
+    created();
+    const timer = setInterval(() => {
+      created();
+    }, 5000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+  return <></>;
+};
 export default InternetSpeed;

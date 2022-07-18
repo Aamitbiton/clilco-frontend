@@ -19,7 +19,7 @@ import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
-import Test from "./components/internetSpeed/test";
+import InternetSpeed from "./components/internetSpeed/InternetSpeed";
 const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 
 export const Lobby = () => {
@@ -117,8 +117,12 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-  const handle_internet_speed = () => {
+  const handle_internet_speed = async () => {
     if (!internetSpeed) return;
+    else if (internetSpeed < 5) {
+      toast("אינטרנט חלש לא ניתן להתחבר לשיחה", { type: "error" });
+      await handle_back_btn();
+    }
     console.log("speed change", internetSpeed);
   };
 
@@ -129,7 +133,7 @@ export const Lobby = () => {
 
   return (
     <>
-      <Test
+      <InternetSpeed
         setInternetSpeed={(val) => {
           setInternetSpeed(val);
         }}
