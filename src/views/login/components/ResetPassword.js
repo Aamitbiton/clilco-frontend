@@ -20,7 +20,7 @@ function ResetPassword(props) {
     if (res)
       setResultMessage({
         error: false,
-        message: " שחזור הסיסמא נשלח בהצלחה!",
+        message: " לינק לשחזור הסיסמא מחכה לכם במייל!",
       });
     else setResultMessage({ error: true, message: "המייל אינו קיים" });
     setIsLoading(false);

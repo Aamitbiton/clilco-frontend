@@ -16,6 +16,7 @@ import AppLogo from "../../../components/AppLogo";
 
 import Privacy from "../../privacy/Privacy";
 import SimpleBottomNavigation from "./bottomNavigation";
+import RestoreEmail from "./RestoreEmail";
 function LoginWithEmail({ close }) {
   const { inputs } = defaultStyles;
   const handleLoginWithEmail = async ({ email, password }) => {
@@ -38,6 +39,7 @@ function LoginWithEmail({ close }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [privacyVisible, setPrivacyVisible] = useState(false);
   const [navigationState, setNavigationState] = useState(0);
+  const [restore_email_visible, set_restore_email_visible] = useState(false);
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().min(6).max(20).required(),
@@ -87,15 +89,6 @@ function LoginWithEmail({ close }) {
             name={"password"}
             width={inputs.STATIC_WIDTH}
           />
-
-          {navigationState === 0 && (
-            <Text
-              onClick={() => setModalVisible(true)}
-              className={"pointer privacy"}
-            >
-              שכחתי סיסמא
-            </Text>
-          )}
           <SubmitButton
             data_cy="login-with-email_login-btn"
             width={inputs.STATIC_WIDTH}
@@ -106,6 +99,22 @@ function LoginWithEmail({ close }) {
           <AppStack margin={1}>
             <Text color={"error"}>{errorMessage}</Text>
           </AppStack>
+          {navigationState === 0 && (
+            <AppStack justifyContent={"center"}>
+              <Text
+                onClick={() => setModalVisible(true)}
+                className={"pointer privacy"}
+              >
+                שכחת סיסמא?
+              </Text>
+              <Text
+                onClick={() => set_restore_email_visible(true)}
+                className={"pointer privacy"}
+              >
+                שכחת אימייל?
+              </Text>
+            </AppStack>
+          )}
         </AppStack>
       </AppForm>
       <Text>
@@ -124,6 +133,14 @@ function LoginWithEmail({ close }) {
           setModalVisible={(val) => setModalVisible(val)}
         >
           <ResetPassword />
+        </AppModal>
+      )}
+      {restore_email_visible && (
+        <AppModal
+          modalVisible={restore_email_visible}
+          setModalVisible={(val) => set_restore_email_visible(val)}
+        >
+          <RestoreEmail />
         </AppModal>
       )}
     </CenterLayout>

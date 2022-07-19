@@ -16,6 +16,10 @@ export async function remove_account() {
   await auth.deleteAccount();
 }
 
+export async function restore_email_by_phone(phone) {
+  return await auth.restore_email_by_phone(phone);
+}
+
 export function get_current_user() {
   return auth.get_current_user();
 }

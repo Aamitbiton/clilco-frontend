@@ -70,3 +70,7 @@ export const remove_account = async () => {
   await authService.remove_account();
   await authService.signOut();
 };
+
+export const restore_email_by_phone = async (phone) => {
+  return await authService.restore_email_by_phone(phone);
+};
