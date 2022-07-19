@@ -99,13 +99,13 @@ export const VideoDate_v3 = () => {
   const handler_answer = async () => {
     if (!room.offer) return;
     console.log("im the answer");
-    await start_answer_event();
     setAnswerGiven(true);
+    await start_answer_event();
     const offerDescription = room.offer;
-    pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
+    await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
 
     const answerDescription = await pc.createAnswer();
-    pc.setLocalDescription(answerDescription);
+    await pc.setLocalDescription(answerDescription);
 
     const answer = {
       type: answerDescription.type,
@@ -140,7 +140,7 @@ export const VideoDate_v3 = () => {
     ) {
       setRemoteDescriptionRun(true);
       const answerDescription = new RTCSessionDescription(room.answer);
-      pc.setRemoteDescription(answerDescription);
+      await pc.setRemoteDescription(answerDescription);
     }
   };
   const updateAnswerCandidates = async (candidates) => {
