@@ -15,6 +15,7 @@ import AppRoutes from "../../app/AppRoutes";
 export const VideoDate_v3 = () => {
   const [answerGiven, setAnswerGiven] = useState(false);
   const [offerGiven, setOfferGiven] = useState(false);
+  const [remoteDescriptionRun, setRemoteDescriptionRun] = useState(false);
   let state = useSelector((state) => state);
   const user = state.user.user;
   let room = state.video.room;
@@ -51,23 +52,15 @@ export const VideoDate_v3 = () => {
   };
   const peer_connection_events = async () => {
     pc.onconnectionstatechange = (event) => {
+      console.log("pc state:", pc.signalingState);
+
       if (pc.connectionState === "disconnected") {
         console.log("detected disconnect");
       }
     };
     const im_the_caller = roomRef.current?.caller.id === user.private.id;
-    console.log("need to be true", im_the_caller);
-    if (im_the_caller) {
-      if (!roomRef.current.offer && !offerGiven && localRef.current)
-        await handler_caller();
-      pc.onicecandidate = (event) => {
-        event.candidate && updateOfferCandidates(event.candidate.toJSON());
-      };
-    } else {
-      pc.onicecandidate = (event) => {
-        event.candidate && updateAnswerCandidates(event.candidate.toJSON());
-      };
-    }
+    if (!roomRef.current.offer && !offerGiven && im_the_caller)
+      await handler_caller();
   };
   const setupSources = async () => {
     const localStream = await navigator.mediaDevices.getUserMedia({
@@ -90,9 +83,10 @@ export const VideoDate_v3 = () => {
   };
   const handler_caller = async () => {
     console.log("im the caller");
+    await start_caller_event();
     setOfferGiven(true);
     const offerDescription = await pc.createOffer();
-    await pc.setLocalDescription(offerDescription);
+    pc.setLocalDescription(offerDescription);
     const offer = {
       sdp: offerDescription.sdp,
       type: offerDescription.type,
@@ -102,53 +96,26 @@ export const VideoDate_v3 = () => {
       roomId: room.id,
       type: "offer",
     });
-
-    let q = await firestore.getQuery(
-      `clilco_rooms/${room.id}/answerCandidates`
-    );
-    firestore.onSnapshot(q, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          let data = change.doc.data();
-          const candidate = new RTCIceCandidate(data.answerCandidates);
-          pc.addIceCandidate(candidate);
-          console.log("add answerCandidates to pc");
-        }
-      });
-    });
   };
   const handler_answer = async () => {
     if (!room.offer) return;
     console.log("im the answer");
+    await start_answer_event();
     setAnswerGiven(true);
-
     const offerDescription = room.offer;
-    await pc.setRemoteDescription(
-      await new RTCSessionDescription(offerDescription)
-    );
+    pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
 
     const answerDescription = await pc.createAnswer();
-    await pc.setLocalDescription(answerDescription);
+    pc.setLocalDescription(answerDescription);
 
     const answer = {
       type: answerDescription.type,
       sdp: answerDescription.sdp,
     };
-
     await add_offer_or_answer({
       offerOrAnswer: answer,
       roomId: room.id,
       type: "answer",
-    });
-    let q = await firestore.getQuery(`clilco_rooms/${room.id}/offerCandidates`);
-    firestore.onSnapshot(q, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          let data = change.doc.data();
-          pc.addIceCandidate(new RTCIceCandidate(data.offerCandidates));
-          console.log("add offerCandidates to pc");
-        }
-      });
     });
   };
   const handle_questions_or_answer = async () => {
@@ -157,6 +124,7 @@ export const VideoDate_v3 = () => {
     if (!im_the_caller && !answerGiven && localRef.current && room.offer)
       await handler_answer();
   };
+
   const handle_room_update = async () => {
     if (!room) return;
     if (room.goToDecision) {
@@ -164,15 +132,16 @@ export const VideoDate_v3 = () => {
       navigate(AppRoutes.AFTER_VIDEO);
     }
     const im_the_caller = room?.caller.id === user.private.id;
-
     if (
       !pc.currentRemoteDescription &&
       room?.answer &&
-      pc.signalingState !== "stable" &&
-      im_the_caller
+      im_the_caller &&
+      pc.signalingState === "have-local-offer" &&
+      !remoteDescriptionRun
     ) {
+      setRemoteDescriptionRun(true);
       const answerDescription = new RTCSessionDescription(room.answer);
-      await pc.setRemoteDescription(answerDescription);
+      pc.setRemoteDescription(answerDescription);
     }
   };
   const updateAnswerCandidates = async (candidates) => {
@@ -193,6 +162,39 @@ export const VideoDate_v3 = () => {
         offerCandidates: candidates,
       }
     );
+  };
+  const start_caller_event = async () => {
+    pc.onicecandidate = (event) => {
+      event.candidate && updateOfferCandidates(event.candidate.toJSON());
+    };
+    let q = await firestore.getQuery(
+      `clilco_rooms/${room.id}/answerCandidates`
+    );
+    firestore.onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          let data = change.doc.data();
+          const candidate = new RTCIceCandidate(data.answerCandidates);
+          pc.addIceCandidate(candidate);
+          console.log("add answerCandidates to pc");
+        }
+      });
+    });
+  };
+  const start_answer_event = async () => {
+    pc.onicecandidate = (event) => {
+      event.candidate && updateAnswerCandidates(event.candidate.toJSON());
+    };
+    let q = await firestore.getQuery(`clilco_rooms/${room.id}/offerCandidates`);
+    firestore.onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          let data = change.doc.data();
+          pc.addIceCandidate(new RTCIceCandidate(data.offerCandidates));
+          console.log("add offerCandidates to pc");
+        }
+      });
+    });
   };
 
   const end_video_date = async () => {
