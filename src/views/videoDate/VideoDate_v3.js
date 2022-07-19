@@ -1,13 +1,16 @@
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 import {
   watch_room,
   add_offer_or_answer,
   clean_room,
+  unsubscribe_room_listener,
+  set_go_to_decision,
 } from "../../store/video/videoFunctions";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./v3Css.scss";
 import firestore from "../../firebase/firestore";
+import AppRoutes from "../../app/AppRoutes";
 
 export const VideoDate_v3 = () => {
   const [answerGiven, setAnswerGiven] = useState(false);
@@ -21,6 +24,7 @@ export const VideoDate_v3 = () => {
   const localRef = useRef();
   const remoteRef = useRef();
 
+  const navigate = useNavigate();
   const servers = {
     iceServers: [
       {
@@ -45,9 +49,17 @@ export const VideoDate_v3 = () => {
       console.error(e);
     }
   };
-  const peer_connection_events = () => {
+  const peer_connection_events = async () => {
+    pc.onconnectionstatechange = (event) => {
+      if (pc.connectionState === "disconnected") {
+        console.log("detected disconnect");
+      }
+    };
     const im_the_caller = roomRef.current?.caller.id === user.private.id;
+    console.log("need to be true", im_the_caller);
     if (im_the_caller) {
+      if (!roomRef.current.offer && !offerGiven && localRef.current)
+        await handler_caller();
       pc.onicecandidate = (event) => {
         event.candidate && updateOfferCandidates(event.candidate.toJSON());
       };
@@ -74,11 +86,7 @@ export const VideoDate_v3 = () => {
     localRef.current.srcObject = localStream;
     remoteRef.current.srcObject = remoteStream;
 
-    pc.onconnectionstatechange = (event) => {
-      if (pc.connectionState === "disconnected") {
-        console.log("detected disconnect");
-      }
-    };
+    await peer_connection_events();
   };
   const handler_caller = async () => {
     console.log("im the caller");
@@ -104,6 +112,7 @@ export const VideoDate_v3 = () => {
           let data = change.doc.data();
           const candidate = new RTCIceCandidate(data.answerCandidates);
           pc.addIceCandidate(candidate);
+          console.log("add answerCandidates to pc");
         }
       });
     });
@@ -114,7 +123,9 @@ export const VideoDate_v3 = () => {
     setAnswerGiven(true);
 
     const offerDescription = room.offer;
-    await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
+    await pc.setRemoteDescription(
+      await new RTCSessionDescription(offerDescription)
+    );
 
     const answerDescription = await pc.createAnswer();
     await pc.setLocalDescription(answerDescription);
@@ -135,27 +146,34 @@ export const VideoDate_v3 = () => {
         if (change.type === "added") {
           let data = change.doc.data();
           pc.addIceCandidate(new RTCIceCandidate(data.offerCandidates));
+          console.log("add offerCandidates to pc");
         }
       });
     });
   };
-  const handle_questions_or_answer = () => {
+  const handle_questions_or_answer = async () => {
     if (!room) return;
     const im_the_caller = room?.caller.id === user.private.id;
-
-    if (!pc.currentRemoteDescription && room?.answer && im_the_caller) {
-      const answerDescription = new RTCSessionDescription(room.answer);
-      pc.setRemoteDescription(answerDescription);
-    }
+    if (!im_the_caller && !answerGiven && localRef.current && room.offer)
+      await handler_answer();
   };
   const handle_room_update = async () => {
     if (!room) return;
-    peer_connection_events();
+    if (room.goToDecision) {
+      await handle_exit();
+      navigate(AppRoutes.AFTER_VIDEO);
+    }
     const im_the_caller = room?.caller.id === user.private.id;
-    if (im_the_caller && !room.offer && !offerGiven && localRef.current)
-      await handler_caller();
-    else if (!im_the_caller && !answerGiven && localRef.current)
-      await handler_answer();
+
+    if (
+      !pc.currentRemoteDescription &&
+      room?.answer &&
+      pc.signalingState !== "stable" &&
+      im_the_caller
+    ) {
+      const answerDescription = new RTCSessionDescription(room.answer);
+      await pc.setRemoteDescription(answerDescription);
+    }
   };
   const updateAnswerCandidates = async (candidates) => {
     console.log("write answer candidates");
@@ -176,9 +194,26 @@ export const VideoDate_v3 = () => {
       }
     );
   };
-  const print_val = () => {
-    console.log(remoteRef?.current?.srcObject?.active);
+
+  const end_video_date = async () => {
+    try {
+      await handle_exit();
+      await unsubscribe_room_listener();
+      await set_go_to_decision();
+      navigate(AppRoutes.AFTER_VIDEO);
+    } catch (e) {
+      console.error(e);
+    }
   };
+  const handle_exit = async (e) => {
+    if (e) e.stopImmediatePropagation();
+    try {
+      pc?.close();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     init_page();
     return () => {
@@ -187,7 +222,6 @@ export const VideoDate_v3 = () => {
   }, []);
   useEffect(handle_questions_or_answer, [room?.answer, room?.offer]);
   useEffect(handle_room_update, [room]);
-  useEffect(print_val, [remoteRef]);
 
   return (
     <div className="videos">
@@ -198,10 +232,9 @@ export const VideoDate_v3 = () => {
         <button style={{ marginTop: "200px" }} onClick={() => clean_room()}>
           clean room
         </button>
-        <button className="hangup button"></button>
         <div tabIndex={0} role="button" className="more button">
           <div className="popover">
-            <button>Copy joining code</button>
+            <button onClick={() => end_video_date()}>end call</button>
           </div>
         </div>
       </div>
