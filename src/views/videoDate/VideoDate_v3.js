@@ -24,7 +24,6 @@ export const VideoDate_v3 = () => {
   const room_unsubscribes = state.video.room_unsubscribes;
   const localRef = useRef();
   const remoteRef = useRef();
-
   const navigate = useNavigate();
   const servers = {
     iceServers: [
