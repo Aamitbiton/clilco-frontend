@@ -14,6 +14,7 @@ import Title from "../../components/title/title";
 import defaultStyles from "../../style/defaultStyles";
 import AppStack from "../../components/AppStack";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Typography from "@mui/material/Typography";
 
 export const AddImage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +35,11 @@ export const AddImage = () => {
   return (
     <CenterLayout direction={"column"}>
       <Title title={"התמונה שלי"} />
+      <Typography textAlign={"center"} lineHeight={2}>
+        להעלות תמונה טובה שלך עם פנים גלויות (תמונה שווה אלף מילים),
+        <br />
+        תמונות שלא יעמדו בכללים יוסרו או תוסר ההרשמה
+      </Typography>
       {image ? (
         <Image
           removeImage={image && removeImage}

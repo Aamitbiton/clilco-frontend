@@ -26,7 +26,7 @@ export const ViewUsers = () => {
   const [users, setUsers] = useState(null);
   const [view_animation, set_view_animation] = useState(true);
   const get_more_users = async () => {
-    const newUsers = await f_get_all_users(!!users, true);
+    const newUsers = await f_get_all_users(!!users, false);
     if (newUsers) {
       const allUsers = users ? users.concat(newUsers) : newUsers;
       setUsers(allUsers);
@@ -70,16 +70,16 @@ export const ViewUsers = () => {
               <img src={user.imgUrl?.url} />
               <div className={"details-container blur-background full-width"}>
                 <p className={"details"}>
-                  {user.name + "," + " " + get_age(user.birthday)}
+                  {user.name + " " + get_age(user.birthday)}
                 </p>
-                <AppStack direction={"row"}>
-                  <LocationOnIcon
-                    className={"details-icon"}
-                    fontSize={"inherit"}
-                    color={"secondary"}
-                  />
-                  <p className={"details"}>{user.city?.name}</p>
-                </AppStack>
+                {/*<AppStack direction={"row"}>*/}
+                {/*  <LocationOnIcon*/}
+                {/*    className={"details-icon"}*/}
+                {/*    fontSize={"inherit"}*/}
+                {/*    color={"secondary"}*/}
+                {/*  />*/}
+                {/*  <p className={"details"}>{user.city?.name}</p>*/}
+                {/*</AppStack>*/}
               </div>
             </div>
           ))}

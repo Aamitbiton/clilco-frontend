@@ -111,6 +111,11 @@ export const Lobby = () => {
   };
 
   useEffect(() => {
+    document.addEventListener("visibilitychange", async () => {
+      if (document.visibilityState === "visible") {
+        await init_page();
+      }
+    });
     init_page();
     return () => {
       handle_exit();

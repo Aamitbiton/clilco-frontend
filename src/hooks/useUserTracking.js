@@ -18,6 +18,7 @@ function useUserTracking(props) {
   window.addEventListener(
     "visibilitychange",
     async (event) => {
+      console.log("USER TRACK EVENT: ", event);
       event.stopImmediatePropagation();
       setVisibilityState(document.visibilityState);
       if (document.visibilityState === "hidden") {
