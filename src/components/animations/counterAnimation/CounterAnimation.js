@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./counterAnimation.css";
 
-function CounterAnimation({ onEnd }) {
+function CounterAnimation({ onEnd, onMiddle }) {
   let counter = 3;
   let element = null;
   let path = require("../../../assets/sounds/Countdown - Sound Effect.mp3");
@@ -19,6 +19,7 @@ function CounterAnimation({ onEnd }) {
   const changeCounter = () => {
     if (counter === 1) endEvent();
     else {
+      if (counter === 2) onMiddle();
       if (counter === 3) audio.play();
       if ("vibrate" in navigator) {
         // vibration API supported

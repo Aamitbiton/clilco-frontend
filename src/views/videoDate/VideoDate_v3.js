@@ -7,6 +7,7 @@ import {
   unsubscribe_room_listener,
   set_go_to_decision,
   update_question_in_room,
+  update_call_answer,
 } from "../../store/video/videoFunctions";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./videoDate.scss";
@@ -29,6 +30,7 @@ import { question_texts } from "./components/questions/question_texts";
 export const VideoDate_v3 = () => {
   const [videoSize, setVideoSize] = useState({ width: 0, height: 0 });
   const [videoClass, setVideoClass] = useState("remote-video");
+  const [setupSourcesDone, setSetupSourcesDone] = useState(false);
   const [volume, setVolume] = useState(
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
@@ -72,9 +74,9 @@ export const VideoDate_v3 = () => {
 
   const init_page = async () => {
     try {
+      await setupSources();
       if (!room_unsubscribes) await watch_room();
       setCounterAnimation(true);
-      await setupSources();
       window.addEventListener("beforeunload", () => {
         console.log("unload detected");
       });
@@ -114,7 +116,8 @@ export const VideoDate_v3 = () => {
     };
     localRef.current.srcObject = localStream;
     remoteRef.current.srcObject = remoteStream;
-
+    setSetupSourcesDone(true);
+    console.log("this is need to be the first");
     await peer_connection_events();
   };
   const set_video_size = () => {
@@ -122,49 +125,6 @@ export const VideoDate_v3 = () => {
       width: remoteRef.current.videoWidth,
       height: remoteRef.current.videoHeight,
     });
-  };
-  const handler_caller = async () => {
-    console.log("im the caller");
-    await start_caller_event();
-    setOfferGiven(true);
-    const offerDescription = await pc.createOffer(mediaConstraints);
-    pc.setLocalDescription(offerDescription);
-    const offer = {
-      sdp: offerDescription.sdp,
-      type: offerDescription.type,
-    };
-    await add_offer_or_answer({
-      offerOrAnswer: offer,
-      roomId: room.id,
-      type: "offer",
-    });
-  };
-  const handler_answer = async () => {
-    if (!room.offer) return;
-    console.log("im the answer");
-    setAnswerGiven(true);
-    await start_answer_event();
-    const offerDescription = room.offer;
-    await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
-
-    const answerDescription = await pc.createAnswer();
-    await pc.setLocalDescription(answerDescription);
-
-    const answer = {
-      type: answerDescription.type,
-      sdp: answerDescription.sdp,
-    };
-    await add_offer_or_answer({
-      offerOrAnswer: answer,
-      roomId: room.id,
-      type: "answer",
-    });
-  };
-  const handle_questions_or_answer = async () => {
-    if (!room) return;
-    const im_the_caller = room?.caller.id === user.private.id;
-    if (!im_the_caller && !answerGiven && localRef.current && room.offer)
-      await handler_answer();
   };
   const calculate_next_question = () => {
     try {
@@ -211,42 +171,43 @@ export const VideoDate_v3 = () => {
       const answerDescription = new RTCSessionDescription(room.answer);
       await pc.setRemoteDescription(answerDescription);
     }
+    check_if_handle_answer();
   };
-  const updateAnswerCandidates = async (candidates) => {
-    console.log("write answer candidates");
-    await firestore.createDoc(
-      `clilco_rooms/${roomRef.current.id}/answerCandidates`,
-      {
-        answerCandidates: candidates,
-      }
-    );
+  const handle_questions_volume = (val) => {
+    setVolume(val / 100);
   };
-  const updateOfferCandidates = async (candidates) => {
-    console.log("write offer candidates");
+  const handle_counter_animation_end = async () => {
+    infoLog("animation end");
+    setCounterAnimation(false);
+    let callAnswer = remoteRef?.current?.srcObject.active;
+    console.log("call answer:", callAnswer);
+    await set_call_answer(!!callAnswer);
+  };
+  const set_call_answer = async (value) => {
+    if (!room) return;
+    await update_call_answer({ roomId: room.id, value: value });
+  };
 
-    await firestore.createDoc(
-      `clilco_rooms/${roomRef.current.id}/offerCandidates`,
-      {
-        offerCandidates: candidates,
-      }
-    );
-  };
-  const start_caller_event = async () => {
-    pc.onicecandidate = (event) => {
-      event.candidate && updateOfferCandidates(event.candidate.toJSON());
+  //only answerer functions
+  const handler_answer = async () => {
+    if (!room.offer) return;
+    console.log("im the answer");
+    setAnswerGiven(true);
+    await start_answer_event();
+    const offerDescription = room.offer;
+    await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
+
+    const answerDescription = await pc.createAnswer();
+    await pc.setLocalDescription(answerDescription);
+
+    const answer = {
+      type: answerDescription.type,
+      sdp: answerDescription.sdp,
     };
-    let q = await firestore.getQuery(
-      `clilco_rooms/${room.id}/answerCandidates`
-    );
-    firestore.onSnapshot(q, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          let data = change.doc.data();
-          const candidate = new RTCIceCandidate(data.answerCandidates);
-          pc.addIceCandidate(candidate);
-          console.log("add answerCandidates to pc");
-        }
-      });
+    await add_offer_or_answer({
+      offerOrAnswer: answer,
+      roomId: room.id,
+      type: "answer",
     });
   };
   const start_answer_event = async () => {
@@ -264,14 +225,70 @@ export const VideoDate_v3 = () => {
       });
     });
   };
-  const handle_questions_volume = (val) => {
-    setVolume(val / 100);
+  const updateAnswerCandidates = async (candidates) => {
+    console.log("write answer candidates");
+    await firestore.createDoc(
+      `clilco_rooms/${roomRef.current.id}/answerCandidates`,
+      {
+        answerCandidates: candidates,
+      }
+    );
   };
-  const handle_counter_animation_end = async () => {
-    infoLog("animation end");
-    setCounterAnimation(false);
-    console.log("current video state:", pc.connectionState);
-    console.log("current remote video:", remoteRef?.current?.srcObject);
+  const check_if_handle_answer = async () => {
+    if (!roomRef.current) return false;
+    const im_the_answer = roomRef.current?.answerer.id === user.private.id;
+    if (
+      im_the_answer &&
+      !answerGiven &&
+      setupSourcesDone &&
+      roomRef.current?.offer
+    ) {
+      console.log("this is need to be second");
+      await handler_answer();
+    }
+  };
+
+  //only caller functions
+  const handler_caller = async () => {
+    console.log("im the caller");
+    await start_caller_event();
+    setOfferGiven(true);
+    const offerDescription = await pc.createOffer(mediaConstraints);
+    pc.setLocalDescription(offerDescription);
+    const offer = {
+      sdp: offerDescription.sdp,
+      type: offerDescription.type,
+    };
+    await add_offer_or_answer({
+      offerOrAnswer: offer,
+      roomId: room.id,
+      type: "offer",
+    });
+  };
+  const start_caller_event = async () => {
+    pc.onicecandidate = (event) => {
+      event.candidate && updateOfferCandidates(event.candidate.toJSON());
+    };
+    let q = await firestore.getQuery(
+      `clilco_rooms/${room.id}/answerCandidates`
+    );
+    firestore.onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          let data = change.doc.data();
+          const candidate = new RTCIceCandidate(data.answerCandidates);
+          pc.addIceCandidate(candidate);
+        }
+      });
+    });
+  };
+  const updateOfferCandidates = async (candidates) => {
+    await firestore.createDoc(
+      `clilco_rooms/${roomRef.current.id}/offerCandidates`,
+      {
+        offerCandidates: candidates,
+      }
+    );
   };
 
   const end_video_date = async () => {
@@ -288,6 +305,9 @@ export const VideoDate_v3 = () => {
     if (e) e.stopImmediatePropagation();
     try {
       pc?.close();
+      localRef?.current?.srcObject.getTracks().forEach(function (track) {
+        track.stop();
+      });
     } catch (e) {
       console.error(e);
     }
@@ -299,7 +319,6 @@ export const VideoDate_v3 = () => {
       console.log("unload detected");
     };
   }, []);
-  useEffect(handle_questions_or_answer, [room?.answer, room?.offer]);
   useEffect(handle_room_update, [room]);
   useEffect(() => {
     let video_class = "remote-video ";
@@ -312,7 +331,12 @@ export const VideoDate_v3 = () => {
   return (
     <>
       {counterAnimation && (
-        <CounterAnimation onEnd={() => handle_counter_animation_end()} />
+        <CounterAnimation
+          onEnd={() => handle_counter_animation_end()}
+          onMiddle={() => {
+            check_if_handle_answer();
+          }}
+        />
       )}
 
       <div className="full-screen" data_cy="video-date-page">
