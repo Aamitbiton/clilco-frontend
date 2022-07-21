@@ -47,6 +47,10 @@ export const search_for_match = async () => {
   return await api.search_for_match();
 };
 
+export const get_rooms_by_date = async ({ startDate, endDate, isSucceed }) => {
+  return await api.get_rooms_by_date({ startDate, endDate, isSucceed });
+};
+
 export const delete_room_from_state = async () => {
   await actionsCreator(VIDEO_CONSTANTS.SET_ROOM, null);
 };

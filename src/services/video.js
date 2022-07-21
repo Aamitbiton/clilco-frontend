@@ -1,6 +1,8 @@
 import * as dbLayer from "../apiMiddleware/dbLayer";
 import * as storageLayer from "../apiMiddleware/storageLayer";
 import * as authService from "./auth";
+import * as api from "../services/api";
+
 import { get_user_public } from "../apiMiddleware/dbLayer";
 
 export async function watch_room(handle_room) {

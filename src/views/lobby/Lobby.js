@@ -137,7 +137,23 @@ export const Lobby = () => {
     console.log("speed change", internetSpeed);
   };
 
-  useEffect(init_page, []);
+  const get_num_of_rooms_today = async () => {
+    // const rooms = await get_rooms_by_date({
+    //   startDate: new Date(),
+    //   isSucceed: true,
+    // });
+    // console.log("rooms", rooms);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      get_num_of_rooms_today();
+    }, 3000);
+    init_page();
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
   useEffect(handle_internet_speed, [internetSpeed]);

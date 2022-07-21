@@ -43,3 +43,16 @@ export async function search_for_match() {
     console.error(e);
   }
 }
+
+export async function get_rooms_by_date({ startDate, endDate, isSucceed }) {
+  try {
+    return await callAbleFunction("get_rooms_by_date", {
+      startDate,
+      endDate,
+      isSucceed,
+    });
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
