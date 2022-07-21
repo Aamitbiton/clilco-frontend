@@ -3,10 +3,17 @@
   position: absolute;
   flex-flow: column;
   display: flex;
-  bottom: 10%;
-  width: 100%;
+  bottom: 30vh;
+  //width: 100%;
   align-items: center;
   z-index: 5;
+
+  width: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background-color: rgba(0,0,0, 0.2);
+  border-radius: 5px;
 }
 
 .loader-text{
