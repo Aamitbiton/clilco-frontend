@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./lobby.scss";
-import { watch_room, search_for_match } from "../../store/video/videoFunctions";
+import {
+  watch_room,
+  search_for_match,
+  get_rooms_by_date,
+} from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
@@ -20,9 +24,15 @@ import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
 import useUserTracking from "../../hooks/useUserTracking";
+import InternetSpeed from "./components/internetSpeed/InternetSpeed";
+import { Users } from "./components/users/Users";
 const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 
 export const Lobby = () => {
+  const [loader, setLoader] = useState(true);
+  const [internetSpeed, setInternetSpeed] = useState(false);
+  const [note, setNote] = useState(NotesInstances.lobby_information_message());
+  const [counterInternetSpeed, setCounterInternetSpeed] = useState(0);
   const [localStream, setLocalStream] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
@@ -109,6 +119,18 @@ export const Lobby = () => {
       console.error(e);
     }
   };
+  const handle_internet_speed = async () => {
+    if (!internetSpeed) return;
+    else if (internetSpeed < 5) {
+      if (counterInternetSpeed < 3)
+        setCounterInternetSpeed(counterInternetSpeed + 1);
+      else {
+        toast("אינטרנט חלש לא ניתן להתחבר לשיחה", { type: "error" });
+        await handle_back_btn();
+      }
+    } else setCounterInternetSpeed(0);
+    console.log("speed change", internetSpeed);
+  };
 
   useEffect(() => {
     document.addEventListener("visibilitychange", async () => {
@@ -121,22 +143,47 @@ export const Lobby = () => {
       handle_exit();
     };
   }, []);
+  const get_num_of_rooms_today = async () => {
+    // const rooms = await get_rooms_by_date({
+    //   startDate: new Date(),
+    //   isSucceed: true,
+    // });
+    // console.log("rooms", rooms);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      get_num_of_rooms_today();
+    }, 3000);
+    init_page();
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
+  useEffect(handle_internet_speed, [internetSpeed]);
 
   return (
     <>
+      <InternetSpeed
+        setInternetSpeed={(val) => {
+          setInternetSpeed(val);
+        }}
+      />
+      {loader && <AppLoader />}
       <div className="full-screen">
-        {!room && <NotesContainer />}
-        {!room && <LobbyLoader />}
-        {!is_suspended() && (
+        {!room && !loader && <Note note={note} />}
+        {!room && !loader && <LobbyLoader />}
+        {!is_suspended() && !loader && (
           <MyVideoInLobby
             setLocalStream={setLocalStream}
             handle_no_permissions={handle_no_permissions}
           />
         )}
+        {!room && <Users setLoader={setLoader} />}
 
-        {!room && (
+        {!room && !loader && (
           <div className="back-btn-from-lobby-to-home flex-center">
             <AppButton
               id="lobby-back-btn"

@@ -63,6 +63,12 @@ const date_tips = (random) => {
   };
 };
 
+const lobby_information_message = () => ({
+  title: "",
+  icon: require("../../../../assets/video_assets/icons/icon_rules.png"),
+  content: [message("לפניך חלק מהמשתמשים שעומדים להיכנס לדייט איתך")],
+});
+
 function message(message, highlighted = false) {
   return { message, highlighted };
 }
@@ -70,6 +76,7 @@ function message(message, highlighted = false) {
 const NotesInstances = {
   date_rules,
   date_tips,
+  lobby_information_message,
 };
 
 export default NotesInstances;

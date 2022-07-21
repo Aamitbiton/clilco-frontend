@@ -6,32 +6,33 @@ import defaultStyles from "../../../../style/defaultStyles";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "../../../../app/AppRoutes";
 import Title from "../../../../components/title/title";
-import FadeAnimation from "../../../../components/animations/Fade/FadeAnimation";
 
 export const Header = () => {
   const styles = {
     position: "absolute",
     right: "5px",
-    lineHeight: "0px",
-    margin: "0px",
+    top: 0,
   };
   const { header } = defaultStyles;
   const navigator = useNavigate();
   return (
-    <FadeAnimation visible={true} timeout={1500}>
-      <div style={{ height: header.HEIGHT }} className={"header-container"}>
-        <img
-          style={{ cursor: "pointer" }}
-          onClick={() => navigator(AppRoutes.ROOT)}
-          className={"img"}
-          alt="header"
-          src={logo_header}
-        />
+    <div style={{ height: header.HEIGHT }} className={"header-container"}>
+      <div
+        style={{ cursor: "pointer" }}
+        className="relative"
+        onClick={() => navigator(AppRoutes.ROOT)}
+      >
+        <img className={"img"} alt="header" src={logo_header} />
         <div style={styles}>
-          <Title fontSize={"18px"} color={"white"} title={"בהרצה"} />
+          <Title
+            mt={"40px"}
+            fontSize={"18px"}
+            color={"white"}
+            title={"בהרצה"}
+          />
         </div>
-        <Menu />
       </div>
-    </FadeAnimation>
+      <Menu />
+    </div>
   );
 };

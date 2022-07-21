@@ -26,11 +26,6 @@ export const StartDate = ({ navigate }) => {
           labelColor={"white"}
           label={"קח אותי לדייט"}
         />
-        <AppButton
-          labelColor={"white"}
-          label={"צפה במשתמשים "}
-          onClick={() => navigate(AppRoutes.VIEW_USERS)}
-        />
       </AppStack>
     </>
   );

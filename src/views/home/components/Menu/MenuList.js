@@ -20,8 +20,11 @@ import { remove_account, signOut } from "../../../../store/auth/authFunctions";
 import ConfirmItem from "../../../Settings/components/ConfirmItem";
 import NoAccountsOutlinedIcon from "@mui/icons-material/NoAccountsOutlined";
 import ConfirmModal from "../../../../components/ConfirmModal/ConfirmModal";
+import { useSelector } from "react-redux";
 
 function MenuList({ anchor, onClick, onKeyDown }) {
+  const videoState = useSelector((state) => state.video);
+
   return (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -35,11 +38,13 @@ function MenuList({ anchor, onClick, onKeyDown }) {
           icon={<HomeIcon />}
           itemText={"בית"}
         />
-        <MenuListItem
-          to={AppRoutes.VIEW_USERS}
-          icon={<PeopleIcon />}
-          itemText={"צפה במשתמשים"}
-        />
+        {videoState.speed_date_time.its_dating_time && (
+          <MenuListItem
+            to={AppRoutes.VIEW_USERS}
+            icon={<PeopleIcon />}
+            itemText={"צפה במשתמשים"}
+          />
+        )}
         <MenuListItem
           to={AppRoutes.CALLS}
           icon={<CallIcon />}
