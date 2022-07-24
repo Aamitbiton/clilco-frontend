@@ -44,6 +44,7 @@ export const watch_remote_user = async (remoteUserId) => {
 };
 
 export const search_for_match = async () => {
+  console.log('search for match')
   return await api.search_for_match();
 };
 

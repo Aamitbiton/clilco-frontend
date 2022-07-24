@@ -28,14 +28,17 @@ import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { question_texts } from "./components/questions/question_texts";
 
 export const VideoDate_v3 = () => {
+  const [startedTimer, setStartedTimer] = useState(false);
   const [videoSize, setVideoSize] = useState({ width: 0, height: 0 });
   const [videoClass, setVideoClass] = useState("remote-video");
   const [setupSourcesDone, setSetupSourcesDone] = useState(false);
+  const [showTimer, setShowTimer] = useState(null);
   const [volume, setVolume] = useState(
     JSON.parse(localStorage.getItem("questions-volume") || 1)
   );
   const [counterAnimation, setCounterAnimation] = useState(false);
   const [answerGiven, setAnswerGiven] = useState(false);
+  const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [offerGiven, setOfferGiven] = useState(false);
   const [remoteDescriptionRun, setRemoteDescriptionRun] = useState(false);
   let state = useSelector((state) => state);
@@ -77,19 +80,16 @@ export const VideoDate_v3 = () => {
       await setupSources();
       if (!room_unsubscribes) await watch_room();
       setCounterAnimation(true);
-      window.addEventListener("beforeunload", () => {
-        console.log("unload detected");
-      });
     } catch (e) {
       console.error(e);
     }
   };
   const peer_connection_events = async () => {
     pc.onconnectionstatechange = (event) => {
-      console.log("pc state:", pc.signalingState);
 
       if (pc.connectionState === "disconnected") {
         console.log("detected disconnect");
+        end_video_date()
       }
     };
     const im_the_caller = roomRef.current?.caller.id === user.private.id;
@@ -104,10 +104,6 @@ export const VideoDate_v3 = () => {
     const remoteStream = new MediaStream();
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
-      console.log("this is the local stream was write on pc", {
-        track,
-        localStream,
-      });
     });
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
@@ -187,11 +183,12 @@ export const VideoDate_v3 = () => {
     if (!room) return;
     await update_call_answer({ roomId: room.id, value: value });
   };
+  const now = () => new Date().getTime();
+
 
   //only answerer functions
   const handler_answer = async () => {
     if (!room.offer) return;
-    console.log("im the answer");
     setAnswerGiven(true);
     await start_answer_event();
     const offerDescription = room.offer;
@@ -220,13 +217,11 @@ export const VideoDate_v3 = () => {
         if (change.type === "added") {
           let data = change.doc.data();
           pc.addIceCandidate(new RTCIceCandidate(data.offerCandidates));
-          console.log("add offerCandidates to pc");
         }
       });
     });
   };
   const updateAnswerCandidates = async (candidates) => {
-    console.log("write answer candidates");
     await firestore.createDoc(
       `clilco_rooms/${roomRef.current.id}/answerCandidates`,
       {
@@ -250,7 +245,6 @@ export const VideoDate_v3 = () => {
 
   //only caller functions
   const handler_caller = async () => {
-    console.log("im the caller");
     await start_caller_event();
     setOfferGiven(true);
     const offerDescription = await pc.createOffer(mediaConstraints);
@@ -301,6 +295,10 @@ export const VideoDate_v3 = () => {
       console.error(e);
     }
   };
+  const handle_room_time_update = async () => {
+    if (dateEndInMilliseconds || !room) return;
+    setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
+  };
   const handle_exit = async (e) => {
     if (e) e.stopImmediatePropagation();
     try {
@@ -312,14 +310,35 @@ export const VideoDate_v3 = () => {
       console.error(e);
     }
   };
+  const handle_date_time = () => {
+    try {
+      if (startedTimer || !dateEndInMilliseconds) return;
+      setStartedTimer(true);
+      const secondsLeftForDate = Math.floor(
+          (dateEndInMilliseconds - now()) / 1000
+      );
+      Array.apply(null, Array(secondsLeftForDate)).forEach((item, i) => {
+        setTimeout(
+            () => secondsLeftForDate - i === 60 && setShowTimer(true),
+            1000 * i
+        );
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
 
   useEffect(() => {
     init_page();
     return () => {
       console.log("unload detected");
+      handle_exit()
     };
   }, []);
   useEffect(handle_room_update, [room]);
+  useEffect(handle_date_time, [dateEndInMilliseconds]);
+  useEffect(handle_room_time_update, [room?.startTime]);
   useEffect(() => {
     let video_class = "remote-video ";
     if (isMobile && videoSize.width < videoSize.height)
@@ -328,6 +347,7 @@ export const VideoDate_v3 = () => {
       video_class += "local-mobile-remote-desktop-video-style ";
     setVideoClass(video_class);
   }, [videoSize]);
+
   return (
     <>
       {counterAnimation && (
@@ -340,6 +360,13 @@ export const VideoDate_v3 = () => {
       )}
 
       <div className="full-screen" data_cy="video-date-page">
+        {showTimer && (
+            <LinearLoading
+                endAction={() => {
+                  end_video_date();
+                }}
+            />
+        )}
         <video
           onLoadedData={set_video_size}
           ref={remoteRef}

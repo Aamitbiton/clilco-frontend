@@ -33,6 +33,7 @@ export const Lobby = () => {
   const [internetSpeed, setInternetSpeed] = useState(false);
   const [note, setNote] = useState(NotesInstances.lobby_information_message());
   const [counterInternetSpeed, setCounterInternetSpeed] = useState(0);
+  const [justOpen, setJustOpen] = useState(true)
   const [localStream, setLocalStream] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
@@ -58,6 +59,7 @@ export const Lobby = () => {
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
+      handle_just_open()
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
@@ -65,12 +67,10 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-  // const handle_page_leaving = () => {
-  //   ["beforeunload", "popstate"].forEach((eventType) =>
-  //     window.addEventListener(eventType, handle_exit)
-  //   );
-  //   if (isMobile)
 
+const handle_just_open = () =>{
+  setTimeout(()=>{setJustOpen(false)},5000)
+};
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
@@ -133,13 +133,20 @@ export const Lobby = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("visibilitychange", async () => {
+    let element = document.getElementById("root");
+    element.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
+        console.log('from the listener')
         await init_page();
       }
     });
+    const interval = setInterval(() => {
+      get_num_of_rooms_today();
+    }, 3000);
     init_page();
     return () => {
+      element.removeEventListener('visibilitychange')
+      clearInterval(interval);
       handle_exit();
     };
   }, []);
@@ -150,17 +157,6 @@ export const Lobby = () => {
     // });
     // console.log("rooms", rooms);
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      get_num_of_rooms_today();
-    }, 3000);
-    init_page();
-    return () => {
-      handle_exit();
-      clearInterval(interval);
-    };
-  }, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
   useEffect(handle_internet_speed, [internetSpeed]);
