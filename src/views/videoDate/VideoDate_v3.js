@@ -26,6 +26,7 @@ import { infoLog } from "../../utils/logs";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { question_texts } from "./components/questions/question_texts";
+import {toast} from "react-toastify";
 
 export const VideoDate_v3 = () => {
   const [startedTimer, setStartedTimer] = useState(false);
@@ -89,6 +90,10 @@ export const VideoDate_v3 = () => {
 
       if (pc.connectionState === "disconnected") {
         console.log("detected disconnect");
+         toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
+          type: "warning",
+        });
+         set_call_answer(false)
         end_video_date()
       }
     };
@@ -377,6 +382,7 @@ export const VideoDate_v3 = () => {
         <video
           ref={localRef}
           autoPlay
+          muted
           playsInline
           className="reverse-video my-video-in-date"
         />
