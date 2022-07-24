@@ -151,6 +151,7 @@ export const Lobby = () => {
     }, 3000);
     init_page();
     return () => {
+      handle_exit();
       clearInterval(interval);
     };
   }, []);
