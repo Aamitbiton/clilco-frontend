@@ -47,7 +47,11 @@ export const search_for_match = async () => {
   return await api.search_for_match();
 };
 
-export const get_rooms_by_date = async ({ startDate, endDate, isSucceed }) => {
+export const get_num_of_rooms_today = async ({
+  startDate,
+  endDate,
+  isSucceed,
+}) => {
   return await api.get_rooms_by_date({ startDate, endDate, isSucceed });
 };
 

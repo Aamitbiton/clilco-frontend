@@ -4,7 +4,7 @@ import "./lobby.scss";
 import {
   watch_room,
   search_for_match,
-  get_rooms_by_date,
+  get_num_of_rooms_today,
 } from "../../store/video/videoFunctions";
 import { handle_user_availability } from "../../store/user/userFunctions";
 import { useDispatch, useSelector } from "react-redux";
@@ -137,20 +137,26 @@ export const Lobby = () => {
     console.log("speed change", internetSpeed);
   };
 
-  const get_num_of_rooms_today = async () => {
-    const rooms = await get_rooms_by_date({
-      startDate: new Date(),
-      isSucceed: true,
-    });
-    console.log("rooms", rooms);
+  const handle_rooms_today = async (flag) => {
+    let startDate = new Date();
+    const rooms = await get_num_of_rooms_today({ startDate, isSucceed: true });
+    setNote(
+      NotesInstances.lobby_information_message(
+        rooms.rooms,
+        rooms.succeed_dates,
+        flag
+      )
+    );
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      get_num_of_rooms_today();
+    init_page();
+    let flag = false;
+    const interval = setInterval(async () => {
+      flag = !flag;
+      await handle_rooms_today(flag);
     }, 3000);
 
-    init_page();
     return () => {
       handle_exit();
       clearInterval(interval);
