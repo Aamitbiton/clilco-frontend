@@ -44,6 +44,7 @@ export const watch_remote_user = async (remoteUserId) => {
 };
 
 export const search_for_match = async () => {
+  console.log('search for match')
   return await api.search_for_match();
 };
 
@@ -68,11 +69,13 @@ export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
 
   if (error) {
     console.log(error);
-    await clean_room();
+    // await clean_room();
   }
 };
 
 export const clean_room = async () => {
+  console.log("try clean room ");
+
   const room = getState().video.room;
   if (!room) return;
   console.log("clean room ");
@@ -123,8 +126,8 @@ export const get_next_speed_date_time = async () => {
   if (check_if_after_date_time()) tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow = new Date(tomorrow).setMinutes("00");
   tomorrow = new Date(tomorrow).setSeconds("00");
-  const start = new Date(tomorrow).setHours("19"); // todo: 19
-  const end = new Date(tomorrow).setHours("21");
+  const start = new Date(tomorrow).setHours("21"); // todo: 19
+  const end = new Date(tomorrow).setHours("22");
   const its_dating_time = await check_if_is_date_time(start, end);
   await actionsCreator(VIDEO_CONSTANTS.SET_SPEED_DATE_TIME, {
     start,

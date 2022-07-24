@@ -35,6 +35,7 @@ import CounterAnimation from "../../components/animations/counterAnimation/Count
 import AppLoader from "../../components/AppLoader/AppLoader";
 import * as videoService from "../../services/video";
 import { ReconnectView } from "./components/reconnectView/ReconnectView";
+import warning from "react-redux/lib/utils/warning";
 
 export const NewVideoDate = () => {
   const [peer, setPeer] = useState(null);
@@ -47,17 +48,16 @@ export const NewVideoDate = () => {
   const [showTimer, setShowTimer] = useState(null);
   const [dateEndInMilliseconds, setDateEndInMilliseconds] = useState(null);
   const [streamBlock, setStreamBlock] = useState(null);
-  const [newProcess, setNewProcess] = useState(true);
   const [startedTimer, setStartedTimer] = useState(false);
   const [mute, setMute] = useState(true);
-  const [waitingForRefresh, setWaitingForRefresh] = useState(false);
   const [counterAnimation, setCounterAnimation] = useState(false);
   const [notRunCounterAnimation, setNotRunCounterAnimation] = useState(false);
 
   let state = useSelector((state) => state);
   let room = state.video.room;
+  const roomRef = useRef(room);
+  roomRef.current = room;
   const room_unsubscribes = state.video.room_unsubscribes;
-  const remoteUser = state.video.remote_user;
   const navigate = useNavigate();
   const user = state.user.user;
 
@@ -84,6 +84,13 @@ export const NewVideoDate = () => {
       peer.on("stream", handle_got_stream);
       if (offer) peer.signal(offer);
       peer.on("signal", handle_signal);
+      // peer.on("close", () => {
+      //   infoLog("videoIsClosed");
+      // });
+      // peer.on("signalingStateChange", (state) => {
+      //   // if (state === 'have-local-offer')
+      //   infoLog(state);
+      // });
       return peer;
     } catch (e) {
       console.error(e);
@@ -111,6 +118,7 @@ export const NewVideoDate = () => {
       peer?.signal(answer);
     } catch (e) {
       console.error(e);
+      // window.location.reload(true);
     }
   };
   const handle_signal = async (offerOrAnswer) => {
@@ -130,14 +138,18 @@ export const NewVideoDate = () => {
   const handle_caller = async ({ offer, answer, goToDecision }) => {
     try {
       if (!offer) await create_offer();
-      else if (answer && !goToDecision) await signal_answer(answer);
+      else if (answer && !goToDecision) {
+        await signal_answer(answer);
+      }
     } catch (e) {
       console.error(e);
     }
   };
   const handle_answerer = async ({ offer, answer }) => {
     try {
-      if (offer && !answer) await create_answer(offer);
+      if (offer && !answer) {
+        await create_answer(offer);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -163,13 +175,28 @@ export const NewVideoDate = () => {
     }
   };
   const handle_counter_animation_end = async () => {
+    infoLog("animation end");
     setCounterAnimation(false);
     const myId = user.private.id;
     let currentMute = get_current_value_from_state("Mute");
     if (currentMute && !remoteStream) {
-      setNotRunCounterAnimation(true);
       if (room.caller.id === myId) await clean_room();
     } else await set_call_answer(true);
+  };
+  const handle_questions_and_answer = async () => {
+    try {
+      if (!room || !room?.reloaded) return;
+      if (!room.answer && !room.offer && !notRunCounterAnimation)
+        setCounterAnimation(true);
+      else {
+        setNotRunCounterAnimation(true);
+      }
+      const myId = user.private.id;
+      if (room.caller.id === myId) await handle_caller(room);
+      else if (room.answerer.id === myId) await handle_answerer(room);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   /**page managment functions*/
@@ -177,7 +204,6 @@ export const NewVideoDate = () => {
     if (!room) return;
     await update_call_answer({ roomId: room.id, value: value });
   };
-
   const get_current_value_from_state = (stateName) => {
     let current_value;
     let string = `set${stateName}`;
@@ -202,7 +228,7 @@ export const NewVideoDate = () => {
     try {
       if (!room) return;
       let roomId = room.id;
-      update_reloaded_in_room({ roomId, value });
+      await update_reloaded_in_room({ roomId, value });
     } catch (e) {}
   };
   const go_to_next_question_local = async () => {
@@ -247,7 +273,6 @@ export const NewVideoDate = () => {
   const end_video_date = async () => {
     try {
       await handle_exit();
-      setRemoteStream(null);
       await unsubscribe_room_listener();
       await set_go_to_decision();
       navigate(AppRoutes.AFTER_VIDEO);
@@ -256,6 +281,7 @@ export const NewVideoDate = () => {
     }
   };
   const returnToLobby = async () => {
+    debugger;
     if (room) await videoService.end_date({ roomId: room.id });
     console.log("try to close the room and navigate to lobby");
     navigate(AppRoutes.LOBBY);
@@ -305,28 +331,11 @@ export const NewVideoDate = () => {
       console.error(e);
     }
   };
-  const handle_room_update = async () => {
+  const handle_room_decision_update = async () => {
     try {
-      if (!room || !room?.reloaded) return;
-      if (!room.answer && !room.offer && !notRunCounterAnimation)
-        setCounterAnimation(true);
-      const myId = user.private.id;
-
-      const { caller, answerer, offer, goToDecision } = room;
-      if (newProcess && offer) await clean_room();
-      setNewProcess(false);
-      if (caller.id === myId) await handle_caller(room);
-      else if (answerer.id === myId) await handle_answerer(room);
-      if (!remoteUser)
-        await get_remote_user_data(
-          caller.id === myId ? answerer.id : caller.id
-        );
-      if (goToDecision) {
-        await end_video_date();
-        navigate(AppRoutes.AFTER_VIDEO);
-      }
-      if (!dateEndInMilliseconds)
-        setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
+      if (!room || !room?.reloaded || !room.goToDecision) return;
+      await end_video_date();
+      navigate(AppRoutes.AFTER_VIDEO);
     } catch (e) {
       console.error(e);
     }
@@ -336,36 +345,41 @@ export const NewVideoDate = () => {
     const myId = user.private.id;
     if (room.reloadManagement && !room.reloaded) {
       let myUser = room.reloadManagement.filter((user) => user.userId === myId);
+      console.log("my user need to reload", myUser[0]?.reload);
       if (myUser[0]?.reload) {
         await run_update_reloaded_in_room(true);
-        // if (room.caller.id === myId) await clean_room();
+        if (room.caller.id === myId) await clean_room();
       }
     }
   };
   const handle_check_video_state = async () => {
-    // if (!room || !room?.reloaded) return;
-    // let res = document.getElementById("remote-stream-id");
-    console.log("check video state");
-    const myId = user.private.id;
-    let currentMute = get_current_value_from_state("Mute");
-    let currentCleanRoomCounter =
-      get_current_value_from_state("CleanRoomCounter");
-    let currentRemoteStream = get_current_value_from_state("RemoteStream");
-    let currentStreamBlock = get_current_value_from_state("StreamBlock");
-
-    if (currentMute && !currentRemoteStream && !currentStreamBlock) {
-      infoLog("the video not work");
-      setNotRunCounterAnimation(true);
-      if (currentCleanRoomCounter === 3) {
-        await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
-          type: "warning",
-        });
-        await end_video_date();
-        return;
-      }
-      setCleanRoomCounter(currentCleanRoomCounter + 1);
-      await clean_room();
-    } else if (!room?.callAnswer) await set_call_answer(true);
+    try {
+      if (!roomRef.current?.reloaded && !counterAnimation) return;
+      // let res = document.getElementById("remote-stream-id");
+      console.log("check video state");
+      const myId = user.private.id;
+      let currentMute = get_current_value_from_state("Mute");
+      let currentCleanRoomCounter =
+        get_current_value_from_state("CleanRoomCounter");
+      if (currentMute && !remoteStream) {
+        infoLog("the video not work");
+        if (currentCleanRoomCounter === 3) {
+          await toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
+            type: "warning",
+          });
+          await set_call_answer(false);
+          await end_video_date();
+          return;
+        }
+        setCleanRoomCounter(currentCleanRoomCounter + 1);
+      } else if (!room?.callAnswer) await set_call_answer(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const handle_room_time_update = async () => {
+    if (dateEndInMilliseconds || !room?.reloaded || !room) return;
+    setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
   };
 
   useEffect(() => {
@@ -374,8 +388,10 @@ export const NewVideoDate = () => {
       handle_exit();
     };
   }, []);
-  useEffect(handle_room_update, [room]);
+  useEffect(handle_room_decision_update, [room?.goToDecision]);
+  useEffect(handle_room_time_update, [room?.startTime]);
   useEffect(handle_refresh_room_update, [room?.reloadManagement]);
+  useEffect(handle_questions_and_answer, [room?.answer, room?.offer]);
   useEffect(handle_date_time, [dateEndInMilliseconds]);
   useEffect(() => {
     const timer = setInterval(() => handle_check_video_state(), 5000);
@@ -393,7 +409,7 @@ export const NewVideoDate = () => {
         <AppLoader
           props={{
             text: "אתה מועבר לדייט, אנא המתן...",
-            timeOut: 10000,
+            timeOut: 15000,
             goBack: returnToLobby,
           }}
         />

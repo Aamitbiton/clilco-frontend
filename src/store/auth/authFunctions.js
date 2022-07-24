@@ -55,7 +55,7 @@ export const check_password = async (code) => {
 };
 
 export const signOut = async () => {
-  await set_user_is_online(false, "signOut");
+  await set_user_is_online(false);
   await authService.signOut();
 };
 export const login_with_email = async ({ email, password }) => {
@@ -69,4 +69,8 @@ export const resetPassword = async (email) => {
 export const remove_account = async () => {
   await authService.remove_account();
   await authService.signOut();
+};
+
+export const restore_email_by_phone = async (phone) => {
+  return await authService.restore_email_by_phone(phone);
 };

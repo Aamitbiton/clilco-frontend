@@ -1,10 +1,48 @@
+@import "../../style/variables";
+
+.reverse-video{
+    -webkit-transform : scaleX(-1);
+    transform : scaleX(-1);
+}
+
+.my-video-in-date{
+    border-radius: 5px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    border: solid 3px white;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 2;
+    object-fit: cover;
+    height: 20vh;
+}
+
 .video-page {
     height: 100vh;
     width: 100vw;
 }
-//.back-btn{
-//    position: absolute;
-//    top: 0;
-//    margin: 2.5%;
-//}
+
+.remote-video{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin:0 auto;
+    height: 100vh;
+    width: 100%;
+
+    -webkit-transform : scaleX(-1);
+    transform : scaleX(-1);
+    z-index: 1;
+}
+
+.both-mobile-video-style{
+    width: 100vw;
+    object-fit: cover;
+}
+
+.local-mobile-remote-desktop-video-style{
+    width: 100vw;
+    object-fit: contain;
+}
+
 

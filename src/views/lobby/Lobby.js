@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./lobby.scss";
 import {
   watch_room,
@@ -23,6 +23,7 @@ import AppLoader from "../../components/AppLoader/AppLoader";
 import LobbyLoader from "./components/lobbyLoader/LobbyLoader";
 import AppModal from "../../components/AppModal";
 import Title from "../../components/title/title";
+import useUserTracking from "../../hooks/useUserTracking";
 import InternetSpeed from "./components/internetSpeed/InternetSpeed";
 import { Users } from "./components/users/Users";
 const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
@@ -39,7 +40,7 @@ export const Lobby = () => {
   const speed_date_time = useSelector((state) => state.video.speed_date_time);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const reject_suspended_user = () => {
     if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
@@ -150,7 +151,14 @@ export const Lobby = () => {
   };
 
   useEffect(() => {
-    init_page();
+    let element = document.getElementById("root");
+    element.addEventListener("visibilitychange", async () => {
+      if (document.visibilityState === "visible") {
+        console.log('from the listener')
+        await init_page();
+      }
+    });
+
     let flag = false;
     const interval = setInterval(async () => {
       flag = !flag;
@@ -158,8 +166,9 @@ export const Lobby = () => {
     }, 3000);
 
     return () => {
-      handle_exit();
+      element.removeEventListener('visibilitychange')
       clearInterval(interval);
+      handle_exit();
     };
   }, []);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);

@@ -1,36 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { set_user_is_online } from "../store/user/userFunctions";
+import {
+  handle_user_availability,
+  set_user_is_online,
+} from "../store/user/userFunctions";
+import { useLocation } from "react-router-dom";
+import AppRoutes from "../app/AppRoutes";
 
-function useUserTracking() {
+function useUserTracking(props) {
   const [visibilityState, setVisibilityState] = useState(null);
+  const location = useLocation();
   const user_tracking = async ({ isOnline }) => {
-    await set_user_is_online(isOnline, "useUserTracking");
+    await set_user_is_online(isOnline);
   };
-  useEffect(() => user_tracking({ isOnline: true }), []);
-  if (window.rn_app) {
-    window.addEventListener(
-      "visibilitychange",
-      async (event) => {
-        event.stopImmediatePropagation();
-        setVisibilityState(document.visibilityState);
-        if (document.visibilityState === "hidden") {
-          await set_user_is_online(false, "visibilitychange");
-        } else if (document.visibilityState === "visible") {
-          await set_user_is_online(true, "visibilitychange");
-        }
-      },
-      { once: true }
-    );
-  }
+  useEffect(() => {
+    user_tracking({ isOnline: true });
+  }, []);
+  window.addEventListener(
+    "visibilitychange",
+    async (event) => {
+      console.log("USER TRACK EVENT: ", event);
+      event.stopImmediatePropagation();
+      setVisibilityState(document.visibilityState);
+      if (document.visibilityState === "hidden") {
+        await set_user_is_online(false);
+      } else if (document.visibilityState === "visible") {
+        console.log({ currentPath: location.pathname });
+        await set_user_is_online(true);
+      }
+    },
+    false
+  );
   window.addEventListener(
     "beforeunload",
     async (event) => {
       event.stopImmediatePropagation();
       // event.preventDefault();
       // event.returnValue = "";
-      await set_user_is_online(false, "beforeunload");
+      await set_user_is_online(false);
     },
-    { once: true }
+    false
   );
 
   return {

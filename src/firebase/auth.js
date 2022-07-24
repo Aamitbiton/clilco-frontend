@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 import { callAbleFunction } from "./functions";
 import { send_message_to_rn } from "../store/reactNative/rnFunctions";
+import { globalFetch } from "../utils/fetch";
 
 const Auth = getAuth();
 
@@ -118,5 +119,18 @@ export async function login_with_google() {
       const user = result.user;
       return user;
     } catch (e) {}
+  }
+}
+
+export async function restore_email_by_phone(phone) {
+  try {
+    const res = await globalFetch({
+      url: "https://us-central1-clilco.cloudfunctions.net/get_email_by_phone_number",
+      data: { phone },
+    });
+    console.log("get_email_by_phone", res);
+    return res;
+  } catch (e) {
+    console.error(e);
   }
 }

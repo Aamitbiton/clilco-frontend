@@ -1,7 +1,8 @@
 import * as Yup from "yup";
 import "yup-phone";
+const ERROR_MESSAGE = "המספר אינו תקין";
 export const phoneSchema = Yup.object().shape({
-  phoneNumber: Yup.string().phone("il").required(),
+  phoneNumber: Yup.string().phone("il").required(ERROR_MESSAGE),
 });
 
 export const codeSchema = Yup.object().shape({
