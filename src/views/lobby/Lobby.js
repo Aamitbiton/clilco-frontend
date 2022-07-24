@@ -33,7 +33,6 @@ export const Lobby = () => {
   const [internetSpeed, setInternetSpeed] = useState(false);
   const [note, setNote] = useState(NotesInstances.lobby_information_message());
   const [counterInternetSpeed, setCounterInternetSpeed] = useState(0);
-  const [justOpen, setJustOpen] = useState(true)
   const [localStream, setLocalStream] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
@@ -59,7 +58,6 @@ export const Lobby = () => {
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
-      handle_just_open()
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
@@ -67,10 +65,18 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-
-const handle_just_open = () =>{
-  setTimeout(()=>{setJustOpen(false)},5000)
-};
+  // const handle_page_leaving = () => {
+  //   ["beforeunload", "popstate"].forEach((eventType) =>
+  //     window.addEventListener(eventType, handle_exit)
+  //   );
+  //   if (isMobile)
+  //     window.addEventListener("visibilitychange", (event) => {
+  //       if (document.visibilityState === "hidden") handle_exit();
+  //       else if (document.visibilityState === "visible")
+  //         handle_user_availability(true);
+  //       console.log(document.visibilityState);
+  //     });
+  // };
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
@@ -132,6 +138,14 @@ const handle_just_open = () =>{
     console.log("speed change", internetSpeed);
   };
 
+  const get_num_of_rooms_today = async () => {
+    const rooms = await get_rooms_by_date({
+      startDate: new Date(),
+      isSucceed: true,
+    });
+    console.log("rooms", rooms);
+  };
+
   useEffect(() => {
     let element = document.getElementById("root");
     element.addEventListener("visibilitychange", async () => {
@@ -150,13 +164,6 @@ const handle_just_open = () =>{
       handle_exit();
     };
   }, []);
-  const get_num_of_rooms_today = async () => {
-    // const rooms = await get_rooms_by_date({
-    //   startDate: new Date(),
-    //   isSucceed: true,
-    // });
-    // console.log("rooms", rooms);
-  };
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(go_to_date, [room]);
   useEffect(handle_internet_speed, [internetSpeed]);
