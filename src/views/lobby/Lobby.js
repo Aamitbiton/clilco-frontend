@@ -151,6 +151,7 @@ export const Lobby = () => {
   };
 
   useEffect(() => {
+    init_page()
     let element = document.getElementById("root");
     element.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
@@ -158,7 +159,6 @@ export const Lobby = () => {
         await init_page();
       }
     });
-
     let flag = false;
     const interval = setInterval(async () => {
       flag = !flag;
