@@ -138,17 +138,18 @@ export const Lobby = () => {
   };
 
   const get_num_of_rooms_today = async () => {
-    // const rooms = await get_rooms_by_date({
-    //   startDate: new Date(),
-    //   isSucceed: true,
-    // });
-    // console.log("rooms", rooms);
+    const rooms = await get_rooms_by_date({
+      startDate: new Date(),
+      isSucceed: true,
+    });
+    console.log("rooms", rooms);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
       get_num_of_rooms_today();
     }, 3000);
+
     init_page();
     return () => {
       handle_exit();
