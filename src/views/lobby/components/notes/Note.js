@@ -11,7 +11,7 @@ function Note({ note }) {
       border: `1px ${palette.primary.main} solid`,
       borderColor: palette.primary.main,
       borderRadius: 10,
-      top: "5%",
+      top: "3%",
       right: 20,
     },
   };
@@ -29,7 +29,7 @@ function Note({ note }) {
       {title && (
         <Text
           color={"white"}
-          sx={{ fontWeight: 600, letterSpacing: 1.4 }}
+          sx={{ fontWeight: 500, letterSpacing: 1.4 }}
           align={"center"}
         >
           {title}

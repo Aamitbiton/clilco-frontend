@@ -1,3 +1,5 @@
+import title from "../../../../components/title/title";
+
 const TIPS = [
   "תגיעו לדייט בלבוש נוח, נעים למראה ולא צועק",
   "תגיעו עם חיוך רחב וניצוצות בעיניים",
@@ -63,11 +65,24 @@ const date_tips = (random) => {
   };
 };
 
-const lobby_information_message = () => ({
-  title: "",
-  icon: require("../../../../assets/video_assets/icons/icon_rules.png"),
-  content: [message("לפניך חלק מהמשתמשים שעומדים להיכנס לדייט איתך")],
-});
+const lobby_information_message = (rooms, success_rooms, flag) => {
+  if (flag)
+    return {
+      title: "",
+      icon: require("../../../../assets/video_assets/icons/icon_tips.png"),
+      content: [
+        message("נתונים עדכניים להיום"),
+        message(`דייטים: ${rooms}`, true),
+        message(`הצלחות: ${success_rooms}`, false),
+      ],
+    };
+  else
+    return {
+      title: "",
+      icon: require("../../../../assets/video_assets/icons/icon_rules.png"),
+      content: [message("לפניך חלק מהמשתמשים שעומדים להיכנס לדייט איתך")],
+    };
+};
 
 function message(message, highlighted = false) {
   return { message, highlighted };
