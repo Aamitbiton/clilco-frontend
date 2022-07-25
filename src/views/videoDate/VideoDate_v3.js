@@ -26,7 +26,7 @@ import { infoLog } from "../../utils/logs";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import { SNACK_BAR_TYPES } from "../../store/app/snackBarTypes";
 import { question_texts } from "./components/questions/question_texts";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 export const VideoDate_v3 = () => {
   const [startedTimer, setStartedTimer] = useState(false);
@@ -92,11 +92,11 @@ export const VideoDate_v3 = () => {
     pc.onconnectionstatechange = (event) => {
       if (pc.connectionState === "disconnected") {
         console.log("detected disconnect");
-         toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
+        toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
           type: "warning",
         });
-      // here need to write something in the room
-        end_video_date()
+        // here need to write something in the room
+        end_video_date();
       }
     };
     const im_the_caller = roomRef.current?.caller.id === user.private.id;
@@ -162,18 +162,18 @@ export const VideoDate_v3 = () => {
   };
   const now = () => new Date().getTime();
 
-// handle functions
+  // handle functions
   const handle_date_time = () => {
     try {
       if (startedTimer || !dateEndInMilliseconds) return;
       setStartedTimer(true);
       const secondsLeftForDate = Math.floor(
-          (dateEndInMilliseconds - now()) / 1000
+        (dateEndInMilliseconds - now()) / 1000
       );
       Array.apply(null, Array(secondsLeftForDate)).forEach((item, i) => {
         setTimeout(
-            () => secondsLeftForDate - i === 60 && setShowTimer(true),
-            1000 * i
+          () => secondsLeftForDate - i === 60 && setShowTimer(true),
+          1000 * i
         );
       });
     } catch (e) {
@@ -192,11 +192,11 @@ export const VideoDate_v3 = () => {
     }
     const im_the_caller = room?.caller.id === user.private.id;
     if (
-        !pc.currentRemoteDescription &&
-        room?.answer &&
-        im_the_caller &&
-        pc.signalingState === "have-local-offer" &&
-        !remoteDescriptionRun
+      !pc.currentRemoteDescription &&
+      room?.answer &&
+      im_the_caller &&
+      pc.signalingState === "have-local-offer" &&
+      !remoteDescriptionRun
     ) {
       setRemoteDescriptionRun(true);
       const answerDescription = new RTCSessionDescription(room.answer);
@@ -337,13 +337,11 @@ export const VideoDate_v3 = () => {
     }
   };
 
-
-
   useEffect(() => {
     init_page();
     return () => {
       console.log("unload detected");
-      handle_exit()
+      handle_exit();
     };
   }, []);
   useEffect(handle_room_update, [room]);
@@ -371,11 +369,11 @@ export const VideoDate_v3 = () => {
 
       <div className="full-screen" data_cy="video-date-page">
         {showTimer && (
-            <LinearLoading
-                endAction={() => {
-                  end_video_date();
-                }}
-            />
+          <LinearLoading
+            endAction={() => {
+              end_video_date();
+            }}
+          />
         )}
         <video
           onLoadedData={set_video_size}
@@ -395,13 +393,14 @@ export const VideoDate_v3 = () => {
         {room && (
           <CurrentQuestion questionIndexes={room?.questions} volume={volume} />
         )}
-
-        <VideoButtons
-          end_video_date={end_video_date}
-          next_question={go_to_next_question_local}
-          handle_questions_volume={handle_questions_volume}
-          volume={volume * 100}
-        />
+        {!counterAnimation && (
+          <VideoButtons
+            end_video_date={end_video_date}
+            next_question={go_to_next_question_local}
+            handle_questions_volume={handle_questions_volume}
+            volume={volume * 100}
+          />
+        )}
       </div>
     </>
   );
