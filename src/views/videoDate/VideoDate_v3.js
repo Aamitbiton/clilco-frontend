@@ -76,6 +76,7 @@ export const VideoDate_v3 = () => {
   };
   const pc = useMemo(() => new RTCPeerConnection(servers), []);
 
+  //created
   const init_page = async () => {
     try {
       await setupSources();
@@ -85,15 +86,16 @@ export const VideoDate_v3 = () => {
       console.error(e);
     }
   };
+
+  //basic functions
   const peer_connection_events = async () => {
     pc.onconnectionstatechange = (event) => {
-
       if (pc.connectionState === "disconnected") {
         console.log("detected disconnect");
          toast("השיחה התנתקה בגלל בעיות אינטרנט של הצד השני.", {
           type: "warning",
         });
-         set_call_answer(false)
+      // here need to write something in the room
         end_video_date()
       }
     };
@@ -154,6 +156,34 @@ export const VideoDate_v3 = () => {
       console.error(e);
     }
   };
+  const set_call_answer = async (value) => {
+    if (!room) return;
+    await update_call_answer({ roomId: room.id, value: value });
+  };
+  const now = () => new Date().getTime();
+
+// handle functions
+  const handle_date_time = () => {
+    try {
+      if (startedTimer || !dateEndInMilliseconds) return;
+      setStartedTimer(true);
+      const secondsLeftForDate = Math.floor(
+          (dateEndInMilliseconds - now()) / 1000
+      );
+      Array.apply(null, Array(secondsLeftForDate)).forEach((item, i) => {
+        setTimeout(
+            () => secondsLeftForDate - i === 60 && setShowTimer(true),
+            1000 * i
+        );
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const handle_room_time_update = async () => {
+    if (dateEndInMilliseconds || !room) return;
+    setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
+  };
   const handle_room_update = async () => {
     if (!room) return;
     if (room.goToDecision) {
@@ -162,11 +192,11 @@ export const VideoDate_v3 = () => {
     }
     const im_the_caller = room?.caller.id === user.private.id;
     if (
-      !pc.currentRemoteDescription &&
-      room?.answer &&
-      im_the_caller &&
-      pc.signalingState === "have-local-offer" &&
-      !remoteDescriptionRun
+        !pc.currentRemoteDescription &&
+        room?.answer &&
+        im_the_caller &&
+        pc.signalingState === "have-local-offer" &&
+        !remoteDescriptionRun
     ) {
       setRemoteDescriptionRun(true);
       const answerDescription = new RTCSessionDescription(room.answer);
@@ -184,12 +214,6 @@ export const VideoDate_v3 = () => {
     console.log("call answer:", callAnswer);
     await set_call_answer(!!callAnswer);
   };
-  const set_call_answer = async (value) => {
-    if (!room) return;
-    await update_call_answer({ roomId: room.id, value: value });
-  };
-  const now = () => new Date().getTime();
-
 
   //only answerer functions
   const handler_answer = async () => {
@@ -290,6 +314,7 @@ export const VideoDate_v3 = () => {
     );
   };
 
+  //end date
   const end_video_date = async () => {
     try {
       await handle_exit();
@@ -299,10 +324,6 @@ export const VideoDate_v3 = () => {
     } catch (e) {
       console.error(e);
     }
-  };
-  const handle_room_time_update = async () => {
-    if (dateEndInMilliseconds || !room) return;
-    setDateEndInMilliseconds(room.startTime + 1000 * 60 * 7);
   };
   const handle_exit = async (e) => {
     if (e) e.stopImmediatePropagation();
@@ -315,23 +336,7 @@ export const VideoDate_v3 = () => {
       console.error(e);
     }
   };
-  const handle_date_time = () => {
-    try {
-      if (startedTimer || !dateEndInMilliseconds) return;
-      setStartedTimer(true);
-      const secondsLeftForDate = Math.floor(
-          (dateEndInMilliseconds - now()) / 1000
-      );
-      Array.apply(null, Array(secondsLeftForDate)).forEach((item, i) => {
-        setTimeout(
-            () => secondsLeftForDate - i === 60 && setShowTimer(true),
-            1000 * i
-        );
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+
 
 
   useEffect(() => {
