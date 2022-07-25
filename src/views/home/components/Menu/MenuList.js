@@ -21,6 +21,7 @@ import ConfirmItem from "../../../Settings/components/ConfirmItem";
 import NoAccountsOutlinedIcon from "@mui/icons-material/NoAccountsOutlined";
 import ConfirmModal from "../../../../components/ConfirmModal/ConfirmModal";
 import { useSelector } from "react-redux";
+import CallsBadge from "../../../callsHistory/components/CallsBadge";
 
 function MenuList({ anchor, onClick, onKeyDown }) {
   const videoState = useSelector((state) => state.video);
@@ -49,7 +50,9 @@ function MenuList({ anchor, onClick, onKeyDown }) {
           to={AppRoutes.CALLS}
           icon={<CallIcon />}
           itemText={"יומן שיחות"}
-        />
+        >
+          <CallsBadge style={{ position: "absolute", top: "30%" }} />
+        </MenuListItem>
         <MenuListItem
           to={AppRoutes.PROFILE}
           icon={<AccountBoxIcon />}
@@ -83,6 +86,7 @@ export const MenuListItem = ({
   itemText,
   icon,
   to,
+  children,
   is_route = true,
 }) => (
   <ConditionalWrapper
@@ -90,6 +94,7 @@ export const MenuListItem = ({
     wrapper={(children) => <CustomLink to={to}>{children}</CustomLink>}
   >
     <ListItem button onClick={onClick}>
+      {children}
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={itemText} />
     </ListItem>

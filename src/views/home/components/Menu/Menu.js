@@ -5,6 +5,7 @@ import "./Menu.scss";
 import AppIconButton from "../../../../components/Buttons/AppIconButton";
 import MenuList from "./MenuList";
 import "./Menu.scss";
+import CallsBadge from "../../../callsHistory/components/CallsBadge";
 export default function Menu() {
   const DrawerDirection = "right";
   const [state, setState] = React.useState({

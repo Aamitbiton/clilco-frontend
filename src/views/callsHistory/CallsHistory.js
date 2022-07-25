@@ -3,16 +3,22 @@ import "./callsHistory.scss";
 import { get_calls } from "../../store/video/videoFunctions";
 import { SingleCall } from "./components/singleCall/SingleCall";
 import { Header } from "../home/components/header/header";
-import AppButton from "../../components/Buttons/AppButton";
 import { useSelector } from "react-redux";
 import { create_snackBar, reset_snackBar } from "../../store/app/appFunctions";
 import LoadingButton from "@mui/lab/LoadingButton";
+import AppStack from "../../components/AppStack";
+import Title from "../../components/title/title";
+import FadeAnimation from "../../components/animations/Fade/FadeAnimation";
+import AppLoader from "../../components/AppLoader/AppLoader";
+import ZoomAnimation from "../../components/animations/Zoom/ZoomAnimation";
+import CallsBadge from "./components/CallsBadge";
 
 export const CallsHistory = () => {
   const [calls, setCalls] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
   const [enabled, setEnabled] = useState(true);
   const created = async () => {
+    localStorage.setItem("last_visited_calls", Date.now().toString());
     await get_more_calls();
   };
 
@@ -40,40 +46,29 @@ export const CallsHistory = () => {
 
   const translate = useSelector((s) => s.app.global_hooks.translate);
   useEffect(created, []);
+  if (showLoading) return <AppLoader />;
   return (
-    <>
+    <FadeAnimation visible={true}>
       <Header />
       <div className="calls-page">
-        <h2 className="calls-title">{translate("calls.title")}</h2>
-
+        <CallsBadge />
+        <Title textAlign={"center"} title={translate("calls.title")} />
         {calls.length ? (
-          <div className="calls">
-            {calls
-              .sort((a, b) => b.startTime - a.startTime)
-              .map((call, i) => (
-                <SingleCall key={i} call={call} />
-              ))}
-
-            {/*{enabled && (*/}
-            {/*  <LoadingButton*/}
-            {/*    style={{*/}
-            {/*      height: "50px",*/}
-            {/*      width: "100%",*/}
-            {/*      marginTop: "30px",*/}
-            {/*    }}*/}
-            {/*    loading={showLoading}*/}
-            {/*    className="get-more-btn"*/}
-            {/*    variant={"outlined"}*/}
-            {/*    onClick={get_more_calls}*/}
-            {/*  >*/}
-            {/*    {translate("calls.get_more_calls")}*/}
-            {/*  </LoadingButton>*/}
-            {/*)}*/}
-          </div>
+          <ZoomAnimation visible={!!calls.length}>
+            <AppStack direction={"column"} alignItems={"center"}>
+              {calls
+                .sort((a, b) => b.startTime - a.startTime)
+                .map((call, i) => (
+                  <SingleCall key={i} call={call} />
+                ))}
+            </AppStack>
+          </ZoomAnimation>
         ) : (
-          <h1 className="no-calls">{translate("calls.no_calls")}</h1>
+          <ZoomAnimation visible={!calls.length}>
+            <h1 className="no-calls">{translate("calls.no_calls")}</h1>
+          </ZoomAnimation>
         )}
       </div>
-    </>
+    </FadeAnimation>
   );
 };
