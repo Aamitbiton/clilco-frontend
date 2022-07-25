@@ -157,7 +157,7 @@ export const VideoDate_v3 = () => {
     }
   };
   const set_call_answer = async (value) => {
-    if (!room) return;
+    if (!room || room?.callAnswer) return;
     await update_call_answer({ roomId: room.id, value: value });
   };
   const now = () => new Date().getTime();
