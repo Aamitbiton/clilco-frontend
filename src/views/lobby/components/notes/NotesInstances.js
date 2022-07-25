@@ -72,8 +72,8 @@ const lobby_information_message = (rooms, success_rooms, flag) => {
       icon: require("../../../../assets/video_assets/icons/icon_tips.png"),
       content: [
         message("נתונים עדכניים להיום"),
-        message(`דייטים: ${rooms}`, true),
-        message(`הצלחות: ${success_rooms}`, false),
+        message(`דייטים: ${rooms} הצלחות: ${success_rooms}`),
+        // message(`הצלחות: ${success_rooms}`, false),
       ],
     };
   else

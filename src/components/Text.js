@@ -1,9 +1,15 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 
-function Text({ children, sx, align, color, ...otherProps }) {
+function Text({ children, sx, align, color, fontSize, ...otherProps }) {
   return (
-    <Typography align={align} sx={sx} color={color}   {...otherProps}>
+    <Typography
+      align={align}
+      sx={sx}
+      color={color}
+      fontSize={fontSize}
+      {...otherProps}
+    >
       {children}
     </Typography>
   );

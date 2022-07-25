@@ -11,8 +11,9 @@ function Note({ note }) {
       border: `1px ${palette.primary.main} solid`,
       borderColor: palette.primary.main,
       borderRadius: 10,
-      top: "3%",
-      right: 20,
+      top: "5%",
+      right: "10%",
+      left: "10%",
     },
   };
   // useEffect(() => {
@@ -39,7 +40,7 @@ function Note({ note }) {
         <Text
           key={index}
           align={"center"}
-          fontSize={"22px"}
+          fontSize={"19px"}
           fontWeight={"bold"}
           color={"primary"}
         >

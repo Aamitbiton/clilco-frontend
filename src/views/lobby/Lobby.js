@@ -31,7 +31,9 @@ const WRTC_PERMISSION_DENIED_MESSAGE = "Permission denied";
 export const Lobby = () => {
   const [loader, setLoader] = useState(true);
   const [internetSpeed, setInternetSpeed] = useState(false);
-  const [note, setNote] = useState(NotesInstances.lobby_information_message());
+  const [note, setNote] = useState(
+    NotesInstances.lobby_information_message(0, 0, false)
+  );
   const [counterInternetSpeed, setCounterInternetSpeed] = useState(0);
   const [localStream, setLocalStream] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -140,33 +142,38 @@ export const Lobby = () => {
 
   const handle_rooms_today = async (flag) => {
     let startDate = new Date();
+    startDate.setHours("19");
     const rooms = await get_num_of_rooms_today({ startDate, isSucceed: true });
-    setNote(
-      NotesInstances.lobby_information_message(
-        rooms.rooms,
-        rooms.succeed_dates,
-        flag
-      )
-    );
+    const successRate = Math.ceil(rooms?.succeed_dates / rooms?.rooms);
+    if (rooms?.rooms > 0 && successRate > 0) {
+      setNote(
+        NotesInstances.lobby_information_message(
+          rooms?.rooms,
+          `${successRate}%`,
+          flag
+        )
+      );
+    }
   };
 
   useEffect(() => {
-    init_page()
+    init_page();
+    let flag = false;
+
     let element = document.getElementById("root");
     element.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
-        console.log('from the listener')
+        console.log("from the listener");
         await init_page();
       }
     });
-    let flag = false;
     const interval = setInterval(async () => {
       flag = !flag;
       await handle_rooms_today(flag);
     }, 3000);
 
     return () => {
-      element.removeEventListener('visibilitychange')
+      element.removeEventListener("visibilitychange");
       clearInterval(interval);
       handle_exit();
     };
