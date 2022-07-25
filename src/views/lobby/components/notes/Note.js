@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Text from "../../../../components/Text";
 import { useTheme } from "@mui/material";
 import "./Note.scss";
-import path from "../../../../assets/sounds/Countdown - Sound Effect.mp3";
 function Note({ note }) {
   const { title, content, icon } = note;
   const { palette } = useTheme();
   const style = {
     container: {
-      zIndex: 100,
+      zIndex: 500,
       border: `1px ${palette.primary.main} solid`,
       borderColor: palette.primary.main,
       borderRadius: 10,
-      top: "10%",
+      top: "3%",
       right: 20,
     },
   };
@@ -30,7 +29,7 @@ function Note({ note }) {
       {title && (
         <Text
           color={"white"}
-          sx={{ fontWeight: 600, letterSpacing: 1.4 }}
+          sx={{ fontWeight: 500, letterSpacing: 1.4 }}
           align={"center"}
         >
           {title}

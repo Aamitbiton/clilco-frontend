@@ -273,7 +273,6 @@ export const NewVideoDate = () => {
   const end_video_date = async () => {
     try {
       await handle_exit();
-      setRemoteStream(null);
       await unsubscribe_room_listener();
       await set_go_to_decision();
       navigate(AppRoutes.AFTER_VIDEO);

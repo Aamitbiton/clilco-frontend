@@ -44,7 +44,16 @@ export const watch_remote_user = async (remoteUserId) => {
 };
 
 export const search_for_match = async () => {
+  console.log('search for match')
   return await api.search_for_match();
+};
+
+export const get_num_of_rooms_today = async ({
+  startDate,
+  endDate,
+  isSucceed,
+}) => {
+  return await api.get_rooms_by_date({ startDate, endDate, isSucceed });
 };
 
 export const delete_room_from_state = async () => {
@@ -65,6 +74,8 @@ export const add_offer_or_answer = async ({ offerOrAnswer, roomId, type }) => {
 };
 
 export const clean_room = async () => {
+  console.log("try clean room ");
+
   const room = getState().video.room;
   if (!room) return;
   console.log("clean room ");

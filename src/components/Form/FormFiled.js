@@ -13,9 +13,14 @@ function FormFiled({
   defaultValue,
   ...otherProps
 }) {
-  const { handleChange, errors, touched } = useFormikContext();
+  const { handleChange, errors, touched, handleSubmit } = useFormikContext();
   return (
     <TextInput
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleSubmit();
+        }
+      }}
       data_cy={data_cy}
       id={id}
       width={width}

@@ -15,7 +15,7 @@ export const RemoteVideo = ({ remoteStream }) => {
   };
   useEffect(() => {
     if (remoteStream) {
-      remoteVideoRef.current.srcObject = remoteStream;
+      remoteStream(remoteVideoRef.current?.srcObject);
       remoteVideoRef.current.addEventListener("", () => {});
     }
   }, [remoteStream]);

@@ -5,7 +5,7 @@
     width: 100px;
     color: white;
 
-    animation: zoom-in-zoom-out 1.5s ease infinite;
+    animation: zoom-in-zoom-out 1s ease infinite;
     text-align: center;
     z-index: 1000;
     font-size: 40px;
