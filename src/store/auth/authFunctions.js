@@ -5,6 +5,7 @@ import { store } from "../index";
 import { set_user_is_online, watch_user } from "../user/userFunctions";
 import USER_CONSTANTS from "../user/constants";
 import { set_user_id_to_rn } from "../reactNative/rnFunctions";
+import { get_calls } from "../video/videoFunctions";
 const { getState, dispatch } = store;
 
 export const login_with_google = async () => {
@@ -27,6 +28,7 @@ export const watch_auth_changes = async (set_app_ready) => {
     if (window.rn_app && user.uid) {
       await set_user_id_to_rn(user.uid);
     }
+    user && (await get_calls());
   });
 };
 

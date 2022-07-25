@@ -281,7 +281,6 @@ export const NewVideoDate = () => {
     }
   };
   const returnToLobby = async () => {
-    debugger;
     if (room) await videoService.end_date({ roomId: room.id });
     console.log("try to close the room and navigate to lobby");
     navigate(AppRoutes.LOBBY);
