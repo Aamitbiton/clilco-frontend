@@ -6,6 +6,8 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpSharpIcon from "@mui/icons-material/VolumeUpSharp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { VolumeBar } from "../../../../components/sliders/volumeBar/VolumeBar";
+import { init_app } from "../../../../store/app/appFunctions";
+import { SECOND } from "../../../../utils/dates";
 
 export const VideoButtons = ({
   end_video_date,
@@ -24,7 +26,22 @@ export const VideoButtons = ({
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const isMobile = useSelector((s) => s.app.isMobile);
   const [disable, setDisable] = useState(false);
+  const [timer, setTimer] = useState(3);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((timer) => {
+        if (timer === 0) {
+          clearInterval(interval);
+          return;
+        }
+        return timer - 1;
+      });
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   return (
     <>
       <div
@@ -54,10 +71,14 @@ export const VideoButtons = ({
         <div>
           <div
             className="video-btn"
-            onClick={end_video_date}
+            onClick={timer ? () => {} : end_video_date}
             data_cy="end-video-btn"
           >
-            <PhoneDisabledSharpIcon fontSize="large" color="turquoise" />
+            {!timer ? (
+              <PhoneDisabledSharpIcon fontSize="large" color="turquoise" />
+            ) : (
+              <div> {timer}</div>
+            )}
             {/*<b>1</b>*/}
           </div>
           <div className="icon-text">{translate("video_page.end-call")}</div>

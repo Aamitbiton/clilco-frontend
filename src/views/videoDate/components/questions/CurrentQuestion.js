@@ -14,9 +14,10 @@ export const CurrentQuestion = ({ questionIndexes, volume }) => {
   const audioRef = useRef();
   const handle_question_url = async ({ index }) => {
     setSrc(await get_question_audio({ index: index.toString() }));
-    play_question();
+    play_question(index);
   };
-  const play_question = () => {
+  const play_question = (index) => {
+    if (index === 0 || index === "0") return;
     audioRef.current?.play();
     console.log("play quest");
   };

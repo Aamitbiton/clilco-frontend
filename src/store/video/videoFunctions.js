@@ -94,7 +94,7 @@ export const set_go_to_decision = async () => {
 
 export const end_date = async () => {
   const room = getState().video.room;
-  if (room) await videoService.end_date({ roomId: room.id });
+  if (room && !room.ended) await videoService.end_date({ roomId: room.id });
 };
 
 export const answer_after_date = async (answer) => {
