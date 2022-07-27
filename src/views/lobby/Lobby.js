@@ -144,15 +144,16 @@ export const Lobby = () => {
     let startDate = new Date();
     startDate.setHours("19");
     const rooms = await get_num_of_rooms_today({ startDate, isSucceed: true });
-    const successRate = Math.ceil(rooms?.succeed_dates / rooms?.rooms);
-    if (rooms?.rooms > 0 && successRate > 0) {
-      setNote(
-        NotesInstances.lobby_information_message(
-          rooms?.rooms,
-          `${successRate}%`,
-          flag
-        )
-      );
+    if (rooms.rooms > 0) {
+      const successRate = Math.ceil(rooms?.succeed_dates / rooms?.rooms);
+      if (successRate > 0)
+        setNote(
+          NotesInstances.lobby_information_message(
+            rooms?.rooms,
+            `${successRate}%`,
+            flag
+          )
+        );
     }
   };
 

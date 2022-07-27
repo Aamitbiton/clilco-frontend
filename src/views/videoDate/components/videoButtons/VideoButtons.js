@@ -26,7 +26,7 @@ export const VideoButtons = ({
   const translate = useSelector((s) => s.app.global_hooks.translate);
   const isMobile = useSelector((s) => s.app.isMobile);
   const [disable, setDisable] = useState(false);
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(3);
 
   useEffect(() => {
     const interval = setInterval(() => {
