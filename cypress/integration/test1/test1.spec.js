@@ -32,6 +32,7 @@ describe(`test webrtc with user ${user}`, () => {
     Cypress.on("uncaught:exception", (err, runnable) => {
       return false; // returning false here prevents Cypress from failing the test on errors
     });
+    cy.wait(8000);
     cy.get("[data_cy=end-video-btn]").click();
     cy.get("[data_cy=after-date-page]").should("exist");
   });

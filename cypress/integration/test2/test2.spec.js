@@ -28,6 +28,6 @@ describe(`test webrtc with user ${user}`, () => {
       return false; // returning false here prevents Cypress from failing the test on errors
     });
     console.log("***************************** waiting for other user");
-    cy.get("[data_cy=after-date-page]", { timeout: 120000 }).should("exist");
+    cy.get("[data_cy=after-date-page]", { timeout: 200000 }).should("exist");
   });
 });

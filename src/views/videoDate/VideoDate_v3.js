@@ -381,7 +381,7 @@ export const VideoDate_v3 = () => {
           autoPlay
           playsInline
           className={videoClass}
-          data-cy={"remote-video"}
+          data_cy={"remote-video"}
         />
         <video
           ref={localRef}
