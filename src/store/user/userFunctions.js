@@ -14,19 +14,17 @@ import {
   myUser,
   set_tip_top_users,
 } from "./utils/tip_top_users";
+import { SECOND } from "../../utils/dates";
+import { create_tracker } from "../../utils/openReplay";
 
 const { getState, dispatch } = store;
 
 export const watch_user = async () => {
   const privateCallBack = async (user) => {
-    if (user?.id) {
-      const tracker = new Tracker({
-        projectKey: "QTiaAnBFRhQYCLVEDedf",
-      });
-      tracker.setUserID(user.id);
-      tracker.start();
-    }
-
+    setTimeout(() => {
+      const is_dating_time = getState().video.speed_date_time.its_dating_time;
+      create_tracker(user, is_dating_time);
+    }, SECOND * 3);
     await actionsCreator(USER_CONSTANTS.SET_USER_PRIVATE, user);
     await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
   };
