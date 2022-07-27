@@ -3,11 +3,11 @@ import USER_CONSTANTS from "./constants";
 import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
 import _ from "lodash";
+import Tracker from "@openreplay/tracker";
 import { store } from "../index";
 import APP_CONSTANTS from "../app/constants";
 import { get_all_users } from "../../apiMiddleware/dbLayer";
 import { globalFetch } from "../../utils/fetch";
-import LogRocket from "logrocket";
 import {
   create_query,
   generate_clilco_users,
@@ -20,10 +20,11 @@ const { getState, dispatch } = store;
 export const watch_user = async () => {
   const privateCallBack = async (user) => {
     if (user?.id) {
-      LogRocket.identify(user.id, {
-        email: user.email,
-        phone: user.phone,
+      const tracker = new Tracker({
+        projectKey: "QTiaAnBFRhQYCLVEDedf",
       });
+      tracker.setUserID(user.id);
+      tracker.start();
     }
 
     await actionsCreator(USER_CONSTANTS.SET_USER_PRIVATE, user);
