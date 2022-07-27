@@ -3,7 +3,6 @@ import USER_CONSTANTS from "./constants";
 import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
 import _ from "lodash";
-import Tracker from "@openreplay/tracker";
 import { store } from "../index";
 import APP_CONSTANTS from "../app/constants";
 import { get_all_users } from "../../apiMiddleware/dbLayer";
