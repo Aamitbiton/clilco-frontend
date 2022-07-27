@@ -171,7 +171,7 @@ export const Lobby = () => {
     const interval = setInterval(async () => {
       flag = !flag;
       await handle_rooms_today(flag);
-    }, 3000);
+    }, 10000);
 
     return () => {
       element.removeEventListener("visibilitychange");
