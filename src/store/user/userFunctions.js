@@ -7,25 +7,23 @@ import { store } from "../index";
 import APP_CONSTANTS from "../app/constants";
 import { get_all_users } from "../../apiMiddleware/dbLayer";
 import { globalFetch } from "../../utils/fetch";
-import LogRocket from "logrocket";
 import {
   create_query,
   generate_clilco_users,
   myUser,
   set_tip_top_users,
 } from "./utils/tip_top_users";
+import { SECOND } from "../../utils/dates";
+import { create_tracker } from "../../utils/openReplay";
 
 const { getState, dispatch } = store;
 
 export const watch_user = async () => {
   const privateCallBack = async (user) => {
-    if (user?.id) {
-      LogRocket.identify(user.id, {
-        email: user.email,
-        phone: user.phone,
-      });
-    }
-
+    setTimeout(() => {
+      const is_dating_time = getState().video.speed_date_time.its_dating_time;
+      create_tracker(user, is_dating_time);
+    }, SECOND * 3);
     await actionsCreator(USER_CONSTANTS.SET_USER_PRIVATE, user);
     await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
   };
