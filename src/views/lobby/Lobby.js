@@ -174,7 +174,9 @@ export const Lobby = () => {
     }, 10000);
 
     return () => {
-      element.removeEventListener("visibilitychange");
+      element.removeEventListener("visibilitychange", () => {
+        console.log("visibilitychange removed.");
+      });
       clearInterval(interval);
       handle_exit();
     };
