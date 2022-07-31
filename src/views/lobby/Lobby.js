@@ -92,12 +92,14 @@ export const Lobby = () => {
   };
   const handle_no_permissions = async (e) => {
     if (e.message === WRTC_PERMISSION_DENIED_MESSAGE) {
-      console.log("permission: ", true);
       navigate(AppRoutes.ROOT);
       await toast("חסרות הרשאות למצלמה. אנא אפשר גישה למצלמה.", {
         type: "error",
       });
+      return;
     }
+    alert(e.message);
+    navigate(AppRoutes.ROOT);
   };
   const stop_my_video = () => {
     try {
@@ -174,7 +176,9 @@ export const Lobby = () => {
     }, 10000);
 
     return () => {
-      element.removeEventListener("visibilitychange");
+      element.removeEventListener("visibilitychange", () => {
+        console.log("visibilitychange removed.");
+      });
       clearInterval(interval);
       handle_exit();
     };
