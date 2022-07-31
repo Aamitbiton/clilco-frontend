@@ -1,4 +1,5 @@
 import Tracker from "@openreplay/tracker";
+
 export async function create_tracker(user, is_time_to_record) {
   if (!user) return;
   if (!is_time_to_record) return;
