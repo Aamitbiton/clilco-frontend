@@ -20,9 +20,12 @@ const { getState, dispatch } = store;
 
 export const watch_user = async () => {
   const privateCallBack = async (user) => {
-    setTimeout(() => {
+    const user_tracked = getState().app.user_tracked;
+    setTimeout(async () => {
+      if (user_tracked) return;
       const is_dating_time = getState().video.speed_date_time.its_dating_time;
-      create_tracker(user, is_dating_time);
+      await create_tracker(user, is_dating_time);
+      await actionsCreator(APP_CONSTANTS.SET_USER_TRACKED, true);
     }, SECOND * 3);
     await actionsCreator(USER_CONSTANTS.SET_USER_PRIVATE, user);
     await actionsCreator(APP_CONSTANTS.FINISHED_FETCHING_USER, true);
