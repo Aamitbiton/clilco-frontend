@@ -36,6 +36,7 @@ export const Lobby = () => {
   );
   const [counterInternetSpeed, setCounterInternetSpeed] = useState(0);
   const [localStream, setLocalStream] = useState(null);
+  const [video_is_ready, set_video_is_ready] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
@@ -99,6 +100,7 @@ export const Lobby = () => {
       return;
     }
     alert(e.message);
+    console.error("LOCAL VIDEO ERROR: ", e.message);
     navigate(AppRoutes.ROOT);
   };
   const stop_my_video = () => {
@@ -141,6 +143,11 @@ export const Lobby = () => {
     } else setCounterInternetSpeed(0);
     console.log("speed change", internetSpeed);
   };
+  const handle_video_ready = () => {
+    if (localStream?.active && !video_is_ready) {
+      set_video_is_ready(true);
+    }
+  };
 
   const handle_rooms_today = async (flag) => {
     let startDate = new Date();
@@ -160,9 +167,9 @@ export const Lobby = () => {
   };
 
   useEffect(() => {
+    if (!video_is_ready) return;
     init_page();
     let flag = false;
-
     let element = document.getElementById("root");
     element.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
@@ -182,8 +189,12 @@ export const Lobby = () => {
       clearInterval(interval);
       handle_exit();
     };
-  }, []);
+  }, [video_is_ready]);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
+  useEffect(() => {
+    console.log("local stream use effect");
+    handle_video_ready();
+  }, [localStream]);
   useEffect(go_to_date, [room]);
   useEffect(handle_internet_speed, [internetSpeed]);
 

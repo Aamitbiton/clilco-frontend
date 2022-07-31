@@ -5,4 +5,5 @@ export default Object.freeze({
   LNG: "LNG",
   SET_IS_MOBILE: "SET_IS_MOBILE",
   SET_SNACK_BAR: "SET_SNACK_BAR",
+  SET_USER_TRACKED: "SET_USER_TRACKED",
 });
