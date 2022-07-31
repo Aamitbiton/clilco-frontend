@@ -8,7 +8,6 @@ describe(`test webrtc with user ${user}`, () => {
     cy.get("[data_cy=login-email-input]").type(user + "@gmail.com");
     cy.get("[data_cy=login-password-input]").type(pass);
     cy.get("[data_cy=login-with-email_login-btn]").click();
-    //todo: add check if got to home page
   });
 
   it("should be at home page and click to start dating", function () {
