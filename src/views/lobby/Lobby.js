@@ -170,8 +170,8 @@ export const Lobby = () => {
     if (!video_is_ready) return;
     init_page();
     let flag = false;
-    let element = document.getElementById("root");
-    element.addEventListener("visibilitychange", async () => {
+    // let element = document.getElementById("root");
+    document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
         console.log("from the listener");
         await init_page();
@@ -183,7 +183,7 @@ export const Lobby = () => {
     }, 10000);
 
     return () => {
-      element.removeEventListener("visibilitychange", () => {
+      document.removeEventListener("visibilitychange", () => {
         console.log("visibilitychange removed.");
       });
       clearInterval(interval);
