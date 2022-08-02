@@ -36,10 +36,11 @@ async function createDoc(path, data, id) {
   }
 }
 
-async function getDocument(path) {
+async function getDocument(path, checkIsDocExists) {
   try {
     const myDoc = await getDoc(doc(db, path));
     if (!myDoc) return;
+    if (checkIsDocExists) return myDoc.exists();
     const data = myDoc.data();
     if (!data) return;
     data.id = myDoc.id;

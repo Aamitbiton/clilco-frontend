@@ -20,7 +20,7 @@ export const Users = ({ setLoader }) => {
   };
   const [users, setUsers] = useState(null);
   const get_more_users = async () => {
-    const newUsers = await f_get_all_users(!!users, true);
+    const newUsers = await f_get_all_users(!!users, false);
     if (newUsers) {
       const allUsers = users ? users.concat(newUsers) : newUsers;
       setUsers(allUsers);

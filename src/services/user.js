@@ -43,3 +43,7 @@ export async function send_contact_form(contactDetails) {
   const id = authService.get_current_user().uid;
   return await api.send_contact_form(contactDetails);
 }
+
+export async function increment_online_users(date, field) {
+  return await dbLayer.incrementField({ date, field });
+}

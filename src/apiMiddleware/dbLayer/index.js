@@ -104,9 +104,9 @@ export async function update_room({ roomId, data }) {
   return await firestore.update(constants.dbPaths.singleRoom(roomId), data);
 }
 
-export async function incrementField({ roomId, field }) {
+export async function incrementField({ date, field }) {
   return await firestore.incrementField(
-    constants.dbPaths.singleRoom(roomId),
+    constants.dbPaths.bo_data.count_online_users(date),
     field
   );
 }

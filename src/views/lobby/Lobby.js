@@ -6,7 +6,10 @@ import {
   search_for_match,
   get_num_of_rooms_today,
 } from "../../store/video/videoFunctions";
-import { handle_user_availability } from "../../store/user/userFunctions";
+import {
+  handle_user_availability,
+  increment_online_users,
+} from "../../store/user/userFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { MyVideoInLobby } from "./components/myVideo/MyVideoInLobby";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -157,8 +160,9 @@ export const Lobby = () => {
     }
   };
 
-  useEffect(() => {
-    init_page();
+  useEffect(async () => {
+    await init_page();
+    await increment_online_users();
     let flag = false;
 
     let element = document.getElementById("root");
