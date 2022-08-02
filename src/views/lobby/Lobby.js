@@ -44,6 +44,8 @@ export const Lobby = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const location = useLocation();
+
+
   const reject_suspended_user = () => {
     if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
@@ -61,6 +63,7 @@ export const Lobby = () => {
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
+      console.log('init page running')
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
@@ -68,18 +71,7 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-  // const handle_page_leaving = () => {
-  //   ["beforeunload", "popstate"].forEach((eventType) =>
-  //     window.addEventListener(eventType, handle_exit)
-  //   );
-  //   if (isMobile)
-  //     window.addEventListener("visibilitychange", (event) => {
-  //       if (document.visibilityState === "hidden") handle_exit();
-  //       else if (document.visibilityState === "visible")
-  //         handle_user_availability(true);
-  //       console.log(document.visibilityState);
-  //     });
-  // };
+
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
@@ -148,7 +140,6 @@ export const Lobby = () => {
       set_video_is_ready(true);
     }
   };
-
   const handle_rooms_today = async (flag) => {
     let startDate = new Date();
     startDate.setHours("19");
@@ -170,7 +161,6 @@ export const Lobby = () => {
     if (!video_is_ready) return;
     init_page();
     let flag = false;
-    // let element = document.getElementById("root");
     document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
         console.log("from the listener");
@@ -192,7 +182,7 @@ export const Lobby = () => {
   }, [video_is_ready]);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
   useEffect(() => {
-    console.log("local stream use effect");
+    if (!localStream) return;
     handle_video_ready();
   }, [localStream]);
   useEffect(go_to_date, [room]);
