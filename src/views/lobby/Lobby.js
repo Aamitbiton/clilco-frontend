@@ -39,6 +39,7 @@ export const Lobby = () => {
   );
   const [counterInternetSpeed, setCounterInternetSpeed] = useState(0);
   const [localStream, setLocalStream] = useState(null);
+  const [video_is_ready, set_video_is_ready] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const room = useSelector((state) => state.video.room);
   const translate = useSelector((state) => state.app.global_hooks.translate);
@@ -46,6 +47,8 @@ export const Lobby = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const location = useLocation();
+
+
   const reject_suspended_user = () => {
     if (is_suspended()) {
       alert("הנך מושהה מן הדייטים עקב דיווח לרעה. נסה להתחבר בפעם הבאה.");
@@ -63,6 +66,7 @@ export const Lobby = () => {
   const init_page = async () => {
     if (reject_suspended_user()) return;
     try {
+      console.log('init page running')
       await watch_room();
       const res = await search_for_match();
       if (!res?.found) await handle_user_availability(true);
@@ -70,18 +74,7 @@ export const Lobby = () => {
       console.error(e);
     }
   };
-  // const handle_page_leaving = () => {
-  //   ["beforeunload", "popstate"].forEach((eventType) =>
-  //     window.addEventListener(eventType, handle_exit)
-  //   );
-  //   if (isMobile)
-  //     window.addEventListener("visibilitychange", (event) => {
-  //       if (document.visibilityState === "hidden") handle_exit();
-  //       else if (document.visibilityState === "visible")
-  //         handle_user_availability(true);
-  //       console.log(document.visibilityState);
-  //     });
-  // };
+
   const handle_not_dating_time = () => {
     if (speed_date_time.its_dating_time || user.public.testUser) return;
     setModalVisible(true);
@@ -95,12 +88,15 @@ export const Lobby = () => {
   };
   const handle_no_permissions = async (e) => {
     if (e.message === WRTC_PERMISSION_DENIED_MESSAGE) {
-      console.log("permission: ", true);
       navigate(AppRoutes.ROOT);
       await toast("חסרות הרשאות למצלמה. אנא אפשר גישה למצלמה.", {
         type: "error",
       });
+      return;
     }
+    alert(e.message);
+    console.error("LOCAL VIDEO ERROR: ", e.message);
+    navigate(AppRoutes.ROOT);
   };
   const stop_my_video = () => {
     try {
@@ -142,7 +138,11 @@ export const Lobby = () => {
     } else setCounterInternetSpeed(0);
     console.log("speed change", internetSpeed);
   };
-
+  const handle_video_ready = () => {
+    if (localStream?.active && !video_is_ready) {
+      set_video_is_ready(true);
+    }
+  };
   const handle_rooms_today = async (flag) => {
     let startDate = new Date();
     startDate.setHours("19");
@@ -161,12 +161,11 @@ export const Lobby = () => {
   };
 
   useEffect(async () => {
+    if (!video_is_ready) return;
     await init_page();
     await increment_online_users();
     let flag = false;
-
-    let element = document.getElementById("root");
-    element.addEventListener("visibilitychange", async () => {
+    document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
         console.log("from the listener");
         await init_page();
@@ -178,12 +177,18 @@ export const Lobby = () => {
     }, 10000);
 
     return () => {
-      element.removeEventListener("visibilitychange");
+      document.removeEventListener("visibilitychange", () => {
+        console.log("visibilitychange removed.");
+      });
       clearInterval(interval);
       handle_exit();
     };
-  }, []);
+  }, [video_is_ready]);
   useEffect(handle_not_dating_time, [speed_date_time.its_dating_time]);
+  useEffect(() => {
+    if (!localStream) return;
+    handle_video_ready();
+  }, [localStream]);
   useEffect(go_to_date, [room]);
   useEffect(handle_internet_speed, [internetSpeed]);
 

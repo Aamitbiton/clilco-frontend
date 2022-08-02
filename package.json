@@ -74,6 +74,6 @@
   },
   "devDependencies": {
     "@welldone-software/why-did-you-render": "^7.0.1",
-    "cypress": "^9.6.0"
+    "cypress": "^10.3.1"
   }
 }

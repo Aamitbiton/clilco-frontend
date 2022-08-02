@@ -30,9 +30,10 @@ jobs:
       # and run all Cypress tests
 
       - name: cypress-run-test1
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4.1.0
         with:
-          spec: cypress/integration/test1/*
+          config-file: cypress.config.js
+          spec: cypress/e2e/test1/*
         timeout-minutes: 10
 
 
@@ -48,7 +49,8 @@ jobs:
       # and run all Cypress tests
 
       - name: cypress-run-test2
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4.1.0
         with:
-          spec: cypress/integration/test2/*
+          config-file: cypress.config.js
+          spec: cypress/e2e/test2/*
         timeout-minutes: 10

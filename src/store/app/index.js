@@ -7,6 +7,7 @@ const {
   LNG,
   SET_IS_MOBILE,
   SET_SNACK_BAR,
+  SET_USER_TRACKED,
 } = APP_CONSTANTS;
 const appInterface = {
   app_ready: false,
@@ -14,6 +15,7 @@ const appInterface = {
   global_hooks: null,
   lng: null,
   isMobile: false,
+  user_tracked: false,
   snackBar: { open: false, handleClose: null, message: null },
 };
 
@@ -35,7 +37,8 @@ export default function app(state = appInterface, action) {
       return { ...state, isMobile: action.payload };
     case SET_SNACK_BAR:
       return { ...state, snackBar: { ...state.snackBar, ...action.payload } };
-
+    case SET_USER_TRACKED:
+      return { ...state, user_tracked: action.payload };
     default:
       return state;
   }
