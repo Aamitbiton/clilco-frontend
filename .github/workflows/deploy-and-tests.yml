@@ -32,6 +32,8 @@ jobs:
       - name: cypress-run-test1
         uses: cypress-io/github-action@v2
         with:
+          config-file: cypress.config.ts
+          record: true
           spec: cypress/e2e/test1/*
         timeout-minutes: 10
 
@@ -50,5 +52,7 @@ jobs:
       - name: cypress-run-test2
         uses: cypress-io/github-action@v2
         with:
+          config-file: cypress.config.ts
+          record: true
           spec: cypress/e2e/test2/*
         timeout-minutes: 10
