@@ -59,7 +59,7 @@ export const MyVideoInLobby = ({
   useEffect(handle_date_started, [dateStarted]);
 
   return (
-    <>
+    <div>
       <div style={{ position: "absolute" }}>
         {/*<EmotionsChart_pie emotionsData={emotions} />*/}
         {/*<EmotionsChart_inline emotionsData={emotions} />*/}
@@ -72,6 +72,6 @@ export const MyVideoInLobby = ({
         autoPlay={true}
         muted={true}
       />
-    </>
+    </div>
   );
 };
