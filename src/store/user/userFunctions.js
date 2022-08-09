@@ -1,11 +1,12 @@
-import * as firestore from "../../firebase/firestore";
+import firestore from "../../firebase/firestore";
+import APP_CONSTANTS from "../app/constants";
 import USER_CONSTANTS from "./constants";
 import actionsCreator from "../actionsCreator";
 import * as userService from "../../services/user";
 import _ from "lodash";
 import { store } from "../index";
-import APP_CONSTANTS from "../app/constants";
 import { get_all_users } from "../../apiMiddleware/dbLayer";
+import { dbPaths } from "../../apiMiddleware/dbLayer/constants";
 import { globalFetch } from "../../utils/fetch";
 import {
   create_query,
@@ -13,7 +14,7 @@ import {
   myUser,
   set_tip_top_users,
 } from "./utils/tip_top_users";
-import { SECOND } from "../../utils/dates";
+import { SECOND, check_is_today_date } from "../../utils/dates";
 import { create_tracker } from "../../utils/openReplay";
 
 const { getState, dispatch } = store;
@@ -115,6 +116,37 @@ export const set_user_is_online = async (isOnline, available = false) => {
   };
   isOnline && delete data.available;
   await userService.update_user_public(data);
+};
+
+export const increment_online_users = async () => {
+  const user = store.getState().user.user.public;
+  const date = JSON.stringify(new Date().setHours(8, 0, 0, 0));
+  let lastVisitDay = JSON.parse(localStorage.getItem("last_day_visit_lobby"));
+  if (lastVisitDay && check_is_today_date(lastVisitDay)) return;
+  localStorage.setItem("last_day_visit_lobby", date);
+  await create_today_date_doc(date);
+  const gender = user?.gender;
+  await userService.increment_online_users(date, gender);
+  if (check_is_today_date(user.createdAt))
+    await userService.increment_online_users(date, "newUser");
+};
+
+//can be replaced with functions that run regularly every beginning of the day
+const create_today_date_doc = async (date) => {
+  const fullPath = dbPaths.bo_data.count_online_users(date);
+  const path = dbPaths.bo_data.lobbyData(date);
+  const isDoc = await firestore.getDocument(fullPath, true);
+  if (!isDoc) {
+    await firestore.createDoc(
+      path,
+      {
+        male: 0,
+        female: 0,
+        newUsers: 0,
+      },
+      date
+    );
+  }
 };
 
 export const send_report = async (report_data) => {

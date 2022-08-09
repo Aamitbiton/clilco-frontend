@@ -12,6 +12,11 @@ export const dbPaths = {
   user_candidates: (type) => `${type}Candidates`,
   user_offers: "offers",
   users_left_room: "users_left_room",
+  bo_data: {
+    singleDate: (date) => `bo_data/${date}`,
+    lobbyData: (date) => `bo_data/${date}/lobbyData`,
+    count_online_users: (date) => `bo_data/${date}/lobbyData/${date}`,
+  },
 };
 export const basics_wheres = (user) => {
   const { maxAge, minAge } = get_relevant_age_range(user);

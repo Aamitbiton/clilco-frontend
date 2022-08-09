@@ -21,7 +21,22 @@ function getBirthdayTime({ day, month, year }) {
 const day_month_year = (time) =>
   JSON.stringify(new Date(time).toString().split(" ").slice(0, 3));
 
+const check_is_today_date = (date) => {
+  const today = new Date();
+  date = new Date(date);
+  return today.toDateString() === date.toDateString();
+};
+
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 
-export { years, SECOND, MINUTE, months, days, getBirthdayTime, day_month_year };
+export {
+  years,
+  SECOND,
+  MINUTE,
+  months,
+  days,
+  getBirthdayTime,
+  day_month_year,
+  check_is_today_date,
+};
